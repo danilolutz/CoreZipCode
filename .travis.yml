@@ -3,7 +3,7 @@ solution: CoreZipCode.sln
 mono: none
 dotnet: 2.0
 script:
- - dotnet restore
+  - dotnet restore
 install:
   - nuget restore CoreZipCode.sln
   - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
