@@ -1,0 +1,12 @@
+language: csharp
+mono: none
+sudo: required
+dist: xenial
+dotnet: 2.2
+
+install:
+- dotnet restore
+
+script:
+ - dotnet build
+ - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj

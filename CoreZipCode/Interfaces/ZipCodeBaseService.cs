@@ -32,13 +32,13 @@ namespace CoreZipCode.Interfaces
             return Execute();
         }
 
-        public string Execute(string uf, string city, string street)
+        public string Execute(string state, string city, string street)
         {
-            Url = SetZipCodeUrlBy(uf, city, street);
+            Url = SetZipCodeUrlBy(state, city, street);
             return Execute();
         }
 
         public abstract string SetZipCodeUrl(string zipcode);
-        public abstract string SetZipCodeUrlBy(string uf, string city, string street);
+        public abstract string SetZipCodeUrlBy(string state, string city, string street);
     }
 }
