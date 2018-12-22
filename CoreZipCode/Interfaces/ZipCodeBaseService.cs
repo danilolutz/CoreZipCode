@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 
-namespace CoreCep.Interfaces
+namespace CoreZipCode.Interfaces
 {
     public abstract class ZipCodeBaseService
     {

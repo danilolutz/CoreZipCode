@@ -1,8 +1,8 @@
 ﻿using Xunit;
-using CoreCep.Interfaces;
-using CoreCep.Services;
+using CoreZipCode.Interfaces;
+using CoreZipCode.Services;
 
-namespace CoreCep.Tests.Services
+namespace CoreZipCode.Tests.Services
 {
     public class ViaCepTest
     {

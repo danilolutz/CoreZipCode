@@ -1,6 +1,6 @@
-﻿using CoreCep.Interfaces;
+﻿using CoreZipCode.Interfaces;
 
-namespace CoreCep.Services
+namespace CoreZipCode.Services
 {
     public class ViaCep : ZipCodeBaseService
     {

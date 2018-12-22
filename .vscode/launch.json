@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/CoreCep.Tests/bin/Debug/netcoreapp2.2/CoreCep.Tests.dll",
+            "program": "${workspaceFolder}/CoreZipCode.Tests/bin/Debug/netcoreapp2.2/CoreZipCode.Tests.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/CoreCep.Tests",
+            "cwd": "${workspaceFolder}/CoreZipCode.Tests",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "internalConsole",
             "stopAtEntry": false,
