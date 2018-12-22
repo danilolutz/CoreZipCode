@@ -10,6 +10,6 @@ namespace CoreZipCode.Services
             return $"https://viacep.com.br/ws/{zipcode}/json/";    
         }
 
-        public override string SetZipCodeUrlBy(string uf, string city, string street) => $"https://viacep.com.br/ws/{uf}/{city}/{street}/json/";
+        public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{state}/{city}/{street}/json/";
     }
 }

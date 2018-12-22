@@ -4,9 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 
     <PackageId>CoreZipCode</PackageId>
-    <Version>1.0.0</Version>
-    <Authors>Danilo Lutz</Authors>
+    <Title>CoreZipCode</Title>
+    <Version>1.0.3</Version>
+    <Authors>Danilo Lutz;Marcos Berquó</Authors>
     <Company>Danilo Lutz</Company>
+    <license>https://github.com/danilolutz/CoreZipCode/blob/master/LICENSE</license>
+    <PackageProjectUrl>https://github.com/danilolutz/CoreZipCode</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/danilolutz/CoreZipCode</RepositoryUrl>
+    <PackageTags>Zip Code;CEP;.Net Core</PackageTags>
   </PropertyGroup>
 
 </Project>
