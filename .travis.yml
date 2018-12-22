@@ -8,3 +8,7 @@ install:
 script:
  - dotnet build
  - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj
+
+ branches:
+  only:
+  - master
