@@ -1,11 +1,10 @@
 language: csharp
-solution: CoreZipCode.sln
 mono: none
-dotnet: 2.0
-script:
-  - dotnet restore
+dotnet: 2.0.0
+
 install:
-  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+- dotnet restore
+
 script:
-  - xbuild /p:Configuration=Release CoreZipCode.sln
-  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./CoreZipCode.Tests/bin/Release/CoreZipCode.Tests.dll
+ - dotnet build
+ - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj
