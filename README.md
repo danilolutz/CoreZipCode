@@ -26,8 +26,7 @@ After you decide how you'll get the CoreZipCode, just inject and use it.
 namespace YouProject
 {
     public YourClass
-    {
-        
+    {   
         private readonly ZipCodeBaseService _coreZipCode;
 
         public YourClass(ZipCodeBaseService coreZipCode)
@@ -44,7 +43,7 @@ namespace YouProject
 }
 ```
 
-> **NOTE**: We only have only brazilian address service working out-the-box at this moment. We intent add the USA service coming soon.
+> **NOTE**: We have only brazilian address service working out-the-box in this moment. We intent add the USA service coming soon.
 
 ### Extending CoreZipCode
 
