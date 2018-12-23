@@ -70,19 +70,18 @@ namespace CoreZipCode.Services
 }
 ```
 
-## Contributing :construction_worker:
+## :construction_worker: Contributing 
 
 Thank you for considering contributing to the CodeZipCore! Just see our [Contributing Guide](CONTRIBUTING.md).
 
-### Code of Conduct :innocent:
+### :innocent: Code of Conduct
 
 In order to ensure that the CodeZipCore community is welcoming to all, please review and abide by the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Security Vulnerabilities :rotating_light:
+## :rotating_light: Security Vulnerabilities
 
 If you discover any security vulnerability within CoreZipCode, please [create a vulnerability issue](https://github.com/danilolutz/CoreZipCode/issues/new?labels=security%20vulnerabilities). All security vulnerabilities will be promptly addressed.
 
-
-## License :scroll:
+## :scroll: License
 
 The CoreZipCode is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
