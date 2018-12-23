@@ -10,3 +10,15 @@ install:
 script:
  - dotnet build
  - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj
+
+branches:
+  only:
+  - master
+  - develop
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: chmod +x ./deploy/deploy.sh && ./deploy/deploy.sh $NUGET_API_KEY $NUGET_SOURCE
+  on:
+    branch: master
