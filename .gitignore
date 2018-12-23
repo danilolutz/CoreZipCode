@@ -548,4 +548,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
+coverage.json
+
 # End of https://www.gitignore.io/api/aspnetcore,visualstudio,visualstudiocode,openframeworks+visualstudio

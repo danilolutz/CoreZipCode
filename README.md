@@ -23,6 +23,9 @@ $ dotnet add package CoreZipCode
 After you decide how you'll get the CoreZipCode, just inject and use it.
 
 ```CSharp
+using CoreZipCode.Interfaces;
+using CoreZipCode.Services;
+
 namespace YouProject
 {
     public YourClass
