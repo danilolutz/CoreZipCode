@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)  [![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
 
-
 ## Overview
 
 > **WARNING**: Early stage development. Not for production use yet.
