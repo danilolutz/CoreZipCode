@@ -1,4 +1,4 @@
-# Contributing to CoreZipCode :construction_worker:
+# :construction_worker: Contributing to CoreZipCode
 
 Thank you for considering contributing to the CoreZipCode! Welcome to our Contribution Guide.
 
