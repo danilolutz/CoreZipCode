@@ -1,4 +1,4 @@
-# Contributing to CoreZipCode
+# :construction_worker: Contributing to CoreZipCode
 
 Thank you for considering contributing to the CoreZipCode! Welcome to our Contribution Guide.
 
@@ -27,7 +27,15 @@ Or by SSH:
 git clone git@github.com:danilolutz/CoreZipCode.git
 ```
 
-What you prefer. Clone the repo and start your work. We usually use [TDD](https://pt.wikipedia.org/wiki/Test_Driven_Development) as development process, just a suggestion. 
+What you prefer. Clone the repo and start your work following this steps: 
+
+1. :wrench: Create a new branch based on master 
+2. :white_check_mark: Name you branch how you prefer BUT **develop** or **master**
+3. :art: Do the best of your art
+4. :pencil: Make commit with a clear message
+5. :ok_hand: Open a pull request from you new branch to master
+
+We usually use [TDD](https://pt.wikipedia.org/wiki/Test_Driven_Development) as development process, just a suggestion. 
 
 **Only thing will be required are the unit tests for new implementations**.
 

@@ -10,7 +10,7 @@ This package is supposed to be used for easily implements address services to yo
 
 Also the **CoreZipCode** are designed to be easily extensible, and if you want, implement your own address services.
 
-## Get Started
+## :sunglasses: Get Started
 
 Well, you can download the code and build it by yourself or you can install by [Nuget](https://www.nuget.org) package in: [CoreZipCode Package](https://www.nuget.org/packages/CoreZipCode/).
 
@@ -70,19 +70,18 @@ namespace CoreZipCode.Services
 }
 ```
 
-## Contributing
+## :construction_worker: Contributing 
 
 Thank you for considering contributing to the CodeZipCore! Just see our [Contributing Guide](CONTRIBUTING.md).
 
-### Code of Conduct
+### :innocent: Code of Conduct
 
 In order to ensure that the CodeZipCore community is welcoming to all, please review and abide by the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## Security Vulnerabilities
+## :rotating_light: Security Vulnerabilities
 
 If you discover any security vulnerability within CoreZipCode, please [create a vulnerability issue](https://github.com/danilolutz/CoreZipCode/issues/new?labels=security%20vulnerabilities). All security vulnerabilities will be promptly addressed.
 
-
-## License
+## :scroll: License
 
 The CoreZipCode is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
