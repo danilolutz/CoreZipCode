@@ -29,15 +29,11 @@ git clone git@github.com:danilolutz/CoreZipCode.git
 
 What you prefer. Clone the repo and start your work following this steps: 
 
-:wrench: Create a new branch based on master 
-
-:white_check_mark: Name you branch how you prefer BUT **develop** or **master**
-
-:art: Do the best of your art
-
-:pencil: Make commit with a clear message
-
-:ok_hand: Open a pull request from you new branch to master
+1. :wrench: Create a new branch based on master 
+2. :white_check_mark: Name you branch how you prefer BUT **develop** or **master**
+3. :art: Do the best of your art
+4. :pencil: Make commit with a clear message
+5. :ok_hand: Open a pull request from you new branch to master
 
 We usually use [TDD](https://pt.wikipedia.org/wiki/Test_Driven_Development) as development process, just a suggestion. 
 
