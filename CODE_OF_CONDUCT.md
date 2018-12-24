@@ -1,4 +1,4 @@
-# CoreZipCode Code of Conduct
+# :innocent: CoreZipCode Code of Conduct
 
 The CoreZipCode code of conduct is derived from the Ruby code of conduct. Any violations of the code of conduct may be reported to Danilo Lutz (danilolutz@gmail.com).
 
