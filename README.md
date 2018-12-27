@@ -12,6 +12,8 @@ This package is supposed to be used for easily implements address services to yo
 
 Also the **CoreZipCode** are designed to be easily extensible, and if you want, implement your own address services.
 
+We follow the [Semantic Versioning](https://semver.org), so check the package compatibility.
+
 ## :sunglasses: Get Started
 
 Well, you can download the code and build it by yourself or you can install by [Nuget](https://www.nuget.org) package in: [CoreZipCode Package](https://www.nuget.org/packages/CoreZipCode/).
