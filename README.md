@@ -1,6 +1,6 @@
 # CoreZipCode
 
-[![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode) 
+[![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)
 [![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
 [![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/)
 
@@ -31,7 +31,7 @@ using CoreZipCode.Services;
 namespace YouProject
 {
     public YourClass
-    {   
+    {
         private readonly ZipCodeBaseService _coreZipCode;
 
         public YourClass(ZipCodeBaseService coreZipCode)
@@ -43,10 +43,16 @@ namespace YouProject
         {
             var addressByZipCode = _coreZipCode.Execute("14810100");
             var zipCodeByAddress = _coreZipCode.Execute("sp", "araraquara", "barão do rio");
+
+            // Generic type return was added in version 1.2.0
+            var addressByZipCodeObject = _coreZipCode.GetAddress<ViaCepAddress>("14810100");
+            var zipCodeByAddressObjectList = _coreZipCode.ListAddresses<ViaCepAddress>("sp", "araraquara", "barão do rio");
         }
     }
 }
 ```
+
+The `ViaCepAddress` POCO class is the type for returned JSON from [ViaCep](https://viacep.com.br) brazilian service. So you will must to do the type for your prefered service.
 
 > **NOTE**: We have only brazilian address service working out-the-box in this moment. We intent add the USA service coming soon.
 
@@ -64,7 +70,7 @@ namespace CoreZipCode.Services
         public override string SetZipCodeUrl(string zipcode)
         {
             zipcode = zipcode.Replace("-", "");
-            return $"https://viacep.com.br/ws/{zipcode}/json/";    
+            return $"https://viacep.com.br/ws/{zipcode}/json/";
         }
 
         public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{state}/{city}/{street}/json/";
@@ -72,7 +78,15 @@ namespace CoreZipCode.Services
 }
 ```
 
-## :construction_worker: Contributing 
+## :heavy_check_mark: Available Services
+
+Below a list of available services out-of-the-box.
+
+| Service | Country |
+| ------------- | -------- |
+| [ViaCep](https://viacep.com.br) | Brazil |
+
+## :construction_worker: Contributing
 
 Thank you for considering contributing to the CodeZipCore! Just see our [Contributing Guide](CONTRIBUTING.md).
 
