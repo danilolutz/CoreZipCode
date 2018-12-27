@@ -12,7 +12,7 @@ This package is supposed to be used for easily implements address services to yo
 
 Also the **CoreZipCode** are designed to be easily extensible, and if you want, implement your own address services.
 
-We follow the [Semantic Versioning](https://semver.org), so check the package compatibility.
+We follow the [Semantic Versioning](https://semver.org), so check the package compatibility before.
 
 ## :sunglasses: Get Started
 
