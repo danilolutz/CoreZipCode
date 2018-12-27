@@ -46,7 +46,7 @@ namespace YouProject
 }
 ```
 
-> **NOTE**: We have only brazilian address service working out-the-box in this moment. We intent add the USA service coming soon.
+> **NOTE**: We have only brazilian address service working out-of-the-box in this moment. We intent add the USA service coming soon.
 
 ### Extending CoreZipCode
 
