@@ -6,13 +6,13 @@
 
 ## Overview
 
-> **WARNING**: Early stage development. Not for production use yet.
+Normaly we implement ZipCode services every time in each new software we create. Well this package is for keep you [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) and eliminate the necessity to implement ZipCode services over and over.
 
-This package is supposed to be used for easily implements address services to yours [Microsoft .Net Core](https://dotnet.github.io/) based software.
+Also this package could be used for easily implements address services to yours [Microsoft .Net Core](https://dotnet.github.io/) based software.
 
-Also the **CoreZipCode** are designed to be easily extensible, and if you want, implement your own address services.
+And the **CoreZipCode** was designed to be easily extensible, and if you want, implement your own address services, you only must override the API calls.
 
-We follow the [Semantic Versioning](https://semver.org), so check the package compatibility before.
+We follow the [Semantic Versioning](https://semver.org), so check the package compatibility before use it.
 
 ## :sunglasses: Get Started
 
@@ -41,7 +41,7 @@ namespace YouProject
             _coreZipCode = coreZipCode;
         }
 
-        public void YourMethod() 
+        public void YourMethod()
         {
             var addressByZipCode = _coreZipCode.Execute("14810100");
             var zipCodeByAddress = _coreZipCode.Execute("sp", "araraquara", "barão do rio");
@@ -50,11 +50,22 @@ namespace YouProject
             var addressByZipCodeObject = _coreZipCode.GetAddress<ViaCepAddress>("14810100");
             var zipCodeByAddressObjectList = _coreZipCode.ListAddresses<ViaCepAddress>("sp", "araraquara", "barão do rio");
         }
+
+        // Async methods introduced in 1.2.0
+        public async void YourMethodAsync()
+        {
+            var addressByZipCode = await _coreZipCode.ExecuteAsync("14810100");
+            var zipCodeByAddress = await _coreZipCode.ExecuteAsync("sp", "araraquara", "barão do rio");
+
+            // Generic type return.
+            var addressByZipCodeObject = await _coreZipCode.GetAddressAsync<ViaCepAddress>("14810100");
+            var zipCodeByAddressObjectList = await _coreZipCode.ListAddressesAsync<ViaCepAddress>("sp", "araraquara", "barão do rio");
+        }
     }
 }
 ```
 
-The `ViaCepAddress` POCO class is the type for returned JSON from [ViaCep](https://viacep.com.br) brazilian service. So you will must to do the type for your prefered service.
+The `ViaCepAddress` POCO class is the type for returned JSON from [ViaCep](https://viacep.com.br) brazilian service. So you will must to implement the POCO class type for your prefered service.
 
 > **NOTE**: We have only brazilian address service working out-the-box in this moment. We intent add the USA service coming soon.
 
@@ -84,9 +95,11 @@ namespace CoreZipCode.Services
 
 Below a list of available services out-of-the-box.
 
-| Service | Country |
-| ------------- | -------- |
-| [ViaCep](https://viacep.com.br) | Brazil |
+| Service | Country | Queries Limit |
+| :------ | :------ | ------------: |
+| [ViaCep](https://viacep.com.br) | Brazil | 300 |
+
+> **NOTE**: Queries limit are **per day** limit.
 
 ## :construction_worker: Contributing
 
