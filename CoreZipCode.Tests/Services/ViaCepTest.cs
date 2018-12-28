@@ -1,15 +1,15 @@
 ﻿using Xunit;
 using CoreZipCode.Interfaces;
-using CoreZipCode.Services;
+using CoreZipCode.Services.ViaCep;
 using System.Collections.Generic;
-using System;
 
 namespace CoreZipCode.Tests.Services
 {
     public class ViaCepTest
     {
         private readonly ZipCodeBaseService _service;
-
+        private readonly string _expectedResponse = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"unidade\": \"\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\"\n}";
+        private readonly string _expectedListResponse ="[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
         public ViaCepTest()
         {
             _service = new ViaCep();
@@ -18,19 +18,17 @@ namespace CoreZipCode.Tests.Services
         [Fact]
         public void MustGetSingleZipCodeJsonString()
         {
-            string expected = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"unidade\": \"\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\"\n}";
             var actual = _service.Execute("14810-100");
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(_expectedResponse, actual);
         }
 
         [Fact]
         public void MustGetListZipCodeJsonString()
         {
-            string expected = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
             var actual = _service.Execute("sp", "araraquara", "barão do rio");
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(_expectedListResponse, actual);
         }
 
         [Fact]
@@ -55,27 +53,47 @@ namespace CoreZipCode.Tests.Services
         }
 
         [Fact]
-        public void MustThrowAnException()
+        public void MustThrowTheExceptions()
         {
-            Assert.Throws<Exception>(() => _service.Execute("123A"));
+            var exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 12345-67 "));
+            Assert.Equal("Invalid ZipCode Size", exception.Message);
+
+            exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 123A5-678 "));
+            Assert.Equal("Invalid ZipCode Format", exception.Message);
+
+            exception = Assert.Throws<ViaCepException>(() => _service.Execute("U", "Araraquara", "barão do rio"));
+            Assert.Equal("Invalid State Param", exception.Message);
+
+            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ar", "barão do rio"));
+            Assert.Equal("Invalid City Param", exception.Message);
+
+            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", "ba"));
+            Assert.Equal("Invalid Street Param", exception.Message);
+
+            exception = Assert.Throws<ViaCepException>(() => _service.Execute("", "Araraquara", "barão do rio"));
+            Assert.Equal("Invalid State Param", exception.Message);
+
+            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "", "barão do rio"));
+            Assert.Equal("Invalid City Param", exception.Message);
+
+            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", ""));
+            Assert.Equal("Invalid Street Param", exception.Message);
         }
 
         [Fact]
         public async void MustGetSingleZipCodeJsonStringAsync()
         {
-            string expected = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"unidade\": \"\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\"\n}";
             var actual = await _service.ExecuteAsync("14810-100");
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(_expectedResponse, actual);
         }
 
         [Fact]
         public async void MustGetListZipCodeJsonStringAsync()
         {
-            string expected = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
             var actual = await _service.ExecuteAsync("sp", "araraquara", "barão do rio");
 
-            Assert.Equal(expected, actual);
+            Assert.Equal(_expectedListResponse, actual);
         }
 
         [Fact]
@@ -100,9 +118,31 @@ namespace CoreZipCode.Tests.Services
         }
 
         [Fact]
-        public void MustThrowAnExceptionAsync()
+        public void MustThrowTheExceptionsAsync()
         {
-            Assert.ThrowsAsync<Exception>(() => _service.ExecuteAsync("123A"));
+            var exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 12345-67 "));
+            Assert.Equal("Invalid ZipCode Size", exception.Result.Message);
+
+            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 123A5-678 "));
+            Assert.Equal("Invalid ZipCode Format", exception.Result.Message);
+
+            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("U", "Araraquara", "barão do rio"));
+            Assert.Equal("Invalid State Param", exception.Result.Message);
+
+            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ar", "barão do rio"));
+            Assert.Equal("Invalid City Param", exception.Result.Message);
+
+            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", "ba"));
+            Assert.Equal("Invalid Street Param", exception.Result.Message);
+
+            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("", "Araraquara", "barão do rio"));
+            Assert.Equal("Invalid State Param", exception.Result.Message);
+
+            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "", "barão do rio"));
+            Assert.Equal("Invalid City Param", exception.Result.Message);
+
+            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", ""));
+            Assert.Equal("Invalid Street Param", exception.Result.Message);
         }
     }
 }

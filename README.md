@@ -24,13 +24,12 @@ Just in case if you doesn't want leave GitHub:
 $ dotnet add package CoreZipCode
 ```
 
-After you decide how you'll get the CoreZipCode, just inject and use it.
+After you decide how you'll get the CoreZipCode, just inject (e.g.: [Simple Injector](https://simpleinjector.org/)) and use it.
 
 ```CSharp
 using CoreZipCode.Interfaces;
-using CoreZipCode.Services;
 
-namespace YouProject
+namespace YourProject
 {
     public YourClass
     {
@@ -76,17 +75,21 @@ Also you can extends ```ZipCodeBaseService``` abstract class and create your own
 ```CSharp
 using CoreZipCode.Interfaces;
 
-namespace CoreZipCode.Services
+namespace CoreZipCode.Services.YourService
 {
-    public class ViaCep : ZipCodeBaseService
+    public class YourService : ZipCodeBaseService
     {
         public override string SetZipCodeUrl(string zipcode)
         {
-            zipcode = zipcode.Replace("-", "");
-            return $"https://viacep.com.br/ws/{zipcode}/json/";
+            // You can implement some validation method here.
+            return $"https://yourservice.com/{zipcode}/json/";
         }
 
-        public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{state}/{city}/{street}/json/";
+        public override string SetZipCodeUrlBy(string state, string city, string street)
+        { 
+            // You can implement some validation method here.
+            return $"https://yourservice.com/{state}/{city}/{street}/json/";
+        }
     }
 }
 ```
