@@ -1,15 +1,26 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Net.Http;
+using System.Text.RegularExpressions;
 using CoreZipCode.Interfaces;
 
-namespace CoreZipCode.Services.ViaCep
+namespace CoreZipCode.Services.ViaCepApi
 {
     public class ViaCep : ZipCodeBaseService
     {
+        public ViaCep()
+        {
+            //
+        }
+
+        public ViaCep(HttpClient request) : base(request)
+        {
+            //
+        }
+
         public override string SetZipCodeUrl(string zipcode) => $"https://viacep.com.br/ws/{ValidateZipCode(zipcode)}/json/";
 
         public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{ValidateParam("State", state, 2)}/{ValidateParam("City", city)}/{ValidateParam("Street", street)}/json/";
 
-        private static string ValidateParam(string name, string value, int size = 3)
+        public static string ValidateParam(string name, string value, int size = 3)
         {
             try
             {
@@ -27,7 +38,7 @@ namespace CoreZipCode.Services.ViaCep
             return value;
         }
 
-        private static string ValidateZipCode(string zipcode)
+        public static string ValidateZipCode(string zipcode)
         {
             zipcode = zipcode.Trim().Replace("-", "");
             try

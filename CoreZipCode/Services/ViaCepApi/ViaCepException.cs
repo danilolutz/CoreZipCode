@@ -1,6 +1,6 @@
 using System;
 
-namespace CoreZipCode.Services.ViaCep
+namespace CoreZipCode.Services.ViaCepApi
 {
     public class ViaCepException : Exception
     {

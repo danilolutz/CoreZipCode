@@ -1,7 +1,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace CoreZipCode.Services.ViaCep
+namespace CoreZipCode.Services.ViaCepApi
 {
     [Serializable]
     public class ViaCepAddress

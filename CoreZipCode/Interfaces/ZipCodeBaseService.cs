@@ -11,15 +11,21 @@ namespace CoreZipCode.Interfaces
     {
         public ZipCodeBaseService()
         {
-            //
+            Request = new HttpClient();
         }
 
-        private string CallApi(string url)
+        public ZipCodeBaseService(HttpClient request)
+        {
+            Request = request;
+        }
+
+        public HttpClient Request { get; private set; }
+
+        public virtual string CallApi(string url)
         {
             try
             {
-                var request = new HttpClient();
-                var response = request.GetAsync(url).Result;
+                var response = Request.GetAsync(url).Result;
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                     throw new ArgumentException();
@@ -32,12 +38,11 @@ namespace CoreZipCode.Interfaces
             }
         }
 
-        private async Task<string> CallApiAsync(string url)
+        public virtual async Task<string> CallApiAsync(string url)
         {
             try
             {
-                var request = new HttpClient();
-                var response = await request.GetAsync(url);
+                var response = await Request.GetAsync(url);
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                     throw new ArgumentException();
@@ -50,21 +55,21 @@ namespace CoreZipCode.Interfaces
             }
         }
 
-        public string Execute(string zipcode) => CallApi(SetZipCodeUrl(zipcode));
+        public virtual string Execute(string zipcode) => CallApi(SetZipCodeUrl(zipcode));
 
-        public string Execute(string state, string city, string street) => CallApi(SetZipCodeUrlBy(state, city, street));
+        public virtual string Execute(string state, string city, string street) => CallApi(SetZipCodeUrlBy(state, city, street));
 
-        public T GetAddress<T>(string zipcode) => JsonConvert.DeserializeObject<T>(CallApi(SetZipCodeUrl(zipcode)));
+        public virtual T GetAddress<T>(string zipcode) => JsonConvert.DeserializeObject<T>(CallApi(SetZipCodeUrl(zipcode)));
 
-        public IList<T> ListAddresses<T>(string state, string city, string street) => JsonConvert.DeserializeObject<IList<T>>(CallApi(SetZipCodeUrlBy(state, city, street)));
+        public virtual IList<T> ListAddresses<T>(string state, string city, string street) => JsonConvert.DeserializeObject<IList<T>>(CallApi(SetZipCodeUrlBy(state, city, street)));
 
-        public async Task<string> ExecuteAsync(string zipcode) => await CallApiAsync(SetZipCodeUrl(zipcode));
+        public virtual async Task<string> ExecuteAsync(string zipcode) => await CallApiAsync(SetZipCodeUrl(zipcode));
 
-        public async Task<string> ExecuteAsync(string state, string city, string street) => await CallApiAsync(SetZipCodeUrlBy(state, city, street));
+        public virtual async Task<string> ExecuteAsync(string state, string city, string street) => await CallApiAsync(SetZipCodeUrlBy(state, city, street));
 
-        public async Task<T> GetAddressAsync<T>(string zipcode) => JsonConvert.DeserializeObject<T>(await CallApiAsync(SetZipCodeUrl(zipcode)));
+        public virtual async Task<T> GetAddressAsync<T>(string zipcode) => JsonConvert.DeserializeObject<T>(await CallApiAsync(SetZipCodeUrl(zipcode)));
 
-        public async Task<IList<T>> ListAddressesAsync<T>(string state, string city, string street) => JsonConvert.DeserializeObject<IList<T>>(await CallApiAsync(SetZipCodeUrlBy(state, city, street)));
+        public virtual async Task<IList<T>> ListAddressesAsync<T>(string state, string city, string street) => JsonConvert.DeserializeObject<IList<T>>(await CallApiAsync(SetZipCodeUrlBy(state, city, street)));
 
         public abstract string SetZipCodeUrl(string zipcode);
 

@@ -99,10 +99,9 @@ namespace CoreZipCode.Services.YourService
 Below a list of available services out-of-the-box.
 
 | Service | Country | Queries Limit |
-| :------ | :------ | ------------: |
-| [ViaCep](https://viacep.com.br) | Brazil | 300 |
-
-> **NOTE**: Queries limit are **per day** limit.
+| :------ | :------ | :------------ |
+| [ViaCep](https://viacep.com.br) | Brazil | 300 by 15 minutes |
+| [StreetLayer](https://streetlayer.com/) | USA | 50 by month |
 
 ## :construction_worker: Contributing
 
