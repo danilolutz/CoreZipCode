@@ -5,6 +5,5 @@ workflow "Unit Tests" {
 
 action "docker://microsoft/dotnet" {
   uses = "docker://microsoft/dotnet"
-  runs = "dotnet build"
-  args = "dotnet test"
+  runs = "dotnet test"
 }
