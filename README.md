@@ -21,7 +21,7 @@ Well, you can download the code and build it by yourself or you can install by [
 Just in case if you doesn't want leave GitHub:
 
 ```bash
-$ dotnet add package CoreZipCode
+dotnet add package CoreZipCode
 ```
 
 After you decide how you'll get the CoreZipCode, just inject (e.g.: [Simple Injector](https://simpleinjector.org/)) and use it.
@@ -86,7 +86,7 @@ namespace CoreZipCode.Services.YourService
         }
 
         public override string SetZipCodeUrlBy(string state, string city, string street)
-        { 
+        {
             // You can implement some validation method here.
             return $"https://yourservice.com/{state}/{city}/{street}/json/";
         }
@@ -94,14 +94,23 @@ namespace CoreZipCode.Services.YourService
 }
 ```
 
+> **NOTE**: Same principles are used to extends postcode lookups.
+
 ## :heavy_check_mark: Available Services
 
-Below a list of available services out-of-the-box.
+Below a list of available services out-of-the-box **address by zipcode** lookup services.
 
 | Service | Country | Queries Limit |
 | :------ | :------ | :------------ |
 | [ViaCep](https://viacep.com.br) | Brazil | 300 by 15 minutes |
-| [StreetLayer](https://streetlayer.com/) | USA | 50 by month |
+| [SmartyStreets](https://smartystreets.com/) | USA | 250 by month |
+
+Below a list of available services out-of-the-box **postcodes** lookup services.
+
+| Service | Country | Queries Limit |
+| :------ | :------ | :------------ |
+| [Postcodes](https://postcodes.io) | United Kingdom | Unknown |
+| [Postal Pin Code](http://postalpincode.in) | USA | Unknown |
 
 ## :construction_worker: Contributing
 
