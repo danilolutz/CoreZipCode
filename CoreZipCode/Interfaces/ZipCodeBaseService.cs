@@ -7,7 +7,7 @@ namespace CoreZipCode.Interfaces
     public abstract class ZipCodeBaseService
     {
         private string Url { get; set; }
-        
+
         private string Execute()
         {
             try
@@ -25,7 +25,7 @@ namespace CoreZipCode.Interfaces
                 throw new System.Exception($"Error trying execute the request: {ex.Message}");
             }
         }
-        
+
         public string Execute(string zipcode)
         {
             Url = SetZipCodeUrl(zipcode);
