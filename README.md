@@ -110,7 +110,7 @@ Below a list of available services out-of-the-box **postcodes** lookup services.
 | Service | Country | Queries Limit |
 | :------ | :------ | :------------ |
 | [Postcodes](https://postcodes.io) | United Kingdom | Unknown |
-| [Postal Pin Code](http://postalpincode.in) | USA | Unknown |
+| [Postal Pin Code](http://postalpincode.in) | India | Unknown |
 
 ## :construction_worker: Contributing
 
