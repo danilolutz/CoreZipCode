@@ -1,6 +1,9 @@
 # CoreZipCode
 
-[![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)  [![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)
+[![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
+[![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/)
+[![Coverage Status](https://coveralls.io/repos/github/danilolutz/CoreZipCode/badge.svg?branch=master)](https://coveralls.io/github/danilolutz/CoreZipCode?branch=master)
 
 ## Overview
 

@@ -12,6 +12,7 @@
     <PackageProjectUrl>https://github.com/danilolutz/CoreZipCode</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danilolutz/CoreZipCode</RepositoryUrl>
     <PackageTags>Zip Code;CEP;.Net Core</PackageTags>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
 
 </Project>
