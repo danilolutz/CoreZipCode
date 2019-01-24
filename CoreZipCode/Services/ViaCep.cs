@@ -7,6 +7,10 @@ namespace CoreZipCode.Services
     [Obsolete("This class was deprecated since version 1.2.0 and will be removed in next version, please use Services.ViaCepApi.ViaCep", false)]
     public class ViaCep : ZipCodeBaseService
     {
+        public ViaCep() : base(new HttpClient())
+        {
+            //
+        }
         public ViaCep(HttpClient request) : base(request)
         {
             //
