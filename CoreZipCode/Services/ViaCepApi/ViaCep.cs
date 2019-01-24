@@ -6,11 +6,6 @@ namespace CoreZipCode.Services.ViaCepApi
 {
     public class ViaCep : ZipCodeBaseService
     {
-        public ViaCep()
-        {
-            //
-        }
-
         public ViaCep(HttpClient request) : base(request)
         {
             //

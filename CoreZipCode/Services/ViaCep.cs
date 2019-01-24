@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using CoreZipCode.Interfaces;
 
 namespace CoreZipCode.Services
@@ -6,6 +7,10 @@ namespace CoreZipCode.Services
     [Obsolete("This class was deprecated since version 1.2.0 and will be removed in next version, please use Services.ViaCepApi.ViaCep", false)]
     public class ViaCep : ZipCodeBaseService
     {
+        public ViaCep(HttpClient request) : base(request)
+        {
+            //
+        }
         public override string SetZipCodeUrl(string zipcode)
         {
             zipcode = zipcode.Replace("-", "");

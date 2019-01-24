@@ -7,53 +7,9 @@ using Newtonsoft.Json;
 
 namespace CoreZipCode.Interfaces
 {
-    public abstract class ZipCodeBaseService
+    public abstract class ZipCodeBaseService : ApiHandler
     {
-        public ZipCodeBaseService()
-        {
-            Request = new HttpClient();
-        }
-
-        public ZipCodeBaseService(HttpClient request)
-        {
-            Request = request;
-        }
-
-        public HttpClient Request { get; private set; }
-
-        public virtual string CallApi(string url)
-        {
-            try
-            {
-                var response = Request.GetAsync(url).Result;
-
-                if (response.StatusCode == HttpStatusCode.BadRequest)
-                    throw new ArgumentException();
-
-                return response.Content.ReadAsStringAsync().Result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error trying execute the request: {ex.Message}");
-            }
-        }
-
-        public virtual async Task<string> CallApiAsync(string url)
-        {
-            try
-            {
-                var response = await Request.GetAsync(url);
-
-                if (response.StatusCode == HttpStatusCode.BadRequest)
-                    throw new ArgumentException();
-
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error trying execute the request: {ex.Message}");
-            }
-        }
+        public ZipCodeBaseService(HttpClient request) : base(request) { }
 
         public virtual string Execute(string zipcode) => CallApi(SetZipCodeUrl(zipcode));
 

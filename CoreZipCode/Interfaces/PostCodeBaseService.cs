@@ -7,8 +7,6 @@ namespace CoreZipCode.Interfaces
 {
     public abstract class PostCodeBaseService : ApiHandler
     {
-        public PostCodeBaseService() : base() { }
-
         public PostCodeBaseService(HttpClient request) : base(request) { }
 
         public virtual string Execute(string postcode) => CallApi(SetPostCodeUrl(postcode));

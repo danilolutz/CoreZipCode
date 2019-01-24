@@ -7,6 +7,7 @@ namespace CoreZipCode.Services.Postcode.PostcodesIoApi
     {
         public PostcodesIo(HttpClient request) : base(request)
         {
+            //
         }
 
         public override string SetPostCodeUrl(string postcode)
