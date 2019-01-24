@@ -7,11 +7,13 @@
 
 ## Overview
 
-> **WARNING**: Early stage development. Not for production use yet.
+Normaly we implement ZipCode services every time in each new software we create. Well this package is for keep you [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) and eliminate the necessity to implement ZipCode services over and over.
 
-This package is supposed to be used for easily implements address services to yours [Microsoft .Net Core](https://dotnet.github.io/) based software.
+Also this package could be used for easily implements address services to yours [Microsoft .Net Core](https://dotnet.github.io/) based software.
 
-Also the **CoreZipCode** are designed to be easily extensible, and if you want, implement your own address services.
+And the **CoreZipCode** was designed to be easily extensible, and if you want, implement your own address services, you only must override the API calls.
+
+We follow the [Semantic Versioning](https://semver.org), so check the package compatibility before use it.
 
 ## :sunglasses: Get Started
 
@@ -20,19 +22,18 @@ Well, you can download the code and build it by yourself or you can install by [
 Just in case if you doesn't want leave GitHub:
 
 ```bash
-$ dotnet add package CoreZipCode
+dotnet add package CoreZipCode
 ```
 
-After you decide how you'll get the CoreZipCode, just inject and use it.
+After you decide how you'll get the CoreZipCode, just inject (e.g.: [Simple Injector](https://simpleinjector.org/)) and use it.
 
 ```CSharp
 using CoreZipCode.Interfaces;
-using CoreZipCode.Services;
 
-namespace YouProject
+namespace YourProject
 {
     public YourClass
-    {   
+    {
         private readonly ZipCodeBaseService _coreZipCode;
 
         public YourClass(ZipCodeBaseService coreZipCode)
@@ -40,16 +41,33 @@ namespace YouProject
             _coreZipCode = coreZipCode;
         }
 
-        public void YourMethod() 
+        public void YourMethod()
         {
             var addressByZipCode = _coreZipCode.Execute("14810100");
             var zipCodeByAddress = _coreZipCode.Execute("sp", "araraquara", "barão do rio");
+
+            // Generic type return was added in version 1.2.0
+            var addressByZipCodeObject = _coreZipCode.GetAddress<ViaCepAddress>("14810100");
+            var zipCodeByAddressObjectList = _coreZipCode.ListAddresses<ViaCepAddress>("sp", "araraquara", "barão do rio");
+        }
+
+        // Async methods introduced in 1.2.0
+        public async void YourMethodAsync()
+        {
+            var addressByZipCode = await _coreZipCode.ExecuteAsync("14810100");
+            var zipCodeByAddress = await _coreZipCode.ExecuteAsync("sp", "araraquara", "barão do rio");
+
+            // Generic type return.
+            var addressByZipCodeObject = await _coreZipCode.GetAddressAsync<ViaCepAddress>("14810100");
+            var zipCodeByAddressObjectList = await _coreZipCode.ListAddressesAsync<ViaCepAddress>("sp", "araraquara", "barão do rio");
         }
     }
 }
 ```
 
-> **NOTE**: We have only brazilian address service working out-of-the-box in this moment. We intent add the USA service coming soon.
+The `ViaCepAddress` POCO class is the type for returned JSON from [ViaCep](https://viacep.com.br) brazilian service. So you will must to implement the POCO class type for your prefered service.
+
+> **NOTE**: We have only brazilian address service working out-the-box in this moment. We intent add the USA service coming soon.
 
 ### Extending CoreZipCode
 
@@ -58,22 +76,44 @@ Also you can extends ```ZipCodeBaseService``` abstract class and create your own
 ```CSharp
 using CoreZipCode.Interfaces;
 
-namespace CoreZipCode.Services
+namespace CoreZipCode.Services.YourService
 {
-    public class ViaCep : ZipCodeBaseService
+    public class YourService : ZipCodeBaseService
     {
         public override string SetZipCodeUrl(string zipcode)
         {
-            zipcode = zipcode.Replace("-", "");
-            return $"https://viacep.com.br/ws/{zipcode}/json/";    
+            // You can implement some validation method here.
+            return $"https://yourservice.com/{zipcode}/json/";
         }
 
-        public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{state}/{city}/{street}/json/";
+        public override string SetZipCodeUrlBy(string state, string city, string street)
+        {
+            // You can implement some validation method here.
+            return $"https://yourservice.com/{state}/{city}/{street}/json/";
+        }
     }
 }
 ```
 
-## :construction_worker: Contributing 
+> **NOTE**: Same principles are used to extends postcode lookups.
+
+## :heavy_check_mark: Available Services
+
+Below a list of available services out-of-the-box **address by zipcode** lookup services.
+
+| Service | Country | Queries Limit |
+| :------ | :------ | :------------ |
+| [ViaCep](https://viacep.com.br) | Brazil | 300 by 15 minutes |
+| [SmartyStreets](https://smartystreets.com/) | USA | 250 by month |
+
+Below a list of available services out-of-the-box **postcodes** lookup services.
+
+| Service | Country | Queries Limit |
+| :------ | :------ | :------------ |
+| [Postcodes](https://postcodes.io) | United Kingdom | Unknown |
+| [Postal Pin Code](http://postalpincode.in) | India | Unknown |
+
+## :construction_worker: Contributing
 
 Thank you for considering contributing to the CodeZipCore! Just see our [Contributing Guide](CONTRIBUTING.md).
 
