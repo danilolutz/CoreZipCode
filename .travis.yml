@@ -5,11 +5,13 @@ dist: xenial
 dotnet: 2.2
 
 install:
-- dotnet restore
+ - dotnet restore
 
 script:
  - dotnet build
- - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj
+ - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:CoverletOutput=".coverage/coverage.opencover.xml"  -p:Exclude="[CoreZipCode.Tests*]*" -p:Exclude="[xunit*]*" -p:ExcludeByFile="../CoreZipCode/Services/ViaCep.cs"
+ - dotnet tool install -g coveralls.net --version 1.0.0
+ - csmacnz.coveralls -i CoreZipCode.Tests/.coverage/coverage.opencover.xml --opencover
 
 branches:
   only:
