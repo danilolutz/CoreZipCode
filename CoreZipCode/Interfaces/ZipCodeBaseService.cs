@@ -9,7 +9,7 @@ namespace CoreZipCode.Interfaces
 {
     public abstract class ZipCodeBaseService : ApiHandler
     {
-        public ZipCodeBaseService(HttpClient request) : base(request) { }
+        protected ZipCodeBaseService(HttpClient request) : base(request) { }
 
         public virtual string Execute(string zipcode) => CallApi(SetZipCodeUrl(zipcode));
 

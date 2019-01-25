@@ -15,7 +15,6 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
     {
         private readonly string _expectedResponse = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"unidade\": \"\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\"\n}";
         private readonly string _expectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
-        private readonly ViaCepAddress _expectedObjectResponse;
         private readonly IList<ViaCepAddress> _expectedObjectListResponse = new List<ViaCepAddress>();
         private ViaCep _service;
         private ViaCep _serviceList;
@@ -23,7 +22,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
 
         public ViaCepTest()
         {
-            _expectedObjectResponse = new ViaCepAddress
+            var expectedObjectResponse = new ViaCepAddress
             {
                 ZipCode = "14810-100",
                 Address1 = "Rua Barão do Rio Branco",
@@ -36,7 +35,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
                 GIA = "1818"
             };
 
-            _expectedObjectListResponse.Add(_expectedObjectResponse);
+            _expectedObjectListResponse.Add(expectedObjectResponse);
 
             _service = ConfigureService(_expectedResponse);
             _serviceList = ConfigureService(_expectedListResponse);
