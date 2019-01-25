@@ -5,28 +5,27 @@ dist: xenial
 dotnet: 2.2
 
 install:
- - dotnet restore
- - dotnet tool install -g coveralls.net --version 1.0.0
+  - dotnet tool install -g coveralls.net --version 1.0.0
+  - dotnet restore
 
 script:
- - dotnet build
- - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:CoverletOutput=".coverage/coverage.opencover.xml"  -p:Exclude="[CoreZipCode.Tests*]*" -p:Exclude="[xunit*]*" -p:ExcludeByFile="../CoreZipCode/Services/ViaCep.cs"
- 
- - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
- - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
- - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
- - echo $TRAVIS_COMMIT
- - echo $TRAVIS_BRANCH
- - echo $REPO_COMMIT_AUTHOR
- - echo $REPO_COMMIT_AUTHOR_EMAIL
- - echo $REPO_COMMIT_MESSAGE
- - echo $TRAVIS_JOB_ID
- - csmacnz.Coveralls -i CoreZipCode.Tests/.coverage/coverage.opencover.xml --opencover --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName "travis-ci"  --useRelativePaths
+  - dotnet build
+  - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:CoverletOutput=".coverage/coverage.opencover.xml"  -p:Exclude="[CoreZipCode.Tests*]*" -p:Exclude="[xunit*]*" -p:ExcludeByFile="../CoreZipCode/Services/ViaCep.cs"
+  - REPO_COMMIT_AUTHOR=$(git show -s --pretty=format:"%cn")
+  - REPO_COMMIT_AUTHOR_EMAIL=$(git show -s --pretty=format:"%ce")
+  - REPO_COMMIT_MESSAGE=$(git show -s --pretty=format:"%s")
+  - echo $TRAVIS_COMMIT
+  - echo $TRAVIS_BRANCH
+  - echo $REPO_COMMIT_AUTHOR
+  - echo $REPO_COMMIT_AUTHOR_EMAIL
+  - echo $REPO_COMMIT_MESSAGE
+  - echo $TRAVIS_JOB_ID
+  - $HOME/.dotnet/tools/csmacnz.Coveralls -i CoreZipCode.Tests/.coverage/coverage.opencover.xml --opencover --repoToken $COVERALLS_REPO_TOKEN --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName "travis-ci"  --useRelativePaths
 
 branches:
   only:
-  - master
-  - develop
+    - master
+    - develop
 
 deploy:
   skip_cleanup: true
