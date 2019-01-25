@@ -13,6 +13,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
     public class ApiHandlerTest
     {
         private Mock<HttpMessageHandler> _handlerMock;
+        private const string MockUri = "https://unit.test.com/";
 
         private HttpClient ConfigureService(HttpStatusCode statusCode)
         {
@@ -34,7 +35,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
 
             var httpClient = new HttpClient(_handlerMock.Object)
             {
-                BaseAddress = new Uri("https://unit.test.com/"),
+                BaseAddress = new Uri(MockUri),
             };
 
             return httpClient;
@@ -55,7 +56,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
-            Assert.Throws<Exception>(() => apiHandler.CallApi("https://unit.test.com/"));
+            Assert.Throws<Exception>(() => apiHandler.CallApi(MockUri));
         }
 
         [Fact]

@@ -13,11 +13,20 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
 {
     public class ViaCepTest
     {
-        private readonly string _expectedResponse = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"unidade\": \"\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\"\n}";
-        private readonly string _expectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
+        private const string ExpectedResponse = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"unidade\": \"\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\"\n}";
+        private const string ExpectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
+        private const string ExpectedState = "SP";
+        private const string ExpectedCity = "Araraquara";
+        private const string PostalPinCodeTest = "14810-100";
+        private const string SendAsync = "SendAsync";
+        private const string MockUri = "https://unit.test.com/";
+        private const string ViaCepParameterState = "sp";
+        private const string ViaCepParameterCity = "araraquara";
+        private const string ViaCepParameterStreet = "barão do rio";
+
         private readonly IList<ViaCepAddress> _expectedObjectListResponse = new List<ViaCepAddress>();
-        private ViaCep _service;
-        private ViaCep _serviceList;
+        private readonly ViaCep _service;
+        private readonly ViaCep _serviceList;
         private Mock<HttpMessageHandler> _handlerMock;
 
         public ViaCepTest()
@@ -37,8 +46,8 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
 
             _expectedObjectListResponse.Add(expectedObjectResponse);
 
-            _service = ConfigureService(_expectedResponse);
-            _serviceList = ConfigureService(_expectedListResponse);
+            _service = ConfigureService(ExpectedResponse);
+            _serviceList = ConfigureService(ExpectedListResponse);
         }
 
         private ViaCep ConfigureService(string response)
@@ -48,7 +57,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
             _handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
+                    SendAsync,
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
@@ -61,7 +70,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
 
             var httpClient = new HttpClient(_handlerMock.Object)
             {
-                BaseAddress = new Uri("https://unit.test.com/"),
+                BaseAddress = new Uri(MockUri)
             };
 
             return new ViaCep(httpClient);
@@ -70,38 +79,38 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public void MustGetSingleZipCodeJsonString()
         {
-            var actual = _service.Execute("14810-100");
+            var actual = _service.Execute(PostalPinCodeTest);
 
-            Assert.Equal(_expectedResponse, actual);
+            Assert.Equal(ExpectedResponse, actual);
         }
 
         [Fact]
         public void MustGetListZipCodeJsonString()
         {
-            var actual = _serviceList.Execute("sp", "araraquara", "barão do rio");
+            var actual = _serviceList.Execute(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 
-            Assert.Equal(_expectedListResponse, actual);
+            Assert.Equal(ExpectedListResponse, actual);
         }
 
         [Fact]
         public void MustGetSingleZipCodeObject()
         {
-            var actual = _service.GetAddress<ViaCepAddress>("14810-100");
+            var actual = _service.GetAddress<ViaCepAddress>(PostalPinCodeTest);
 
             Assert.IsType<ViaCepAddress>(actual);
-            Assert.Equal("Araraquara", actual.City);
-            Assert.Equal("SP", actual.State);
+            Assert.Equal(ExpectedCity, actual.City);
+            Assert.Equal(ExpectedState, actual.State);
         }
 
         [Fact]
         public void MustGetZipCodeObjectList()
         {
-            var actual = _serviceList.ListAddresses<ViaCepAddress>("sp", "araraquara", "barão do rio");
+            var actual = _serviceList.ListAddresses<ViaCepAddress>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 
             Assert.IsType<List<ViaCepAddress>>(actual);
             Assert.True(actual.Count > 0);
-            Assert.Equal("Araraquara", actual[0].City);
-            Assert.Equal("SP", actual[0].State);
+            Assert.Equal(ExpectedCity, actual[0].City);
+            Assert.Equal(ExpectedState, actual[0].State);
         }
 
         [Fact]
@@ -135,38 +144,38 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public async void MustGetSingleZipCodeJsonStringAsync()
         {
-            var actual = await _service.ExecuteAsync("14810-100");
+            var actual = await _service.ExecuteAsync(PostalPinCodeTest);
 
-            Assert.Equal(_expectedResponse, actual);
+            Assert.Equal(ExpectedResponse, actual);
         }
 
         [Fact]
         public async void MustGetListZipCodeJsonStringAsync()
         {
-            var actual = await _serviceList.ExecuteAsync("sp", "araraquara", "barão do rio");
+            var actual = await _serviceList.ExecuteAsync(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 
-            Assert.Equal(_expectedListResponse, actual);
+            Assert.Equal(ExpectedListResponse, actual);
         }
 
         [Fact]
         public async void MustGetSingleZipCodeObjectAsync()
         {
-            var actual = await _service.GetAddressAsync<ViaCepAddress>("14810-100");
+            var actual = await _service.GetAddressAsync<ViaCepAddress>(PostalPinCodeTest);
 
             Assert.IsType<ViaCepAddress>(actual);
-            Assert.Equal("Araraquara", actual.City);
-            Assert.Equal("SP", actual.State);
+            Assert.Equal(ExpectedCity, actual.City);
+            Assert.Equal(ExpectedState, actual.State);
         }
 
         [Fact]
         public async void MustGetZipCodeObjectListAsync()
         {
-            var actual = await _serviceList.ListAddressesAsync<ViaCepAddress>("sp", "araraquara", "barão do rio");
+            var actual = await _serviceList.ListAddressesAsync<ViaCepAddress>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 
             Assert.IsType<List<ViaCepAddress>>(actual);
             Assert.True(actual.Count > 0);
-            Assert.Equal("Araraquara", actual[0].City);
-            Assert.Equal("SP", actual[0].State);
+            Assert.Equal(ExpectedCity, actual[0].City);
+            Assert.Equal(ExpectedState, actual[0].State);
         }
 
         [Fact]

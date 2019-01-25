@@ -6,6 +6,9 @@ namespace CoreZipCode.Services.ViaCepApi
 {
     public class ViaCep : ZipCodeBaseService
     {
+        private const string ZipCodeSizeErrorMessage = "Invalid ZipCode Size";
+        private const string ZipCodeFormatErrorMessage = "Invalid ZipCode Format";
+
         public ViaCep(HttpClient request) : base(request)
         {
             //
