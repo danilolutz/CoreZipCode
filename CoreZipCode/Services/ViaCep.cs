@@ -1,6 +1,6 @@
+using CoreZipCode.Interfaces;
 using System;
 using System.Net.Http;
-using CoreZipCode.Interfaces;
 
 namespace CoreZipCode.Services
 {

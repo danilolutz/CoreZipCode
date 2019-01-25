@@ -11,7 +11,7 @@ namespace CoreZipCode.Interfaces
 
         public ApiHandler(HttpClient request) => Request = request;
 
-        public HttpClient Request { get; private set; }
+        public HttpClient Request { get; }
 
         public virtual string CallApi(string url)
         {

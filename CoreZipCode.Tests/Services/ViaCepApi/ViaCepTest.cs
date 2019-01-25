@@ -1,13 +1,13 @@
-﻿using Xunit;
-using CoreZipCode.Services.ViaCepApi;
-using System.Collections.Generic;
+﻿using CoreZipCode.Services.ViaCepApi;
 using Moq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Net;
 using Moq.Protected;
 using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace CoreZipCode.Tests.Services.ViaCepApi
 {

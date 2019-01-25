@@ -1,8 +1,6 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace CoreZipCode.Services.Postcode.PostalpincodeInApi
 {
@@ -20,7 +18,7 @@ namespace CoreZipCode.Services.Postcode.PostalpincodeInApi
     }
 
     [Serializable]
-    public partial class PostOffice
+    public class PostOffice
     {
         [JsonProperty("Name")]
         public string Name { get; set; }
@@ -39,19 +37,19 @@ namespace CoreZipCode.Services.Postcode.PostalpincodeInApi
 
         [JsonProperty("Circle")]
         public string Circle { get; set; }
-        
+
         [JsonProperty("District")]
         public string District { get; set; }
-        
+
         [JsonProperty("Division")]
         public string Division { get; set; }
-        
+
         [JsonProperty("Region")]
         public string Region { get; set; }
-        
+
         [JsonProperty("State")]
         public string State { get; set; }
-        
+
         [JsonProperty("Country")]
         public string Country { get; set; }
     }

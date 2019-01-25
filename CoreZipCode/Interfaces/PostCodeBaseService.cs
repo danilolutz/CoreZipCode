@@ -1,13 +1,12 @@
-using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace CoreZipCode.Interfaces
 {
     public abstract class PostCodeBaseService : ApiHandler
     {
-        public PostCodeBaseService(HttpClient request) : base(request) { }
+        protected PostCodeBaseService(HttpClient request) : base(request) { }
 
         public virtual string Execute(string postcode) => CallApi(SetPostCodeUrl(postcode));
 

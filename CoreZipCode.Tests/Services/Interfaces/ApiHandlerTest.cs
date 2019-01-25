@@ -1,11 +1,11 @@
+using CoreZipCode.Interfaces;
+using Moq;
+using Moq.Protected;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreZipCode.Interfaces;
-using Moq;
-using Moq.Protected;
 using Xunit;
 
 namespace CoreZipCode.Tests.Services.Interfaces
@@ -60,11 +60,11 @@ namespace CoreZipCode.Tests.Services.Interfaces
         }
 
         [Fact]
-        public void MustCallApiAsyncException()
+        public async void MustCallApiAsyncException()
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
-            Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync(MockUri));
+            await Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync("https://unit.test.com/"));
         }
     }
 }
