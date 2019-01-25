@@ -1,11 +1,11 @@
+using CoreZipCode.Interfaces;
+using Moq;
+using Moq.Protected;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreZipCode.Interfaces;
-using Moq;
-using Moq.Protected;
 using Xunit;
 
 namespace CoreZipCode.Tests.Services.Interfaces
