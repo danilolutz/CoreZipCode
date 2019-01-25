@@ -13,6 +13,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
     public class ApiHandlerTest
     {
         private Mock<HttpMessageHandler> _handlerMock;
+        private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
 
         private HttpClient ConfigureService(HttpStatusCode statusCode)
@@ -22,7 +23,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
             _handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
+                    SendAsync,
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
@@ -64,7 +65,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
-            await Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync("https://unit.test.com/"));
+            await Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync(MockUri));
         }
     }
 }

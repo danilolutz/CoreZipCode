@@ -23,6 +23,11 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         private const string ViaCepParameterState = "sp";
         private const string ViaCepParameterCity = "araraquara";
         private const string ViaCepParameterStreet = "barão do rio";
+        private const string InvalidStreetMessage = "Invalid Street Param";
+        private const string InvalidCityMessage = "Invalid City Param";
+        private const string InvalidStateMessage = "Invalid State Param";
+        private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
+        private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
 
         private readonly IList<ViaCepAddress> _expectedObjectListResponse = new List<ViaCepAddress>();
         private readonly ViaCep _service;
@@ -117,28 +122,28 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         public void MustThrowTheExceptions()
         {
             var exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 12345-67 "));
-            Assert.Equal("Invalid ZipCode Size", exception.Message);
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
             exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 123A5-678 "));
-            Assert.Equal("Invalid ZipCode Format", exception.Message);
+            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
 
             exception = Assert.Throws<ViaCepException>(() => _service.Execute("U", "Araraquara", "barão do rio"));
-            Assert.Equal("Invalid State Param", exception.Message);
+            Assert.Equal(InvalidStateMessage, exception.Message);
 
             exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ar", "barão do rio"));
-            Assert.Equal("Invalid City Param", exception.Message);
+            Assert.Equal(InvalidCityMessage, exception.Message);
 
             exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", "ba"));
-            Assert.Equal("Invalid Street Param", exception.Message);
+            Assert.Equal(InvalidStreetMessage, exception.Message);
 
             exception = Assert.Throws<ViaCepException>(() => _service.Execute("", "Araraquara", "barão do rio"));
-            Assert.Equal("Invalid State Param", exception.Message);
+            Assert.Equal(InvalidStateMessage, exception.Message);
 
             exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "", "barão do rio"));
-            Assert.Equal("Invalid City Param", exception.Message);
+            Assert.Equal(InvalidCityMessage, exception.Message);
 
             exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", ""));
-            Assert.Equal("Invalid Street Param", exception.Message);
+            Assert.Equal(InvalidStreetMessage, exception.Message);
         }
 
         [Fact]
@@ -182,28 +187,28 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         public void MustThrowTheExceptionsAsync()
         {
             var exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 12345-67 "));
-            Assert.Equal("Invalid ZipCode Size", exception.Result.Message);
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
 
             exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 123A5-678 "));
-            Assert.Equal("Invalid ZipCode Format", exception.Result.Message);
+            Assert.Equal(InvalidZipCodeFormatMessage, exception.Result.Message);
 
             exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("U", "Araraquara", "barão do rio"));
-            Assert.Equal("Invalid State Param", exception.Result.Message);
+            Assert.Equal(InvalidStateMessage, exception.Result.Message);
 
             exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ar", "barão do rio"));
-            Assert.Equal("Invalid City Param", exception.Result.Message);
+            Assert.Equal(InvalidCityMessage, exception.Result.Message);
 
             exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", "ba"));
-            Assert.Equal("Invalid Street Param", exception.Result.Message);
+            Assert.Equal(InvalidStreetMessage, exception.Result.Message);
 
             exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("", "Araraquara", "barão do rio"));
-            Assert.Equal("Invalid State Param", exception.Result.Message);
+            Assert.Equal(InvalidStateMessage, exception.Result.Message);
 
             exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "", "barão do rio"));
-            Assert.Equal("Invalid City Param", exception.Result.Message);
+            Assert.Equal(InvalidCityMessage, exception.Result.Message);
 
             exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", ""));
-            Assert.Equal("Invalid Street Param", exception.Result.Message);
+            Assert.Equal(InvalidStreetMessage, exception.Result.Message);
         }
     }
 }
