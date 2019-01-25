@@ -59,11 +59,11 @@ namespace CoreZipCode.Tests.Services.Interfaces
         }
 
         [Fact]
-        public void MustCallApiAsyncException()
+        public async void MustCallApiAsyncException()
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
-            Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync("https://unit.test.com/"));
+            await Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync("https://unit.test.com/"));
         }
     }
 }
