@@ -6,6 +6,9 @@ namespace CoreZipCode.Services.ViaCepApi
 {
     public class ViaCep : ZipCodeBaseService
     {
+        private const string ZipCodeSizeErrorMessage = "Invalid ZipCode Size";
+        private const string ZipCodeFormatErrorMessage = "Invalid ZipCode Format";
+
         public ViaCep(HttpClient request) : base(request)
         {
             //
@@ -40,11 +43,11 @@ namespace CoreZipCode.Services.ViaCepApi
             {
                 if (zipcode.Length != 8)
                 {
-                    throw new ViaCepException("Invalid ZipCode Size");
+                    throw new ViaCepException(ZipCodeSizeErrorMessage);
                 }
                 if (!Regex.IsMatch(zipcode, ("[0-9]{8}")))
                 {
-                    throw new ViaCepException("Invalid ZipCode Format");
+                    throw new ViaCepException(ZipCodeFormatErrorMessage);
                 }
             }
             catch (ViaCepException ex)
