@@ -17,17 +17,11 @@ namespace CoreZipCode.Services.ViaCepApi
 
         public static string ValidateParam(string name, string value, int size = 3)
         {
-            try
+            value = value.Trim();
+
+            if (string.IsNullOrEmpty(value) || value.Length < size)
             {
-                value = value.Trim();
-                if (string.IsNullOrEmpty(value) || value.Length < size)
-                {
-                    throw new ViaCepException($"Invalid {name} Param");
-                }
-            }
-            catch (ViaCepException ex)
-            {
-                throw ex;
+                throw new ViaCepException($"Invalid {name} Param");
             }
 
             return value;
@@ -36,20 +30,15 @@ namespace CoreZipCode.Services.ViaCepApi
         public static string ValidateZipCode(string zipcode)
         {
             zipcode = zipcode.Trim().Replace("-", "");
-            try
+
+            if (zipcode.Length != 8)
             {
-                if (zipcode.Length != 8)
-                {
-                    throw new ViaCepException("Invalid ZipCode Size");
-                }
-                if (!Regex.IsMatch(zipcode, ("[0-9]{8}")))
-                {
-                    throw new ViaCepException("Invalid ZipCode Format");
-                }
+                throw new ViaCepException("Invalid ZipCode Size");
             }
-            catch (ViaCepException ex)
+
+            if (!Regex.IsMatch(zipcode, ("[0-9]{8}")))
             {
-                throw ex;
+                throw new ViaCepException("Invalid ZipCode Format");
             }
 
             return zipcode;
