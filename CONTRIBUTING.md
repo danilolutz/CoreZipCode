@@ -27,9 +27,9 @@ Or by SSH:
 git clone git@github.com:danilolutz/CoreZipCode.git
 ```
 
-What you prefer. Clone the repo and start your work following this steps: 
+What you prefer. Clone the repo and start your work following this steps:
 
-1. :wrench: Create a new branch based on master 
+1. :wrench: Create a new branch based on master
 2. :white_check_mark: Name you branch how you prefer BUT **develop** or **master**
 3. :art: Do the best of your art
 4. :pencil: Make commit with a clear message
@@ -37,7 +37,7 @@ What you prefer. Clone the repo and start your work following this steps:
 
 We usually use [TDD](https://pt.wikipedia.org/wiki/Test_Driven_Development) as development process, just a suggestion.
 
-Maybe you ask yourself: _How can I contribute?_ or _What i can do?_ 
+Maybe you ask yourself: _How can I contribute?_ or _What i can do?_
 
 We'll help you:
 
