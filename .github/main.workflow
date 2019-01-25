@@ -12,6 +12,7 @@ action "docker://microsoft/dotnet" {
     "-p:CoverletOutputFormat=cobertura",
     "-p:CoverletOutput=\".coverage/coverage.cobertura.xml\"",
     "-p:Exclude=\"[CoreZipCode.Tests*]*\"",
-    "-p:Exclude=\"[xunit*]*\""
+    "-p:Exclude=\"[xunit*]*\"",
+    "-p:ExcludeByFile=\"../CoreZipCode/Services/ViaCep.cs\""
   ]
 }
