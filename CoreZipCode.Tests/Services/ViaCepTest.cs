@@ -1,7 +1,7 @@
-﻿using Xunit;
-using CoreZipCode.Interfaces;
+﻿using CoreZipCode.Interfaces;
 using CoreZipCode.Services;
 using System.Net.Http;
+using Xunit;
 
 namespace CoreZipCode.Tests.Services
 {

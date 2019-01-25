@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
+﻿using CoreZipCode.Interfaces;
+using System.Net.Http;
 using System.Text.RegularExpressions;
-using CoreZipCode.Interfaces;
 
 namespace CoreZipCode.Services.ViaCepApi
 {
