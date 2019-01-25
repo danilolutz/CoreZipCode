@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using CoreZipCode.Interfaces;
 using CoreZipCode.Services;
+using System.Net.Http;
 
 namespace CoreZipCode.Tests.Services
 {
@@ -10,7 +11,7 @@ namespace CoreZipCode.Tests.Services
 
         public ViaCepTest()
         {
-            _service = new ViaCep();
+            _service = new ViaCep(new HttpClient());
         }
 
         [Fact]

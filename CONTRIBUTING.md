@@ -35,7 +35,7 @@ What you prefer. Clone the repo and start your work following this steps:
 4. :pencil: Make commit with a clear message
 5. :ok_hand: Open a pull request from you new branch to master
 
-We usually use [TDD](https://pt.wikipedia.org/wiki/Test_Driven_Development) as development process, just a suggestion. 
+We usually use [TDD](https://pt.wikipedia.org/wiki/Test_Driven_Development) as development process, just a suggestion.
 
 Maybe you ask yourself: _How can I contribute?_ or _What i can do?_ 
 
@@ -44,7 +44,7 @@ We'll help you:
 * You can implement you favorite address service and submit to CoreZipCode to be an out-of-the-box service;
 * You can find and fix bugs;
 * Implement openned issues;
-* Improve the CoreZipCode programming;.
+* Improve the CoreZipCode programming.
 
 **Only thing will be required by us to approve the pull requests are the unit tests for the new implementations**.
 
