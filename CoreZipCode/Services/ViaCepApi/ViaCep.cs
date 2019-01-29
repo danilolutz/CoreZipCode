@@ -36,12 +36,12 @@ namespace CoreZipCode.Services.ViaCepApi
 
             if (zipcode.Length != 8)
             {
-                throw new ViaCepException("Invalid ZipCode Size");
+                throw new ViaCepException(ZipCodeSizeErrorMessage);
             }
 
             if (!Regex.IsMatch(zipcode, ("[0-9]{8}")))
             {
-                throw new ViaCepException("Invalid ZipCode Format");
+                throw new ViaCepException(ZipCodeFormatErrorMessage);
             }
 
             return zipcode;
