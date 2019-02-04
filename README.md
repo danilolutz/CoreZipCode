@@ -46,12 +46,12 @@ namespace YourProject
             var addressByZipCode = _coreZipCode.Execute("14810100");
             var zipCodeByAddress = _coreZipCode.Execute("sp", "araraquara", "barão do rio");
 
-            // Generic type return was added in version 1.2.0
+            // Generic type return was added in version 1.1.0
             var addressByZipCodeObject = _coreZipCode.GetAddress<ViaCepAddress>("14810100");
             var zipCodeByAddressObjectList = _coreZipCode.ListAddresses<ViaCepAddress>("sp", "araraquara", "barão do rio");
         }
 
-        // Async methods introduced in 1.2.0
+        // Async methods introduced in 1.1.0
         public async void YourMethodAsync()
         {
             var addressByZipCode = await _coreZipCode.ExecuteAsync("14810100");
