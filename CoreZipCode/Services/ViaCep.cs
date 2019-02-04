@@ -4,7 +4,7 @@ using System.Net.Http;
 
 namespace CoreZipCode.Services
 {
-    [Obsolete("This class was deprecated since version 1.2.0 and will be removed in next version, please use Services.ViaCepApi.ViaCep", false)]
+    [Obsolete("This class was deprecated since version 1.1.0 and will be removed in next version, please use Services.ViaCepApi.ViaCep", false)]
     public class ViaCep : ZipCodeBaseService
     {
         public ViaCep() : base(new HttpClient())
