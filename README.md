@@ -115,11 +115,11 @@ Below a list of available services out-of-the-box **postcodes** lookup services.
 
 ## :construction_worker: Contributing
 
-Thank you for considering contributing to the CodeZipCore! Just see our [Contributing Guide](CONTRIBUTING.md).
+Thank you for considering contributing to the CodeZipCore! Just see our [Contributing Guide](.github/CONTRIBUTING.md).
 
 ### :innocent: Code of Conduct
 
-In order to ensure that the CodeZipCore community is welcoming to all, please review and abide by the [Code of Conduct](CODE_OF_CONDUCT.md).
+In order to ensure that the CodeZipCore community is welcoming to all, please review and abide by the [Code of Conduct](.github/CODE_OF_CONDUCT.md).
 
 ## :rotating_light: Security Vulnerabilities
 
