@@ -7,11 +7,11 @@
 
 ## Overview
 
-Normaly we implement ZipCode services every time in each new software we create. Well this package is for keep you [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) and eliminate the necessity to implement ZipCode services over and over.
+Normaly we must implement ZipCode or Postcode services every time in each new software we create. Well this package is for keep you [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) and eliminate the necessity to implement ZipCode or Postcode services over and over.
 
 Also this package could be used for easily implements address services to yours [Microsoft .Net Core](https://dotnet.github.io/) based software.
 
-And the **CoreZipCode** was designed to be easily extensible, and if you want, implement your own address services, you only must override the API calls.
+And the **CoreZipCode** was designed to be easily extensible, and if you want, implement your own address services, you only must override the API calls methods.
 
 We follow the [Semantic Versioning](https://semver.org), so check the package compatibility before use it.
 
@@ -19,7 +19,7 @@ We follow the [Semantic Versioning](https://semver.org), so check the package co
 
 Well, you can download the code and build it by yourself or you can install by [Nuget](https://www.nuget.org) package in: [CoreZipCode Package](https://www.nuget.org/packages/CoreZipCode/).
 
-Just in case if you doesn't want leave GitHub:
+Just in case if you doesn't want leave GitHub at this moment:
 
 ```bash
 dotnet add package CoreZipCode
@@ -65,9 +65,7 @@ namespace YourProject
 }
 ```
 
-The `ViaCepAddress` POCO class is the type for returned JSON from [ViaCep](https://viacep.com.br) brazilian service. So you will must to implement the POCO class type for your prefered service.
-
-> **NOTE**: We have only brazilian address service working out-the-box in this moment. We intent add the USA service coming soon.
+The `ViaCepAddress` POCO class is the type for returned JSON from [ViaCep](https://viacep.com.br) brazilian service. So you will must to implement the POCO class for your new service.
 
 ### Extending CoreZipCode
 
@@ -95,7 +93,7 @@ namespace CoreZipCode.Services.YourService
 }
 ```
 
-> **NOTE**: Same principles are used to extends postcode lookups.
+> **NOTE**: Same principles are used to extends postcode lookups (```PostCodeBaseService```).
 
 ## :heavy_check_mark: Available Services
 
