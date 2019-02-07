@@ -55,7 +55,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
-        public void MustGetPostCodes()
+        public void MustGetPostcodes()
         {
             var actual = _service.Execute(PostalPinCodeTest);
 
@@ -63,7 +63,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
-        public void MustGetPostCodesObject()
+        public void MustGetPostcodesObject()
         {
             var actual = _service.GetPostcode<PostcodesIoModel>(PostalPinCodeTest);
 
@@ -74,7 +74,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
-        public async void MustGetPostCodesAsync()
+        public async void MustGetPostcodesAsync()
         {
             var actual = await _service.ExecuteAsync(PostalPinCodeTest);
 
@@ -82,7 +82,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
-        public async void MustGetPostCodesObjectAsync()
+        public async void MustGetPostcodesObjectAsync()
         {
             var actual = await _service.GetPostcodeAsync<PostcodesIoModel>(PostalPinCodeTest);
 
