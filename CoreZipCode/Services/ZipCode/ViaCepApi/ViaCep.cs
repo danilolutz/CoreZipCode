@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Text.RegularExpressions;
 
-namespace CoreZipCode.Services.ViaCepApi
+namespace CoreZipCode.Services.ZipCode.ViaCepApi
 {
     public class ViaCep : ZipCodeBaseService
     {
