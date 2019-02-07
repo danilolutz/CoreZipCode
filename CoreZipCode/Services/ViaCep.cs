@@ -15,10 +15,10 @@ namespace CoreZipCode.Services
         {
             //
         }
-        public override string SetZipCodeUrl(string zipcode)
+        public override string SetZipCodeUrl(string zipCode)
         {
-            zipcode = zipcode.Replace("-", "");
-            return $"https://viacep.com.br/ws/{zipcode}/json/";
+            zipCode = zipCode.Replace("-", "");
+            return $"https://viacep.com.br/ws/{zipCode}/json/";
         }
 
         public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{state}/{city}/{street}/json/";
