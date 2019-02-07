@@ -19,12 +19,12 @@ branches:
     - develop
 
 before_deploy:
-  - dotnet pack CoreZipCode.sln -c Release --include-symbols -p:PackageVersion=$TRAVIS_TAG -v detailed
+  - dotnet pack CoreZipCode.sln -c Release --include-symbols -p:PackageVersion=${TRAVIS_TAG#v} -v detailed
 
 deploy:
   - provider: releases
     api_key: $GITHUB_TOKEN
-    file: "./CoreZipCode/bin/Debug/CoreZipCode.$TRAVIS_TAG.nupkg"
+    file: "./CoreZipCode/bin/Debug/CoreZipCode.${TRAVIS_TAG#v}.nupkg"
     skip_cleanup: true
     on:
       tags: true
