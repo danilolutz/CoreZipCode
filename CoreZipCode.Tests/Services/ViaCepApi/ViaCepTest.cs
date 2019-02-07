@@ -17,7 +17,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         private const string ExpectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
         private const string ExpectedState = "SP";
         private const string ExpectedCity = "Araraquara";
-        private const string PostalPinCodeTest = "14810-100";
+        private const string PostalZipCodeTest = "14810-100";
         private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
         private const string ViaCepParameterState = "sp";
@@ -84,7 +84,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public void MustGetSingleZipCodeJsonString()
         {
-            var actual = _service.Execute(PostalPinCodeTest);
+            var actual = _service.Execute(PostalZipCodeTest);
 
             Assert.Equal(ExpectedResponse, actual);
         }
@@ -100,7 +100,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public void MustGetSingleZipCodeObject()
         {
-            var actual = _service.GetAddress<ViaCepAddress>(PostalPinCodeTest);
+            var actual = _service.GetAddress<ViaCepAddress>(PostalZipCodeTest);
 
             Assert.IsType<ViaCepAddress>(actual);
             Assert.Equal(ExpectedCity, actual.City);
@@ -149,7 +149,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public async void MustGetSingleZipCodeJsonStringAsync()
         {
-            var actual = await _service.ExecuteAsync(PostalPinCodeTest);
+            var actual = await _service.ExecuteAsync(PostalZipCodeTest);
 
             Assert.Equal(ExpectedResponse, actual);
         }
@@ -165,7 +165,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public async void MustGetSingleZipCodeObjectAsync()
         {
-            var actual = await _service.GetAddressAsync<ViaCepAddress>(PostalPinCodeTest);
+            var actual = await _service.GetAddressAsync<ViaCepAddress>(PostalZipCodeTest);
 
             Assert.IsType<ViaCepAddress>(actual);
             Assert.Equal(ExpectedCity, actual.City);
