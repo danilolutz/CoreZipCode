@@ -11,7 +11,6 @@ install:
 script:
   - dotnet build
   - dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:CoverletOutput=".coverage/coverage.opencover.xml"  -p:Exclude="[CoreZipCode.Tests*]*" -p:Exclude="[xunit*]*" -p:ExcludeByFile="../CoreZipCode/Services/ViaCep.cs"
-  - echo $TRAVIS_JOB_ID
   - $HOME/.dotnet/tools/csmacnz.Coveralls -i CoreZipCode.Tests/.coverage/coverage.opencover.xml --opencover --repoToken $COVERALLS_REPO_TOKEN --jobId $TRAVIS_JOB_ID --serviceName "travis-ci" --useRelativePaths
 
 branches:
@@ -19,9 +18,20 @@ branches:
     - master
     - develop
 
+before_deploy:
+  - dotnet pack CoreZipCode.sln -c Release --include-symbols -p:PackageVersion=$TRAVIS_TAG -v detailed
+
 deploy:
-  provider: script
-  script: chmod +x .deploy/deploy.sh && .deploy/deploy.sh $NUGET_API_KEY $TRAVIS_TAG
-  skip_cleanup: true
-  on:
-    tags: true
+  - provider: releases
+    api_key: $GITHUB_TOKEN
+    file: "./CoreZipCode/bin/Debug/CoreZipCode.$TRAVIS_TAG.nupkg"
+    skip_cleanup: true
+    on:
+      tags: true
+      branch: master
+  - provider: script
+    script: bash .deploy/deploy.sh
+    skip_cleanup: true
+    on:
+      tags: true
+      branch: master

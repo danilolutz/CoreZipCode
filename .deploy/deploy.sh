@@ -1,6 +1,5 @@
-ApiKey=$1
-PackageVersion=$2
+#!/bin/bash
 
-dotnet pack CoreZipCode.sln -v detailed -p:PackageVersion=$PackageVersion
+set -e
 
-dotnet nuget push CoreZipCode/bin/Debug/CoreZipCode.$PackageVersion.nupkg --api-key $ApiKey --source https://api.nuget.org/v3/index.json
+dotnet nuget push CoreZipCode/bin/Debug/CoreZipCode.$TRAVIS_TAG.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
