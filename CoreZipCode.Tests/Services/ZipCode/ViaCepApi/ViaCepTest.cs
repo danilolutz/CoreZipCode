@@ -1,4 +1,4 @@
-﻿using CoreZipCode.Services.ViaCepApi;
+﻿using CoreZipCode.Services.ZipCode.ViaCepApi;
 using Moq;
 using Moq.Protected;
 using System;
@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CoreZipCode.Tests.Services.ViaCepApi
+namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
 {
     public class ViaCepTest
     {
@@ -17,7 +17,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         private const string ExpectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
         private const string ExpectedState = "SP";
         private const string ExpectedCity = "Araraquara";
-        private const string PostalZipCodeTest = "14810-100";
+        private const string ZipCodeTest = "14810-100";
         private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
         private const string ViaCepParameterState = "sp";
@@ -29,28 +29,12 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
         private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
 
-        private readonly IList<ViaCepAddress> _expectedObjectListResponse = new List<ViaCepAddress>();
         private readonly ViaCep _service;
         private readonly ViaCep _serviceList;
         private Mock<HttpMessageHandler> _handlerMock;
 
         public ViaCepTest()
         {
-            var expectedObjectResponse = new ViaCepAddress
-            {
-                ZipCode = "14810-100",
-                Address1 = "Rua Barão do Rio Branco",
-                Complement = string.Empty,
-                Neighborhood = "Vila Xavier (Vila Xavier)",
-                City = "Araraquara",
-                State = "SP",
-                Unity = string.Empty,
-                IBGE = "3503208",
-                GIA = "1818"
-            };
-
-            _expectedObjectListResponse.Add(expectedObjectResponse);
-
             _service = ConfigureService(ExpectedResponse);
             _serviceList = ConfigureService(ExpectedListResponse);
         }
@@ -84,7 +68,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public void MustGetSingleZipCodeJsonString()
         {
-            var actual = _service.Execute(PostalZipCodeTest);
+            var actual = _service.Execute(ZipCodeTest);
 
             Assert.Equal(ExpectedResponse, actual);
         }
@@ -100,7 +84,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public void MustGetSingleZipCodeObject()
         {
-            var actual = _service.GetAddress<ViaCepAddress>(PostalZipCodeTest);
+            var actual = _service.GetAddress<ViaCepAddress>(ZipCodeTest);
 
             Assert.IsType<ViaCepAddress>(actual);
             Assert.Equal(ExpectedCity, actual.City);
@@ -149,7 +133,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public async void MustGetSingleZipCodeJsonStringAsync()
         {
-            var actual = await _service.ExecuteAsync(PostalZipCodeTest);
+            var actual = await _service.ExecuteAsync(ZipCodeTest);
 
             Assert.Equal(ExpectedResponse, actual);
         }
@@ -165,7 +149,7 @@ namespace CoreZipCode.Tests.Services.ViaCepApi
         [Fact]
         public async void MustGetSingleZipCodeObjectAsync()
         {
-            var actual = await _service.GetAddressAsync<ViaCepAddress>(PostalZipCodeTest);
+            var actual = await _service.GetAddressAsync<ViaCepAddress>(ZipCodeTest);
 
             Assert.IsType<ViaCepAddress>(actual);
             Assert.Equal(ExpectedCity, actual.City);
