@@ -18,7 +18,7 @@ namespace CoreZipCode.Interfaces
         /// <summary>
         /// ApiHandler Constructor with parameter: request.
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">HttpClient class param to handle with API Servers Connections.</param>
         public ApiHandler(HttpClient request) => Request = request;
 
         /// <summary>
