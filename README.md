@@ -99,17 +99,17 @@ namespace CoreZipCode.Services.YourService
 
 Below a list of available services out-of-the-box **address by zipcode** lookup services.
 
-| Service | Country | Queries Limit |
-| :------ | :------ | :------------ |
-| [ViaCep](https://viacep.com.br) | Brazil | 300 by 15 minutes |
-| [SmartyStreets](https://smartystreets.com/) | USA | 250 by month |
+| Service | Country | Queries Limit | Needs Key |
+| :------ | :------ | :------------ | :-------- |
+| [ViaCep](https://viacep.com.br) | Brazil | 300 by 15 minutes | No |
+| [SmartyStreets](https://smartystreets.com/) | USA | 250 by month | Yes |
 
 Below a list of available services out-of-the-box **postcodes** lookup services.
 
-| Service | Country | Queries Limit |
-| :------ | :------ | :------------ |
-| [Postcodes](https://postcodes.io) | United Kingdom | Unknown |
-| [Postal Pin Code](http://postalpincode.in) | India | Unknown |
+| Service | Country | Queries Limit | Needs Key |
+| :------ | :------ | :------------ | No |
+| [Postcodes](https://postcodes.io) | United Kingdom | Unknown | No |
+| [Postal Pin Code](http://postalpincode.in) | India | Unknown | No |
 
 ## :construction_worker: Contributing
 
