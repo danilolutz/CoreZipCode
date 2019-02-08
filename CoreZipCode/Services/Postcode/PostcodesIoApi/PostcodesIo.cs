@@ -5,6 +5,8 @@ namespace CoreZipCode.Services.Postcode.PostcodesIoApi
 {
     public class PostcodesIo : PostcodeBaseService
     {
+        public PostcodesIo() : base() { }
+
         public PostcodesIo(HttpClient request) : base(request)
         {
             //

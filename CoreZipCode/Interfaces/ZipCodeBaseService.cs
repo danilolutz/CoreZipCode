@@ -15,6 +15,12 @@ namespace CoreZipCode.Interfaces
         /// <summary>
         /// Zip Code Base Service protected constructor.
         /// </summary>
+        protected ZipCodeBaseService() : base() { }
+
+        /// <inheritdoc />
+        /// <summary>
+        /// Zip Code Base Service protected constructor.
+        /// </summary>
         /// <param name="request">HttpClient class param to handle with API Servers Connections.</param>
         protected ZipCodeBaseService(HttpClient request) : base(request) { }
 

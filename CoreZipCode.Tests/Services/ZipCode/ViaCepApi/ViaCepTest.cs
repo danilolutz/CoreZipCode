@@ -66,6 +66,13 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
+        public void ConstructorTest()
+        {
+            var actual = new ViaCep();
+            Assert.NotNull(actual);
+        }
+
+        [Fact]
         public void MustGetSingleZipCodeJsonString()
         {
             var actual = _service.Execute(ZipCodeTest);
