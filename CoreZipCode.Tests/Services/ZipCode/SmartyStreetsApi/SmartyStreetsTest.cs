@@ -23,11 +23,13 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         private const string SmartyStreetsParameterState = "CA";
         private const string SmartyStreetsParameterCity = "Mountain View";
         private const string SmartyStreetsParameterStreet = "1600 Amphitheatre Pkwy";
-        private const string InvalidStreetMessage = "Invalid Street Param";
-        private const string InvalidCityMessage = "Invalid City Param";
-        private const string InvalidStateMessage = "Invalid State Param";
+        private const string InvalidStreetMessage = "Invalid Street, parameter over size";
+        private const string InvalidCityMessage = "Invalid City, parameter over size";
+        private const string InvalidStateMessage = "Invalid State, parameter over size";
         private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
         private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
+        private const string AuthToken = "some auth token";
+        private const string AuthId = "some auth id";
 
         private readonly SmartyStreets _service;
         private readonly SmartyStreets _serviceList;
@@ -66,9 +68,14 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public void Constructor_null_test()
+        public void ConstructorNullTest()
         {
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets("", null));
+            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), AuthId, null));
+            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), null, AuthToken));
+            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), null, null));
+            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), AuthId, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), string.Empty, AuthToken));
+            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), string.Empty, string.Empty));
         }
 
         [Fact]
@@ -108,33 +115,27 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
             Assert.Equal(SmartyStreetsParameterState, actual[0].Components.StateAbbreviation);
         }
 
-        // [Fact]
-        // public void MustThrowTheExceptions()
-        // {
-        //     var exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 12345-67 "));
-        //     Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
+        [Fact]
+        public void MustThrowTheExceptions()
+        {
+            var exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute(" 12345678901234567890 "));
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
-        //     exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 123A5-678 "));
-        //     Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
+            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute(" 12A"));
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
-        //     exception = Assert.Throws<ViaCepException>(() => _service.Execute("U", "Araraquara", "barão do rio"));
-        //     Assert.Equal(InvalidStateMessage, exception.Message);
+            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute(" 123A5678 "));
+            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
 
-        //     exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ar", "barão do rio"));
-        //     Assert.Equal(InvalidCityMessage, exception.Message);
+            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
+            Assert.Equal(InvalidStateMessage, exception.Message);
 
-        //     exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", "ba"));
-        //     Assert.Equal(InvalidStreetMessage, exception.Message);
+            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
+            Assert.Equal(InvalidCityMessage, exception.Message);
 
-        //     exception = Assert.Throws<ViaCepException>(() => _service.Execute("", "Araraquara", "barão do rio"));
-        //     Assert.Equal(InvalidStateMessage, exception.Message);
-
-        //     exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "", "barão do rio"));
-        //     Assert.Equal(InvalidCityMessage, exception.Message);
-
-        //     exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", ""));
-        //     Assert.Equal(InvalidStreetMessage, exception.Message);
-        // }
+            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
+            Assert.Equal(InvalidStreetMessage, exception.Message);
+        }
 
         [Fact]
         public async void MustGetSingleZipCodeJsonStringAsync()
@@ -173,32 +174,26 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
             Assert.Equal(SmartyStreetsParameterState, actual[0].Components.StateAbbreviation);
         }
 
-        // [Fact]
-        // public void MustThrowTheExceptionsAsync()
-        // {
-        //     var exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 12345-67 "));
-        //     Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
+        [Fact]
+        public void MustThrowTheExceptionsAsync()
+        {
+            var exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync(" 12345678901234567890 "));
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
 
-        //     exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 123A5-678 "));
-        //     Assert.Equal(InvalidZipCodeFormatMessage, exception.Result.Message);
+            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync(" 12A"));
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
 
-        //     exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("U", "Araraquara", "barão do rio"));
-        //     Assert.Equal(InvalidStateMessage, exception.Result.Message);
+            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync(" 123A5678 "));
+            Assert.Equal(InvalidZipCodeFormatMessage, exception.Result.Message);
 
-        //     exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ar", "barão do rio"));
-        //     Assert.Equal(InvalidCityMessage, exception.Result.Message);
+            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
+            Assert.Equal(InvalidStateMessage, exception.Result.Message);
 
-        //     exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", "ba"));
-        //     Assert.Equal(InvalidStreetMessage, exception.Result.Message);
+            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
+            Assert.Equal(InvalidCityMessage, exception.Result.Message);
 
-        //     exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("", "Araraquara", "barão do rio"));
-        //     Assert.Equal(InvalidStateMessage, exception.Result.Message);
-
-        //     exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "", "barão do rio"));
-        //     Assert.Equal(InvalidCityMessage, exception.Result.Message);
-
-        //     exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", ""));
-        //     Assert.Equal(InvalidStreetMessage, exception.Result.Message);
-        // }
+            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
+            Assert.Equal(InvalidStreetMessage, exception.Result.Message);
+        }
     }
 }

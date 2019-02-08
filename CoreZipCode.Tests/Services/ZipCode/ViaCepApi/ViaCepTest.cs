@@ -29,28 +29,12 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
         private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
 
-        private readonly IList<ViaCepAddress> _expectedObjectListResponse = new List<ViaCepAddress>();
         private readonly ViaCep _service;
         private readonly ViaCep _serviceList;
         private Mock<HttpMessageHandler> _handlerMock;
 
         public ViaCepTest()
         {
-            var expectedObjectResponse = new ViaCepAddress
-            {
-                ZipCode = "14810-100",
-                Address1 = "Rua Barão do Rio Branco",
-                Complement = string.Empty,
-                Neighborhood = "Vila Xavier (Vila Xavier)",
-                City = "Araraquara",
-                State = "SP",
-                Unity = string.Empty,
-                IBGE = "3503208",
-                GIA = "1818"
-            };
-
-            _expectedObjectListResponse.Add(expectedObjectResponse);
-
             _service = ConfigureService(ExpectedResponse);
             _serviceList = ConfigureService(ExpectedListResponse);
         }

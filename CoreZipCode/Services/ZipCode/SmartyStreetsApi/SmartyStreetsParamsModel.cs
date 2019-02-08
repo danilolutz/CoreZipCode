@@ -1,6 +1,4 @@
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 
 namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
 {
