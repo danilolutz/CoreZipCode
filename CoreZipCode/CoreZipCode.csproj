@@ -5,13 +5,18 @@
 
     <PackageId>CoreZipCode</PackageId>
     <Title>CoreZipCode</Title>
-    <Version>1.0.5</Version>
+    <Version>1.1.0</Version>
     <Authors>Danilo Lutz;Marcos Berquó</Authors>
     <Company>Danilo Lutz</Company>
     <license>https://github.com/danilolutz/CoreZipCode/blob/master/LICENSE</license>
     <PackageProjectUrl>https://github.com/danilolutz/CoreZipCode</PackageProjectUrl>
     <RepositoryUrl>https://github.com/danilolutz/CoreZipCode</RepositoryUrl>
     <PackageTags>Zip Code;CEP;.Net Core</PackageTags>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
 
 </Project>
