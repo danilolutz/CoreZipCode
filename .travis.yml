@@ -15,13 +15,14 @@ script:
 
 branches:
   only:
-    - master
-    - develop
+  - master
+  - develop
+  - /^v.*$/
 
 before_deploy:
   - dotnet pack CoreZipCode.sln -c Release --include-symbols -p:PackageVersion=${TRAVIS_TAG#v} -v detailed
 
-deploy:
+  deploy:
   - provider: releases
     api_key: $GITHUB_TOKEN
     file: "./CoreZipCode/bin/Debug/CoreZipCode.${TRAVIS_TAG#v}.nupkg"
@@ -34,4 +35,3 @@ deploy:
     skip_cleanup: true
     on:
       tags: true
-      branch: master
