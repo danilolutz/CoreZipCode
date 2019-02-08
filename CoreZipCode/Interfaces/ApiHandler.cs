@@ -5,14 +5,32 @@ using System.Threading.Tasks;
 
 namespace CoreZipCode.Interfaces
 {
+    /// <summary>
+    /// ApiHandler class
+    /// </summary>
     public class ApiHandler
     {
+        /// <summary>
+        /// ApiHandler Constructor without parameter.
+        /// </summary>
         public ApiHandler() => Request = new HttpClient();
 
+        /// <summary>
+        /// ApiHandler Constructor with parameter: request.
+        /// </summary>
+        /// <param name="request">HttpClient class param to handle with API Servers Connections.</param>
         public ApiHandler(HttpClient request) => Request = request;
 
+        /// <summary>
+        /// Http Client Request.
+        /// </summary>
         public HttpClient Request { get; }
 
+        /// <summary>
+        /// Method to execute the api call.
+        /// </summary>
+        /// <param name="url">Api url to execute</param>
+        /// <returns>String Server response</returns>
         public virtual string CallApi(string url)
         {
             try
@@ -30,6 +48,11 @@ namespace CoreZipCode.Interfaces
             }
         }
 
+        /// <summary>
+        /// Method to execute the api call async.
+        /// </summary>
+        /// <param name="url">Api url to execute async</param>
+        /// <returns>String Server response</returns>
         public virtual async Task<string> CallApiAsync(string url)
         {
             try
