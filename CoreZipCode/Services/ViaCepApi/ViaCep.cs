@@ -14,7 +14,7 @@ namespace CoreZipCode.Services.ViaCepApi
             //
         }
 
-        public override string SetZipCodeUrl(string zipcode) => $"https://viacep.com.br/ws/{ValidateZipCode(zipcode)}/json/";
+        public override string SetZipCodeUrl(string zipCode) => $"https://viacep.com.br/ws/{ValidateZipCode(zipCode)}/json/";
 
         public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{ValidateParam("State", state, 2)}/{ValidateParam("City", city)}/{ValidateParam("Street", street)}/json/";
 
@@ -30,21 +30,21 @@ namespace CoreZipCode.Services.ViaCepApi
             return value;
         }
 
-        public static string ValidateZipCode(string zipcode)
+        public static string ValidateZipCode(string zipCode)
         {
-            zipcode = zipcode.Trim().Replace("-", "");
+            zipCode = zipCode.Trim().Replace("-", "");
 
-            if (zipcode.Length != 8)
+            if (zipCode.Length != 8)
             {
                 throw new ViaCepException(ZipCodeSizeErrorMessage);
             }
 
-            if (!Regex.IsMatch(zipcode, ("[0-9]{8}")))
+            if (!Regex.IsMatch(zipCode, ("[0-9]{8}")))
             {
                 throw new ViaCepException(ZipCodeFormatErrorMessage);
             }
 
-            return zipcode;
+            return zipCode;
         }
     }
 }
