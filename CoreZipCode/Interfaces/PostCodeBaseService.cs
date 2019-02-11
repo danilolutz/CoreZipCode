@@ -14,7 +14,7 @@ namespace CoreZipCode.Interfaces
         /// <summary>
         /// postalcode base service protected constructor.
         /// </summary>
-        protected PostcodeBaseService() : base() { }
+        protected PostcodeBaseService() { }
 
         /// <inheritdoc />
         /// <summary>

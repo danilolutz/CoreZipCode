@@ -23,9 +23,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         private const string SmartyStreetsParameterState = "CA";
         private const string SmartyStreetsParameterCity = "Mountain View";
         private const string SmartyStreetsParameterStreet = "1600 Amphitheatre Pkwy";
-        private const string InvalidStreetMessage = "Invalid Street, parameter over size";
-        private const string InvalidCityMessage = "Invalid City, parameter over size";
-        private const string InvalidStateMessage = "Invalid State, parameter over size";
+        private const string InvalidStreetMessage = "Invalid Street, parameter over size of 64 characters.";
+        private const string InvalidCityMessage = "Invalid City, parameter over size of 64 characters.";
+        private const string InvalidStateMessage = "Invalid State, parameter over size of 32 characters.";
         private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
         private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
         private const string AuthToken = "some auth token";

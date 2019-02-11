@@ -9,7 +9,7 @@ namespace CoreZipCode.Services.ZipCode.ViaCepApi
         private const string ZipCodeSizeErrorMessage = "Invalid ZipCode Size";
         private const string ZipCodeFormatErrorMessage = "Invalid ZipCode Format";
 
-        public ViaCep() : base() { }
+        public ViaCep() { }
 
         public ViaCep(HttpClient request) : base(request)
         {
@@ -20,19 +20,19 @@ namespace CoreZipCode.Services.ZipCode.ViaCepApi
 
         public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{ValidateParam("State", state, 2)}/{ValidateParam("City", city)}/{ValidateParam("Street", street)}/json/";
 
-        public static string ValidateParam(string name, string value, int size = 3)
+        private static string ValidateParam(string name, string value, int size = 3)
         {
             value = value.Trim();
 
             if (string.IsNullOrEmpty(value) || value.Length < size)
             {
-                throw new ViaCepException($"Invalid {name} Param");
+                throw new ViaCepException($"Invalid {name}, parameter below size of {size.ToString()} characters.");
             }
 
             return value;
         }
 
-        public static string ValidateZipCode(string zipCode)
+        private static string ValidateZipCode(string zipCode)
         {
             zipCode = zipCode.Trim().Replace("-", "");
 

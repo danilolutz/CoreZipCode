@@ -15,7 +15,7 @@ namespace CoreZipCode.Interfaces
         /// <summary>
         /// Zip Code Base Service protected constructor.
         /// </summary>
-        protected ZipCodeBaseService() : base() { }
+        protected ZipCodeBaseService() { }
 
         /// <inheritdoc />
         /// <summary>

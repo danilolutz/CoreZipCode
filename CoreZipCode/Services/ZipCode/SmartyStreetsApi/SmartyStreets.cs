@@ -16,7 +16,7 @@ namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
         private readonly string _authId;
         private readonly string _authToken;
 
-        public SmartyStreets(string authId, string authToken) : base()
+        public SmartyStreets(string authId, string authToken)
         {
             _authId = string.IsNullOrWhiteSpace(authId) ? throw new ArgumentNullException(nameof(authId)) : authId;
             _authToken = string.IsNullOrWhiteSpace(authToken) ? throw new ArgumentNullException(nameof(authToken)) : authToken;
@@ -30,13 +30,13 @@ namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
 
         public override string SetZipCodeUrl(string zipcode) => $"{BaseZipcodeUrl}?auth-id={_authId}&auth-token={_authToken}&zipcode={ValidateZipCode(zipcode)}";
 
-        public override string SetZipCodeUrlBy(string state, string city, string street) => $"{BaseStreetUrl}?auth-id={_authId}&auth-token={_authToken}&street={ValidateParam("Street", street, 64)}&city={ValidateParam("City", city, 64)}&state={ValidateParam("State", state, 32)}&candidates=10";
+        public override string SetZipCodeUrlBy(string state, string city, string street) => $"{BaseStreetUrl}?auth-id={_authId}&auth-token={_authToken}&street={ValidateParam("Street", street)}&city={ValidateParam("City", city)}&state={ValidateParam("State", state, 32)}&candidates=10";
 
-        private static string ValidateParam(string name, string value, int size = 16)
+        private static string ValidateParam(string name, string value, int size = 64)
         {
             if (value.Length > size)
             {
-                throw new SmartyStreetsException($"Invalid {name}, parameter over size");
+                throw new SmartyStreetsException($"Invalid {name}, parameter over size of {size.ToString()} characters.");
             }
 
             return value.Trim();

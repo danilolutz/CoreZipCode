@@ -5,7 +5,7 @@ namespace CoreZipCode.Services.Postcode.PostalpincodeInApi
 {
     public class PostalpincodeIn : PostcodeBaseService
     {
-        public PostalpincodeIn() : base() { }
+        public PostalpincodeIn() { }
 
         public PostalpincodeIn(HttpClient request) : base(request)
         {
