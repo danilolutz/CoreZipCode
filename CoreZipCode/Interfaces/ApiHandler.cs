@@ -24,7 +24,7 @@ namespace CoreZipCode.Interfaces
         /// <summary>
         /// Http Client Request.
         /// </summary>
-        public HttpClient Request { get; }
+        private HttpClient Request { get; }
 
         /// <summary>
         /// Method to execute the api call.

@@ -53,6 +53,13 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
 
             return new PostalpincodeIn(httpClient);
         }
+        
+        [Fact]
+        public void ConstructorTest()
+        {
+            var actual = new PostalpincodeIn();
+            Assert.NotNull(actual);
+        }
 
         [Fact]
         public void MustGetPostcodes()

@@ -23,9 +23,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         private const string ViaCepParameterState = "sp";
         private const string ViaCepParameterCity = "araraquara";
         private const string ViaCepParameterStreet = "barão do rio";
-        private const string InvalidStreetMessage = "Invalid Street Param";
-        private const string InvalidCityMessage = "Invalid City Param";
-        private const string InvalidStateMessage = "Invalid State Param";
+        private const string InvalidStreetMessage = "Invalid Street, parameter below size of 3 characters.";
+        private const string InvalidCityMessage = "Invalid City, parameter below size of 3 characters.";
+        private const string InvalidStateMessage = "Invalid State, parameter below size of 2 characters.";
         private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
         private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
 
@@ -63,6 +63,13 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
             };
 
             return new ViaCep(httpClient);
+        }
+
+        [Fact]
+        public void ConstructorTest()
+        {
+            var actual = new ViaCep();
+            Assert.NotNull(actual);
         }
 
         [Fact]

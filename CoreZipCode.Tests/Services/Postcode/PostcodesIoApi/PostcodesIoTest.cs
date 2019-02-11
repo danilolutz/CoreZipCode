@@ -55,6 +55,13 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
+        public void ConstructorTest()
+        {
+            var actual = new PostcodesIo();
+            Assert.NotNull(actual);
+        }
+
+        [Fact]
         public void MustGetPostcodes()
         {
             var actual = _service.Execute(PostalPinCodeTest);
