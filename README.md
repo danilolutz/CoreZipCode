@@ -1,10 +1,10 @@
 # CoreZipCode
 
 [![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)
-[![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
-[![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/)
 [![Coverage Status](https://coveralls.io/repos/github/danilolutz/CoreZipCode/badge.svg?branch=master)](https://coveralls.io/github/danilolutz/CoreZipCode?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e80743d2e8d8415dbc03cb459a3e8639)](https://www.codacy.com/app/danilolutz/CoreZipCode?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=danilolutz/CoreZipCode&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/github/danilolutz/CoreZipCode/badge.svg?targetFile=CoreZipCode%2FCoreZipCode.csproj)](https://snyk.io/test/github/danilolutz/CoreZipCode?targetFile=CoreZipCode%2FCoreZipCode.csproj)
+[![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/) [![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
