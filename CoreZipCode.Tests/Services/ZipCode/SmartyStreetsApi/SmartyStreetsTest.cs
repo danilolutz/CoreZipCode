@@ -33,7 +33,6 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
 
         private readonly SmartyStreets _service;
         private readonly SmartyStreets _serviceParam;
-        private Mock<HttpMessageHandler> _handlerMock;
 
         public SmartyStreetsTest()
         {
@@ -41,11 +40,11 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
             _serviceParam = ConfigureService(ExpectedParamResponse);
         }
 
-        private SmartyStreets ConfigureService(string response)
+        private static SmartyStreets ConfigureService(string response)
         {
-            _handlerMock = new Mock<HttpMessageHandler>();
+            var handlerMock = new Mock<HttpMessageHandler>();
 
-            _handlerMock
+            handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     SendAsync,
@@ -59,7 +58,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
                 })
                 .Verifiable();
 
-            var httpClient = new HttpClient(_handlerMock.Object)
+            var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri(MockUri)
             };

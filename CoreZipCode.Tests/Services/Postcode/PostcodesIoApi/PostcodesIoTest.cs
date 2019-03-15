@@ -27,7 +27,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
             _service = ConfigureService(ExpectedResponse);
         }
 
-        private PostcodesIo ConfigureService(string response)
+        private static PostcodesIo ConfigureService(string response)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
 

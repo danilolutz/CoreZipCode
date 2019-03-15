@@ -38,7 +38,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
             _serviceList = ConfigureService(ExpectedListResponse);
         }
 
-        private ViaCep ConfigureService(string response)
+        private static ViaCep ConfigureService(string response)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
 

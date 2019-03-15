@@ -27,7 +27,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
             _service = ConfigureService(ExpectedResponse);
         }
 
-        private PostalpincodeIn ConfigureService(string response)
+        private static PostalpincodeIn ConfigureService(string response)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
 

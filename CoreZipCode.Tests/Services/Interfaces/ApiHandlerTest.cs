@@ -15,7 +15,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
 
-        private HttpClient ConfigureService(HttpStatusCode statusCode)
+        private static HttpClient ConfigureService(HttpStatusCode statusCode)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
 
