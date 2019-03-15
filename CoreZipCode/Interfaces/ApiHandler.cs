@@ -13,18 +13,24 @@ namespace CoreZipCode.Interfaces
         /// <summary>
         /// Http Client Request.
         /// </summary>
-        private readonly HttpClient Request;
+        private readonly HttpClient _request;
 
         /// <summary>
-        /// ApiHandler Constructor without parameter.
+        /// ApiHandler Constructor without parameter: request.
         /// </summary>
-        public ApiHandler() => Request = new HttpClient();
+        public ApiHandler()
+        {
+            _request = new HttpClient();
+        }
 
         /// <summary>
         /// ApiHandler Constructor with parameter: request.
         /// </summary>
         /// <param name="request">HttpClient class param to handle with API Servers Connections.</param>
-        public ApiHandler(HttpClient request) => Request = request;
+        public ApiHandler(HttpClient request)
+        {
+            _request = request;
+        }
 
         /// <summary>
         /// Method to execute the api call.
@@ -35,7 +41,7 @@ namespace CoreZipCode.Interfaces
         {
             try
             {
-                var response = Request.GetAsync(url).Result;
+                var response = _request.GetAsync(url).Result;
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
@@ -59,7 +65,7 @@ namespace CoreZipCode.Interfaces
         {
             try
             {
-                var response = await Request.GetAsync(url);
+                var response = await _request.GetAsync(url);
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
