@@ -10,7 +10,7 @@ using Xunit;
 
 namespace CoreZipCode.Tests.Services.Interfaces
 {
-    public class ApiHandlerTest
+    public static class ApiHandlerTest
     {
         private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
