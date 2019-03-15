@@ -51,7 +51,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(response),
@@ -67,14 +67,14 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public void ConstructorTest()
+        public static void ConstructorTest()
         {
             var actual = new SmartyStreets(AuthId, AuthToken);
             Assert.NotNull(actual);
         }
 
         [Fact]
-        public void ConstructorNullTest()
+        public static void ConstructorNullTest()
         {
             Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), AuthId, null));
             Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), null, AuthToken));

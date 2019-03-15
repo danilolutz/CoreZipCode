@@ -38,7 +38,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(response),
@@ -54,7 +54,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
         }
         
         [Fact]
-        public void ConstructorTest()
+        public static void ConstructorTest()
         {
             var actual = new PostalpincodeIn();
             Assert.NotNull(actual);

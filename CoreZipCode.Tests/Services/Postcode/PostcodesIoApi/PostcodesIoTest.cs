@@ -38,7 +38,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(response),
@@ -54,7 +54,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
-        public void ConstructorTest()
+        public static void ConstructorTest()
         {
             var actual = new PostcodesIo();
             Assert.NotNull(actual);

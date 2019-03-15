@@ -42,7 +42,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         }
 
         [Fact]
-        public void MustCreateANewInstance()
+        public static void MustCreateANewInstance()
         {
             var apiHandler = new ApiHandler();
             var apiHandlerWithHttpClient = new ApiHandler(ConfigureService(HttpStatusCode.OK));
@@ -52,7 +52,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         }
 
         [Fact]
-        public void MustCallApiException()
+        public static void MustCallApiException()
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
@@ -60,7 +60,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         }
 
         [Fact]
-        public async void MustCallApiAsyncException()
+        public static async Task MustCallApiAsyncException()
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
