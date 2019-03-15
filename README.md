@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
 [![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/)
 [![Coverage Status](https://coveralls.io/repos/github/danilolutz/CoreZipCode/badge.svg?branch=master)](https://coveralls.io/github/danilolutz/CoreZipCode?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/danilolutz/CoreZipCode/badge.svg?targetFile=CoreZipCode%2FCoreZipCode.csproj)](https://snyk.io/test/github/danilolutz/CoreZipCode?targetFile=CoreZipCode%2FCoreZipCode.csproj)
 
 ## Overview
 
