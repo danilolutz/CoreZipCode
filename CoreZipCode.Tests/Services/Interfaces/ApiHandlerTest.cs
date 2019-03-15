@@ -64,7 +64,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
-            await Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync(MockUri));
+            await Assert.ThrowsAsync<HttpRequestException>(() => apiHandler.CallApiAsync(MockUri));
         }
     }
 }

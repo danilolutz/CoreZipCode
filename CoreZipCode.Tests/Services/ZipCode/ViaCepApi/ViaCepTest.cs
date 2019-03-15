@@ -65,7 +65,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
-        public void ConstructorTest()
+        public static void ConstructorTest()
         {
             var actual = new ViaCep();
             Assert.NotNull(actual);

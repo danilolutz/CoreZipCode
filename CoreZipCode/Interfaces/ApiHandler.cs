@@ -24,7 +24,7 @@ namespace CoreZipCode.Interfaces
         /// <summary>
         /// Http Client Request.
         /// </summary>
-        private HttpClient Request { get; }
+        private HttpClient Request { get; set; }
 
         /// <summary>
         /// Method to execute the api call.
@@ -62,13 +62,15 @@ namespace CoreZipCode.Interfaces
                 var response = await Request.GetAsync(url);
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
                     throw new ArgumentException();
+                }
 
                 return await response.Content.ReadAsStringAsync();
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error trying execute the request: {ex.Message}");
+                throw new HttpRequestException($"Error trying execute the request: {ex.Message}");
             }
         }
     }
