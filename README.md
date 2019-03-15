@@ -1,5 +1,6 @@
 # CoreZipCode
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/66997f9e11e441c1b65883bbe7073816)](https://app.codacy.com/app/danilolutz/CoreZipCode?utm_source=github.com&utm_medium=referral&utm_content=danilolutz/CoreZipCode&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)
 [![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
 [![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/)
