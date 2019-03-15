@@ -4,7 +4,7 @@ namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
 {
     public class SmartyStreetsException : Exception
     {
-        public SmartyStreetsException(string message = "") : base(message)
+        public SmartyStreetsException(string message) : base(message)
         {
             //
         }

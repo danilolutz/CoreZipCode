@@ -152,7 +152,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetSingleZipCodeJsonStringAsync()
+        public async Task MustGetSingleZipCodeJsonStringAsync()
         {
             var actual = await _service.ExecuteAsync(ZipCodeTest);
 
@@ -160,7 +160,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetListZipCodeJsonStringAsync()
+        public async Task MustGetListZipCodeJsonStringAsync()
         {
             var actual = await _serviceParam.ExecuteAsync(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
 
@@ -168,7 +168,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetSingleZipCodeObjectAsync()
+        public async Task MustGetSingleZipCodeObjectAsync()
         {
             var actual = await _service.GetAddressAsync<List<SmartyStreetsModel>>(ZipCodeTest);
 
@@ -178,7 +178,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetZipCodeByParamsListAsync()
+        public async Task MustGetZipCodeByParamsListAsync()
         {
             var actual = await _serviceParam.ListAddressesAsync<SmartyStreetsParamsModel>(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
 

@@ -20,7 +20,6 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         private const int ExpectedStatusSuccess = 200;
         private const int ExpectedResultQuality = 1;
 
-        private Mock<HttpMessageHandler> _handlerMock;
         private readonly PostcodesIo _service;
 
         public PostcodesIoTest()
@@ -30,9 +29,9 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
 
         private PostcodesIo ConfigureService(string response)
         {
-            _handlerMock = new Mock<HttpMessageHandler>();
+            var handlerMock = new Mock<HttpMessageHandler>();
 
-            _handlerMock
+            handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     SendAsync,
@@ -46,7 +45,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
                 })
                 .Verifiable();
 
-            var httpClient = new HttpClient(_handlerMock.Object)
+            var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri(MockUri),
             };
@@ -81,7 +80,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
-        public async void MustGetPostcodesAsync()
+        public async Task MustGetPostcodesAsync()
         {
             var actual = await _service.ExecuteAsync(PostalPinCodeTest);
 
@@ -89,7 +88,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         }
 
         [Fact]
-        public async void MustGetPostcodesObjectAsync()
+        public async Task MustGetPostcodesObjectAsync()
         {
             var actual = await _service.GetPostcodeAsync<PostcodesIoModel>(PostalPinCodeTest);
 

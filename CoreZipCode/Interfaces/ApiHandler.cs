@@ -38,13 +38,15 @@ namespace CoreZipCode.Interfaces
                 var response = Request.GetAsync(url).Result;
 
                 if (response.StatusCode == HttpStatusCode.BadRequest)
+                {
                     throw new ArgumentException();
+                }
 
                 return response.Content.ReadAsStringAsync().Result;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error trying execute the request: {ex.Message}");
+                throw new HttpRequestException($"Error trying execute the request: {ex.Message}");
             }
         }
 
