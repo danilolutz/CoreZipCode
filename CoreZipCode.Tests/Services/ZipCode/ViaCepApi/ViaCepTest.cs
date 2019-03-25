@@ -31,7 +31,6 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
 
         private readonly ViaCep _service;
         private readonly ViaCep _serviceList;
-        private Mock<HttpMessageHandler> _handlerMock;
 
         public ViaCepTest()
         {
@@ -39,25 +38,25 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
             _serviceList = ConfigureService(ExpectedListResponse);
         }
 
-        private ViaCep ConfigureService(string response)
+        private static ViaCep ConfigureService(string response)
         {
-            _handlerMock = new Mock<HttpMessageHandler>();
+            var handlerMock = new Mock<HttpMessageHandler>();
 
-            _handlerMock
+            handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     SendAsync,
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(response),
                 })
                 .Verifiable();
 
-            var httpClient = new HttpClient(_handlerMock.Object)
+            var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri(MockUri)
             };
@@ -66,7 +65,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
-        public void ConstructorTest()
+        public static void ConstructorTest()
         {
             var actual = new ViaCep();
             Assert.NotNull(actual);
@@ -138,7 +137,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
-        public async void MustGetSingleZipCodeJsonStringAsync()
+        public async Task MustGetSingleZipCodeJsonStringAsync()
         {
             var actual = await _service.ExecuteAsync(ZipCodeTest);
 
@@ -146,7 +145,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
-        public async void MustGetListZipCodeJsonStringAsync()
+        public async Task MustGetListZipCodeJsonStringAsync()
         {
             var actual = await _serviceList.ExecuteAsync(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 
@@ -154,7 +153,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
-        public async void MustGetSingleZipCodeObjectAsync()
+        public async Task MustGetSingleZipCodeObjectAsync()
         {
             var actual = await _service.GetAddressAsync<ViaCepAddress>(ZipCodeTest);
 
@@ -164,7 +163,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
-        public async void MustGetZipCodeObjectListAsync()
+        public async Task MustGetZipCodeObjectListAsync()
         {
             var actual = await _serviceList.ListAddressesAsync<ViaCepAddress>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 

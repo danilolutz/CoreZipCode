@@ -1,9 +1,10 @@
 # CoreZipCode
 
 [![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)
-[![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
-[![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/)
 [![Coverage Status](https://coveralls.io/repos/github/danilolutz/CoreZipCode/badge.svg?branch=master)](https://coveralls.io/github/danilolutz/CoreZipCode?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e80743d2e8d8415dbc03cb459a3e8639)](https://www.codacy.com/app/danilolutz/CoreZipCode?utm_source=github.com&utm_medium=referral&utm_content=danilolutz/CoreZipCode&utm_campaign=Badge_Grade)
+[![Known Vulnerabilities](https://snyk.io/test/github/danilolutz/CoreZipCode/badge.svg?targetFile=CoreZipCode%2FCoreZipCode.csproj)](https://snyk.io/test/github/danilolutz/CoreZipCode?targetFile=CoreZipCode%2FCoreZipCode.csproj)
+[![CoreZipCode Nuget Package](https://img.shields.io/nuget/v/CoreZipCode.svg)](https://www.nuget.org/packages/CoreZipCode/) [![License: MIT](https://img.shields.io/badge/License-MIT-428f7e.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
@@ -69,7 +70,7 @@ The `ViaCepAddress` POCO class is the type for returned JSON from [ViaCep](https
 
 ### Extending CoreZipCode
 
-Also you can extends ```ZipCodeBaseService``` abstract class and create your own implementation of your prefered address service. Like below:
+Also you can extends `ZipCodeBaseService` abstract class and create your own implementation of your prefered address service. Like below:
 
 ```CSharp
 using CoreZipCode.Interfaces;
@@ -93,23 +94,23 @@ namespace CoreZipCode.Services.YourService
 }
 ```
 
-> **NOTE**: Same principles are used to extends postcode lookups (```PostCodeBaseService```).
+> **NOTE**: Same principles are used to extends postcode lookups (`PostCodeBaseService`).
 
 ## :heavy_check_mark: Available Services
 
 Below a list of available services out-of-the-box **address by zipcode** lookup services.
 
-| Service | Country | Queries Limit |
-| :------ | :------ | :------------ |
-| [ViaCep](https://viacep.com.br) | Brazil | 300 by 15 minutes |
-| [SmartyStreets](https://smartystreets.com/) | USA | 250 by month |
+| Service                                     | Country | Queries Limit     |
+| :------------------------------------------ | :------ | :---------------- |
+| [ViaCep](https://viacep.com.br)             | Brazil  | 300 by 15 minutes |
+| [SmartyStreets](https://smartystreets.com/) | USA     | 250 by month      |
 
 Below a list of available services out-of-the-box **postcodes** lookup services.
 
-| Service | Country | Queries Limit |
-| :------ | :------ | :------------ |
-| [Postcodes](https://postcodes.io) | United Kingdom | Unknown |
-| [Postal Pin Code](http://postalpincode.in) | India | Unknown |
+| Service                                    | Country        | Queries Limit |
+| :----------------------------------------- | :------------- | :------------ |
+| [Postcodes](https://postcodes.io)          | United Kingdom | Unknown       |
+| [Postal Pin Code](http://postalpincode.in) | India          | Unknown       |
 
 ## :construction_worker: Contributing
 

@@ -34,29 +34,30 @@ namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
 
         private static string ValidateParam(string name, string value, int size = 64)
         {
-            if (value.Length > size)
+            var aux = value;
+            if (aux.Length > size)
             {
                 throw new SmartyStreetsException($"Invalid {name}, parameter over size of {size.ToString()} characters.");
             }
 
-            return value.Trim();
+            return aux.Trim();
         }
 
         private static string ValidateZipCode(string zipCode)
         {
-            zipCode = zipCode.Trim().Replace("-", "");
+            var zipAux = zipCode.Trim().Replace("-", "");
 
-            if (zipCode.Length < 5 || zipCode.Length > 16)
+            if (zipAux.Length < 5 || zipAux.Length > 16)
             {
                 throw new SmartyStreetsException(ZipCodeSizeErrorMessage);
             }
 
-            if (!Regex.IsMatch(zipCode, ("[0-9]{5,16}")))
+            if (!Regex.IsMatch(zipAux, ("[0-9]{5,16}")))
             {
                 throw new SmartyStreetsException(ZipCodeFormatErrorMessage);
             }
 
-            return zipCode;
+            return zipAux;
         }
     }
 }

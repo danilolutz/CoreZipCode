@@ -17,12 +17,12 @@ However, if you prefer to work with code, simply go to [Cloning the repository](
 
 We follow (or try to) this code architecture principles:
 
-* [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming)
-* [SOLID](https://en.wikipedia.org/wiki/SOLID)
-* [Design Patterns](https://en.wikipedia.org/wiki/Software_design_pattern)
-* [DRY - Don't Repeat Yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
-* [KISS - Keep It Simple, Stupid](https://en.wikipedia.org/wiki/KISS_principle)
-* [YAGNI - You Aren't Gonna Need It](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)
+- [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming)
+- [SOLID](https://en.wikipedia.org/wiki/SOLID)
+- [Design Patterns](https://en.wikipedia.org/wiki/Software_design_pattern)
+- [DRY - Don't Repeat Yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+- [KISS - Keep It Simple, Stupid](https://en.wikipedia.org/wiki/KISS_principle)
+- [YAGNI - You Aren't Gonna Need It](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)
 
 ## Reporting an Issue
 
@@ -64,16 +64,16 @@ Maybe you ask yourself: _How can I contribute?_ or _What i can do?_
 
 We'll help you:
 
-* You can implement you favorite zipcode or postcode service and submit to CoreZipCode to be an out-of-the-box service;
-* You can find and fix bugs;
-* Implement openned issues;
-* Improve the CoreZipCode programming.
+- You can implement you favorite zipcode or postcode service and submit to CoreZipCode to be an out-of-the-box service;
+- You can find and fix bugs;
+- Implement openned issues;
+- Improve the CoreZipCode programming.
 
 **Only thing will be required by us to approve the pull requests are the unit tests (with correct code coverage) for the new implementations**.
 
 ## Testing
 
-You already know how it's works, just add you test class in ```CoreZipCode.Tests``` project, implement it, run the unit tests, be sure everything is okay and submit to repo.
+You already know how it's works, just add you test class in `CoreZipCode.Tests` project, implement it, run the unit tests, be sure everything is okay and submit to repo.
 
 To run the tests go to solution folder and execute:
 
@@ -88,6 +88,7 @@ dotnet test CoreZipCode.Tests/CoreZipCode.Tests.csproj -p:CollectCoverage=true -
 
 reportgenerator -reports:CoreZipCode.Tests/.coverage/coverage.opencover.xml -targetdir:CoreZipCode.Tests/.coverage
 ```
+
 And open the file `CoreZipCode.Tests/.coverage/index.htm` to see how the unit tests are affecting the code coverage.
 
 > **NOTE**: You need to have [ReportGenerator](https://www.nuget.org/packages/dotnet-reportgenerator-globaltool) installed. Use the follow command: `dotnet tool install -g dotnet-reportgenerator-globaltool` to install it globally.
