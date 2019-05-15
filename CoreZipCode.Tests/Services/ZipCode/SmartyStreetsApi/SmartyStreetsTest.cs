@@ -33,7 +33,6 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
 
         private readonly SmartyStreets _service;
         private readonly SmartyStreets _serviceParam;
-        private Mock<HttpMessageHandler> _handlerMock;
 
         public SmartyStreetsTest()
         {
@@ -41,25 +40,25 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
             _serviceParam = ConfigureService(ExpectedParamResponse);
         }
 
-        private SmartyStreets ConfigureService(string response)
+        private static SmartyStreets ConfigureService(string response)
         {
-            _handlerMock = new Mock<HttpMessageHandler>();
+            var handlerMock = new Mock<HttpMessageHandler>();
 
-            _handlerMock
+            handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     SendAsync,
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(response),
                 })
                 .Verifiable();
 
-            var httpClient = new HttpClient(_handlerMock.Object)
+            var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri(MockUri)
             };
@@ -68,14 +67,14 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public void ConstructorTest()
+        public static void ConstructorTest()
         {
             var actual = new SmartyStreets(AuthId, AuthToken);
             Assert.NotNull(actual);
         }
 
         [Fact]
-        public void ConstructorNullTest()
+        public static void ConstructorNullTest()
         {
             Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), AuthId, null));
             Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), null, AuthToken));
@@ -152,7 +151,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetSingleZipCodeJsonStringAsync()
+        public async Task MustGetSingleZipCodeJsonStringAsync()
         {
             var actual = await _service.ExecuteAsync(ZipCodeTest);
 
@@ -160,7 +159,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetListZipCodeJsonStringAsync()
+        public async Task MustGetListZipCodeJsonStringAsync()
         {
             var actual = await _serviceParam.ExecuteAsync(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
 
@@ -168,7 +167,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetSingleZipCodeObjectAsync()
+        public async Task MustGetSingleZipCodeObjectAsync()
         {
             var actual = await _service.GetAddressAsync<List<SmartyStreetsModel>>(ZipCodeTest);
 
@@ -178,7 +177,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         }
 
         [Fact]
-        public async void MustGetZipCodeByParamsListAsync()
+        public async Task MustGetZipCodeByParamsListAsync()
         {
             var actual = await _serviceParam.ListAddressesAsync<SmartyStreetsParamsModel>(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
 

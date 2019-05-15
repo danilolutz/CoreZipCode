@@ -20,7 +20,6 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
         private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
 
-        private Mock<HttpMessageHandler> _handlerMock;
         private readonly PostalpincodeIn _service;
 
         public PostalpincodeInTest()
@@ -28,25 +27,25 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
             _service = ConfigureService(ExpectedResponse);
         }
 
-        private PostalpincodeIn ConfigureService(string response)
+        private static PostalpincodeIn ConfigureService(string response)
         {
-            _handlerMock = new Mock<HttpMessageHandler>();
+            var handlerMock = new Mock<HttpMessageHandler>();
 
-            _handlerMock
+            handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     SendAsync,
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(response),
                 })
                 .Verifiable();
 
-            var httpClient = new HttpClient(_handlerMock.Object)
+            var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri(MockUri),
             };
@@ -55,7 +54,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
         }
         
         [Fact]
-        public void ConstructorTest()
+        public static void ConstructorTest()
         {
             var actual = new PostalpincodeIn();
             Assert.NotNull(actual);
@@ -81,7 +80,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
         }
 
         [Fact]
-        public async void MustGetPostcodesAsync()
+        public async Task MustGetPostcodesAsync()
         {
             var actual = await _service.ExecuteAsync(PostalPinCodeTest);
 
@@ -89,7 +88,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
         }
 
         [Fact]
-        public async void MustGetPostcodesObjectAsync()
+        public async Task MustGetPostcodesObjectAsync()
         {
             var actual = await _service.GetPostcodeAsync<PostalpincodeInModel>(PostalPinCodeTest);
 

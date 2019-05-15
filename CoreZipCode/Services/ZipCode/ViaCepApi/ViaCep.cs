@@ -22,31 +22,31 @@ namespace CoreZipCode.Services.ZipCode.ViaCepApi
 
         private static string ValidateParam(string name, string value, int size = 3)
         {
-            value = value.Trim();
+            var aux = value.Trim();
 
-            if (string.IsNullOrEmpty(value) || value.Length < size)
+            if (string.IsNullOrEmpty(aux) || aux.Length < size)
             {
                 throw new ViaCepException($"Invalid {name}, parameter below size of {size.ToString()} characters.");
             }
 
-            return value;
+            return aux;
         }
 
         private static string ValidateZipCode(string zipCode)
         {
-            zipCode = zipCode.Trim().Replace("-", "");
+            var zipAux = zipCode.Trim().Replace("-", "");
 
-            if (zipCode.Length != 8)
+            if (zipAux.Length != 8)
             {
                 throw new ViaCepException(ZipCodeSizeErrorMessage);
             }
 
-            if (!Regex.IsMatch(zipCode, ("[0-9]{8}")))
+            if (!Regex.IsMatch(zipAux, ("[0-9]{8}")))
             {
                 throw new ViaCepException(ZipCodeFormatErrorMessage);
             }
 
-            return zipCode;
+            return zipAux;
         }
     }
 }

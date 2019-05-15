@@ -10,31 +10,30 @@ using Xunit;
 
 namespace CoreZipCode.Tests.Services.Interfaces
 {
-    public class ApiHandlerTest
+    public static class ApiHandlerTest
     {
-        private Mock<HttpMessageHandler> _handlerMock;
         private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
 
-        private HttpClient ConfigureService(HttpStatusCode statusCode)
+        private static HttpClient ConfigureService(HttpStatusCode statusCode)
         {
-            _handlerMock = new Mock<HttpMessageHandler>();
+            var handlerMock = new Mock<HttpMessageHandler>();
 
-            _handlerMock
+            handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     SendAsync,
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = statusCode,
                     Content = new StringContent(""),
                 })
                 .Verifiable();
 
-            var httpClient = new HttpClient(_handlerMock.Object)
+            var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri(MockUri),
             };
@@ -43,7 +42,7 @@ namespace CoreZipCode.Tests.Services.Interfaces
         }
 
         [Fact]
-        public void MustCreateANewInstance()
+        public static void MustCreateANewInstance()
         {
             var apiHandler = new ApiHandler();
             var apiHandlerWithHttpClient = new ApiHandler(ConfigureService(HttpStatusCode.OK));
@@ -53,19 +52,19 @@ namespace CoreZipCode.Tests.Services.Interfaces
         }
 
         [Fact]
-        public void MustCallApiException()
+        public static void MustCallApiException()
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
-            Assert.Throws<Exception>(() => apiHandler.CallApi(MockUri));
+            Assert.Throws<HttpRequestException>(() => apiHandler.CallApi(MockUri));
         }
 
         [Fact]
-        public async void MustCallApiAsyncException()
+        public static async Task MustCallApiAsyncException()
         {
             var apiHandler = new ApiHandler(ConfigureService(HttpStatusCode.BadRequest));
 
-            await Assert.ThrowsAsync<Exception>(() => apiHandler.CallApiAsync(MockUri));
+            await Assert.ThrowsAsync<HttpRequestException>(() => apiHandler.CallApiAsync(MockUri));
         }
     }
 }
