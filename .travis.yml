@@ -2,7 +2,7 @@ language: csharp
 mono: none
 sudo: required
 dist: xenial
-dotnet: 2.2
+dotnet: 6.0
 
 install:
   - dotnet tool install -g coveralls.net --version 1.0.0
@@ -15,7 +15,7 @@ script:
 
 branches:
   only:
-  - master
+  - main
   - develop
   - /^v.*$/
 
@@ -29,7 +29,7 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-    branch: master
+    branch: main
 - provider: script
   script: bash .deploy/deploy.sh
   skip_cleanup: true

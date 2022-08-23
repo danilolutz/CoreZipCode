@@ -13,8 +13,8 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
 {
     public class ViaCepTest
     {
-        private const string ExpectedResponse = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"unidade\": \"\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\"\n}";
-        private const string ExpectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"unidade\": \"\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\"\n  }\n]";
+        private const string ExpectedResponse = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\",\n  \"ddd\": \"16\",\n  \"siafi\": \"7107\"\n}";
+        private const string ExpectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\",\n    \"ddd\": \"16\",\n  \"siafi\": \"7107\"  }\n]";
         private const string ExpectedState = "SP";
         private const string ExpectedCity = "Araraquara";
         private const string ZipCodeTest = "14810-100";
@@ -90,9 +90,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         [Fact]
         public void MustGetSingleZipCodeObject()
         {
-            var actual = _service.GetAddress<ViaCepAddress>(ZipCodeTest);
+            var actual = _service.GetAddress<ViaCepAddressModel>(ZipCodeTest);
 
-            Assert.IsType<ViaCepAddress>(actual);
+            Assert.IsType<ViaCepAddressModel>(actual);
             Assert.Equal(ExpectedCity, actual.City);
             Assert.Equal(ExpectedState, actual.State);
         }
@@ -100,9 +100,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         [Fact]
         public void MustGetZipCodeObjectList()
         {
-            var actual = _serviceList.ListAddresses<ViaCepAddress>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
+            var actual = _serviceList.ListAddresses<ViaCepAddressModel>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 
-            Assert.IsType<List<ViaCepAddress>>(actual);
+            Assert.IsType<List<ViaCepAddressModel>>(actual);
             Assert.True(actual.Count > 0);
             Assert.Equal(ExpectedCity, actual[0].City);
             Assert.Equal(ExpectedState, actual[0].State);
@@ -155,9 +155,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         [Fact]
         public async Task MustGetSingleZipCodeObjectAsync()
         {
-            var actual = await _service.GetAddressAsync<ViaCepAddress>(ZipCodeTest);
+            var actual = await _service.GetAddressAsync<ViaCepAddressModel>(ZipCodeTest);
 
-            Assert.IsType<ViaCepAddress>(actual);
+            Assert.IsType<ViaCepAddressModel>(actual);
             Assert.Equal(ExpectedCity, actual.City);
             Assert.Equal(ExpectedState, actual.State);
         }
@@ -165,9 +165,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         [Fact]
         public async Task MustGetZipCodeObjectListAsync()
         {
-            var actual = await _serviceList.ListAddressesAsync<ViaCepAddress>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
+            var actual = await _serviceList.ListAddressesAsync<ViaCepAddressModel>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
 
-            Assert.IsType<List<ViaCepAddress>>(actual);
+            Assert.IsType<List<ViaCepAddressModel>>(actual);
             Assert.True(actual.Count > 0);
             Assert.Equal(ExpectedCity, actual[0].City);
             Assert.Equal(ExpectedState, actual[0].State);

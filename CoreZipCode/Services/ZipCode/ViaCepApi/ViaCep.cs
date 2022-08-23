@@ -26,7 +26,7 @@ namespace CoreZipCode.Services.ZipCode.ViaCepApi
 
             if (string.IsNullOrEmpty(aux) || aux.Length < size)
             {
-                throw new ViaCepException($"Invalid {name}, parameter below size of {size.ToString()} characters.");
+                throw new ViaCepException($"Invalid {name}, parameter below size of {size} characters.");
             }
 
             return aux;

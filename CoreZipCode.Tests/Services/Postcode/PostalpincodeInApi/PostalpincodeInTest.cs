@@ -52,7 +52,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostalpincodeInApi
 
             return new PostalpincodeIn(httpClient);
         }
-        
+
         [Fact]
         public static void ConstructorTest()
         {

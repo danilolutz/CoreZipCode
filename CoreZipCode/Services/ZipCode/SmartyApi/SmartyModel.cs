@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
+namespace CoreZipCode.Services.ZipCode.SmartyApi
 {
     [Serializable]
-    public class SmartyStreetsModel
+    public class SmartyModel
     {
         [JsonProperty("input_index")]
         public long InputIndex { get; set; }
