@@ -1,4 +1,4 @@
-﻿using CoreZipCode.Services.ZipCode.SmartyStreetsApi;
+﻿using CoreZipCode.Services.ZipCode.SmartyApi;
 using Moq;
 using Moq.Protected;
 using System;
@@ -9,9 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
+namespace CoreZipCode.Tests.Services.ZipCode.SmartyApi
 {
-    public class SmartyStreetsTest
+    public class SmartyTest
     {
         private const string ExpectedZipcodeResponse = "[{\"input_index\":0,\"city_states\":[{\"city\":\"Cupertino\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true},{\"city\":\"Monte Vista\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true},{\"city\":\"Permanente\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true}],\"zipcodes\":[{\"zipcode\":\"95014\",\"zipcode_type\":\"S\",\"default_city\":\"Cupertino\",\"county_fips\":\"06085\",\"county_name\":\"Santa Clara\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"latitude\":37.32098,\"longitude\":-122.03838,\"precision\":\"Zip5\"}]}]";
         private const string ExpectedParamResponse = "[{\"input_index\":0,\"candidate_index\":0,\"delivery_line_1\":\"1600 Amphitheatre Pkwy\",\"last_line\":\"Mountain View CA 94043-1351\",\"delivery_point_barcode\":\"940431351000\",\"components\":{\"primary_number\":\"1600\",\"street_name\":\"Amphitheatre\",\"street_suffix\":\"Pkwy\",\"city_name\":\"Mountain View\",\"default_city_name\":\"Mountain View\",\"state_abbreviation\":\"CA\",\"zipcode\":\"94043\",\"plus4_code\":\"1351\",\"delivery_point\":\"00\",\"delivery_point_check_digit\":\"0\"},\"metadata\":{\"record_type\":\"S\",\"zip_type\":\"Standard\",\"county_fips\":\"06085\",\"county_name\":\"Santa Clara\",\"carrier_route\":\"C909\",\"congressional_district\":\"18\",\"rdi\":\"Commercial\",\"elot_sequence\":\"0094\",\"elot_sort\":\"A\",\"latitude\":37.42357,\"longitude\":-122.08661,\"precision\":\"Zip9\",\"time_zone\":\"Pacific\",\"utc_offset\":-8,\"dst\":true},\"analysis\":{\"dpv_match_code\":\"Y\",\"dpv_footnotes\":\"AABB\",\"dpv_cmra\":\"N\",\"dpv_vacant\":\"N\",\"active\":\"N\"}}]";
@@ -20,9 +20,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         private const string ZipCodeTest = "95014";
         private const string SendAsync = "SendAsync";
         private const string MockUri = "https://unit.test.com/";
-        private const string SmartyStreetsParameterState = "CA";
-        private const string SmartyStreetsParameterCity = "Mountain View";
-        private const string SmartyStreetsParameterStreet = "1600 Amphitheatre Pkwy";
+        private const string SmartyParameterState = "CA";
+        private const string SmartyParameterCity = "Mountain View";
+        private const string SmartyParameterStreet = "1600 Amphitheatre Pkwy";
         private const string InvalidStreetMessage = "Invalid Street, parameter over size of 64 characters.";
         private const string InvalidCityMessage = "Invalid City, parameter over size of 64 characters.";
         private const string InvalidStateMessage = "Invalid State, parameter over size of 32 characters.";
@@ -31,16 +31,16 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         private const string AuthToken = "some auth token";
         private const string AuthId = "some auth id";
 
-        private readonly SmartyStreets _service;
-        private readonly SmartyStreets _serviceParam;
+        private readonly Smarty _service;
+        private readonly Smarty _serviceParam;
 
-        public SmartyStreetsTest()
+        public SmartyTest()
         {
             _service = ConfigureService(ExpectedZipcodeResponse);
             _serviceParam = ConfigureService(ExpectedParamResponse);
         }
 
-        private static SmartyStreets ConfigureService(string response)
+        private static Smarty ConfigureService(string response)
         {
             var handlerMock = new Mock<HttpMessageHandler>();
 
@@ -63,32 +63,32 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
                 BaseAddress = new Uri(MockUri)
             };
 
-            return new SmartyStreets(httpClient, "test-auth-id", "test-auth-token");
+            return new Smarty(httpClient, "test-auth-id", "test-auth-token");
         }
 
         [Fact]
         public static void ConstructorTest()
         {
-            var actual = new SmartyStreets(AuthId, AuthToken);
+            var actual = new Smarty(AuthId, AuthToken);
             Assert.NotNull(actual);
         }
 
         [Fact]
         public static void ConstructorNullTest()
         {
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), AuthId, null));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), null, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), null, null));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), AuthId, string.Empty));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), string.Empty, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(new HttpClient(), string.Empty, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), AuthId, null));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), null, AuthToken));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), null, null));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), AuthId, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), string.Empty, AuthToken));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), string.Empty, string.Empty));
 
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(AuthId, null));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(null, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(null, null));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(AuthId, string.Empty));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(string.Empty, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new SmartyStreets(string.Empty, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(AuthId, null));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(null, AuthToken));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(null, null));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(AuthId, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(string.Empty, AuthToken));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(string.Empty, string.Empty));
         }
 
         [Fact]
@@ -102,7 +102,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         [Fact]
         public void MustGetZipCodeByParamsJsonString()
         {
-            var actual = _serviceParam.Execute(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
+            var actual = _serviceParam.Execute(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
 
             Assert.Equal(ExpectedParamResponse, actual);
         }
@@ -110,9 +110,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         [Fact]
         public void MustGetSingleZipCodeObject()
         {
-            var actual = _service.GetAddress<List<SmartyStreetsModel>>(ZipCodeTest);
+            var actual = _service.GetAddress<List<SmartyModel>>(ZipCodeTest);
 
-            Assert.IsType<List<SmartyStreetsModel>>(actual);
+            Assert.IsType<List<SmartyModel>>(actual);
             Assert.Equal(ExpectedCity, actual[0].CityStates[0].City);
             Assert.Equal(ExpectedState, actual[0].CityStates[0].StateAbbreviation);
         }
@@ -120,33 +120,33 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         [Fact]
         public void MustGetZipCodeByParamsList()
         {
-            var actual = _serviceParam.ListAddresses<SmartyStreetsParamsModel>(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
+            var actual = _serviceParam.ListAddresses<SmartyParamsModel>(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
 
-            Assert.IsType<List<SmartyStreetsParamsModel>>(actual);
+            Assert.IsType<List<SmartyParamsModel>>(actual);
             Assert.True(actual.Count > 0);
-            Assert.Equal(SmartyStreetsParameterCity, actual[0].Components.CityName);
-            Assert.Equal(SmartyStreetsParameterState, actual[0].Components.StateAbbreviation);
+            Assert.Equal(SmartyParameterCity, actual[0].Components.CityName);
+            Assert.Equal(SmartyParameterState, actual[0].Components.StateAbbreviation);
         }
 
         [Fact]
         public void MustThrowTheExceptions()
         {
-            var exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute(" 12345678901234567890 "));
+            var exception = Assert.Throws<SmartyException>(() => _service.Execute(" 12345678901234567890 "));
             Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
-            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute(" 12A"));
+            exception = Assert.Throws<SmartyException>(() => _service.Execute(" 12A"));
             Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
-            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute(" 123A5678 "));
+            exception = Assert.Throws<SmartyException>(() => _service.Execute(" 123A5678 "));
             Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
 
-            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
+            exception = Assert.Throws<SmartyException>(() => _service.Execute("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
             Assert.Equal(InvalidStateMessage, exception.Message);
 
-            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
+            exception = Assert.Throws<SmartyException>(() => _service.Execute("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
             Assert.Equal(InvalidCityMessage, exception.Message);
 
-            exception = Assert.Throws<SmartyStreetsException>(() => _service.Execute("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
+            exception = Assert.Throws<SmartyException>(() => _service.Execute("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
             Assert.Equal(InvalidStreetMessage, exception.Message);
         }
 
@@ -161,7 +161,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         [Fact]
         public async Task MustGetListZipCodeJsonStringAsync()
         {
-            var actual = await _serviceParam.ExecuteAsync(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
+            var actual = await _serviceParam.ExecuteAsync(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
 
             Assert.Equal(ExpectedParamResponse, actual);
         }
@@ -169,9 +169,9 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         [Fact]
         public async Task MustGetSingleZipCodeObjectAsync()
         {
-            var actual = await _service.GetAddressAsync<List<SmartyStreetsModel>>(ZipCodeTest);
+            var actual = await _service.GetAddressAsync<List<SmartyModel>>(ZipCodeTest);
 
-            Assert.IsType<List<SmartyStreetsModel>>(actual);
+            Assert.IsType<List<SmartyModel>>(actual);
             Assert.Equal(ExpectedCity, actual[0].CityStates[0].City);
             Assert.Equal(ExpectedState, actual[0].CityStates[0].StateAbbreviation);
         }
@@ -179,33 +179,33 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyStreetsApi
         [Fact]
         public async Task MustGetZipCodeByParamsListAsync()
         {
-            var actual = await _serviceParam.ListAddressesAsync<SmartyStreetsParamsModel>(SmartyStreetsParameterState, SmartyStreetsParameterCity, SmartyStreetsParameterStreet);
+            var actual = await _serviceParam.ListAddressesAsync<SmartyParamsModel>(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
 
-            Assert.IsType<List<SmartyStreetsParamsModel>>(actual);
+            Assert.IsType<List<SmartyParamsModel>>(actual);
             Assert.True(actual.Count > 0);
-            Assert.Equal(SmartyStreetsParameterCity, actual[0].Components.CityName);
-            Assert.Equal(SmartyStreetsParameterState, actual[0].Components.StateAbbreviation);
+            Assert.Equal(SmartyParameterCity, actual[0].Components.CityName);
+            Assert.Equal(SmartyParameterState, actual[0].Components.StateAbbreviation);
         }
 
         [Fact]
         public void MustThrowTheExceptionsAsync()
         {
-            var exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync(" 12345678901234567890 "));
+            var exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12345678901234567890 "));
             Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
 
-            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync(" 12A"));
+            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12A"));
             Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
 
-            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync(" 123A5678 "));
+            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 123A5678 "));
             Assert.Equal(InvalidZipCodeFormatMessage, exception.Result.Message);
 
-            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
+            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
             Assert.Equal(InvalidStateMessage, exception.Result.Message);
 
-            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
+            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
             Assert.Equal(InvalidCityMessage, exception.Result.Message);
 
-            exception = Assert.ThrowsAsync<SmartyStreetsException>(() => _service.ExecuteAsync("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
+            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
             Assert.Equal(InvalidStreetMessage, exception.Result.Message);
         }
     }

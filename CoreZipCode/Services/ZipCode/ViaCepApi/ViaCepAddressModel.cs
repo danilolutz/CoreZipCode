@@ -4,7 +4,7 @@ using System;
 namespace CoreZipCode.Services.ZipCode.ViaCepApi
 {
     [Serializable]
-    public class ViaCepAddress
+    public class ViaCepAddressModel
     {
         [JsonProperty(PropertyName = "cep")]
         public string ZipCode { get; set; }
@@ -24,13 +24,16 @@ namespace CoreZipCode.Services.ZipCode.ViaCepApi
         [JsonProperty(PropertyName = "uf")]
         public string State { get; set; }
 
-        [JsonProperty(PropertyName = "unidade")]
-        public string Unity { get; set; }
-
         [JsonProperty(PropertyName = "ibge")]
-        public string IBGE { get; set; }
+        public string Ibge { get; set; }
 
         [JsonProperty(PropertyName = "gia")]
-        public string GIA { get; set; }
+        public string Gia { get; set; }
+
+        [JsonProperty(PropertyName = "ddd")]
+        public string Ddd { get; set; }
+
+        [JsonProperty(PropertyName = "siafi")]
+        public string Siafi { get; set; }
     }
 }
