@@ -37,7 +37,7 @@ namespace CoreZipCode.Services.ZipCode.SmartyApi
             var aux = value;
             if (aux.Length > size)
             {
-                throw new SmartyException($"Invalid {name}, parameter over size of {size.ToString()} characters.");
+                throw new SmartyException($"Invalid {name}, parameter over size of {size} characters.");
             }
 
             return aux.Trim();

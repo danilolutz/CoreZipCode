@@ -7,7 +7,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreZipCode", "CoreZipCode\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreZipCode.Tests", "CoreZipCode.Tests\CoreZipCode.Tests.csproj", "{BEBE3369-518F-46D3-A946-45066E705688}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp\SampleApp.csproj", "{A6F19749-0E0C-4667-B702-734CDA305829}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp", "SampleApp\SampleApp.csproj", "{A6F19749-0E0C-4667-B702-734CDA305829}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA76150E-93CD-4AF2-8507-22FCABB653EB}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		.travis.yml = .travis.yml
+		corezipcode.png = corezipcode.png
+		corezipcode.svg = corezipcode.svg
+		.deploy\deploy.sh = .deploy\deploy.sh
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
