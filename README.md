@@ -103,7 +103,7 @@ Below a list of available services out-of-the-box **address by zipcode** lookup 
 | Service                                     | Country | Queries Limit     |
 | :------------------------------------------ | :------ | :---------------- |
 | [ViaCep](https://viacep.com.br)             | Brazil  | 300 by 15 minutes |
-| [SmartyStreets](https://smartystreets.com/) | USA     | 250 by month      |
+| [Smarty](https://www.smarty.com/)           | USA     | 250 by month      |
 
 Below a list of available services out-of-the-box **postcodes** lookup services.
 

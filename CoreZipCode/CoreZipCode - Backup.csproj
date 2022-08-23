@@ -16,12 +16,6 @@
     <Copyright>Danilo Lutz Copyright</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>CoreZipCode is useful to retrives zipcodes and postalcodes.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>- Change SmartyStreets to Smarty since they changed their name
-- Check ViaCep Service and keep compatibility
-- Check Smarty Service and keep compatibility
-- Check PostalpincodeIn Service and keep compatibility
-- Check PostcodesIo Service and keep compatibility</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

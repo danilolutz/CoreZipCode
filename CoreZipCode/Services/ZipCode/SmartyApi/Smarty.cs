@@ -1,11 +1,11 @@
+using CoreZipCode.Interfaces;
 using System;
 using System.Net.Http;
-using CoreZipCode.Interfaces;
 using System.Text.RegularExpressions;
 
-namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
+namespace CoreZipCode.Services.ZipCode.SmartyApi
 {
-    public class SmartyStreets : ZipCodeBaseService
+    public class Smarty : ZipCodeBaseService
     {
         private const string ZipCodeSizeErrorMessage = "Invalid ZipCode Size";
         private const string ZipCodeFormatErrorMessage = "Invalid ZipCode Format";
@@ -16,13 +16,13 @@ namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
         private readonly string _authId;
         private readonly string _authToken;
 
-        public SmartyStreets(string authId, string authToken)
+        public Smarty(string authId, string authToken)
         {
             _authId = string.IsNullOrWhiteSpace(authId) ? throw new ArgumentNullException(nameof(authId)) : authId;
             _authToken = string.IsNullOrWhiteSpace(authToken) ? throw new ArgumentNullException(nameof(authToken)) : authToken;
         }
 
-        public SmartyStreets(HttpClient request, string authId, string authToken) : base(request)
+        public Smarty(HttpClient request, string authId, string authToken) : base(request)
         {
             _authId = string.IsNullOrWhiteSpace(authId) ? throw new ArgumentNullException(nameof(authId)) : authId;
             _authToken = string.IsNullOrWhiteSpace(authToken) ? throw new ArgumentNullException(nameof(authToken)) : authToken;
@@ -37,7 +37,7 @@ namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
             var aux = value;
             if (aux.Length > size)
             {
-                throw new SmartyStreetsException($"Invalid {name}, parameter over size of {size.ToString()} characters.");
+                throw new SmartyException($"Invalid {name}, parameter over size of {size.ToString()} characters.");
             }
 
             return aux.Trim();
@@ -49,12 +49,12 @@ namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
 
             if (zipAux.Length < 5 || zipAux.Length > 16)
             {
-                throw new SmartyStreetsException(ZipCodeSizeErrorMessage);
+                throw new SmartyException(ZipCodeSizeErrorMessage);
             }
 
             if (!Regex.IsMatch(zipAux, ("[0-9]{5,16}")))
             {
-                throw new SmartyStreetsException(ZipCodeFormatErrorMessage);
+                throw new SmartyException(ZipCodeFormatErrorMessage);
             }
 
             return zipAux;

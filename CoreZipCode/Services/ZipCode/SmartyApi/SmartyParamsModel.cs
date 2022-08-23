@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace CoreZipCode.Services.ZipCode.SmartyStreetsApi
+namespace CoreZipCode.Services.ZipCode.SmartyApi
 {
-    public class SmartyStreetsParamsModel
+    public class SmartyParamsModel
     {
         [JsonProperty("input_index")]
         public long InputIndex { get; set; }
