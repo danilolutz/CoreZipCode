@@ -1,8 +1,9 @@
 name: Upload dotnet package
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - "*"
 
 jobs:
   deploy:
@@ -24,7 +25,8 @@ jobs:
       - name: Publish the package to GPR
         run: dotnet nuget push CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
+        uses: softprops/action-gh-release@v1
         with:
-          name: CoreZipCode.${{github.ref_name}}.nupkg
-          path: CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg
+          files: CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
