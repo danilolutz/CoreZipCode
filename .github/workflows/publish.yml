@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,11 +25,11 @@ jobs:
       - run: dotnet build --configuration Release CoreZipCode.sln
       - name: Create the package
         run: dotnet pack --configuration Release CoreZipCode.sln --include-symbols -p:PackageVersion=${{github.ref_name}} -v normal
-      - name: Publish the package to GPR
-        run: dotnet nuget push CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
       - name: Upload a Build Artifact
         uses: softprops/action-gh-release@v1
         with:
           files: CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish the package to GPR
+        run: dotnet nuget push CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
