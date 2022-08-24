@@ -23,3 +23,8 @@ jobs:
         run: dotnet pack --configuration Release CoreZipCode.sln --include-symbols -p:PackageVersion=${{github.ref_name}} -v normal
       - name: Publish the package to GPR
         run: dotnet nuget push CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: CoreZipCode.${{github.ref_name}}.nupkg
+          path: CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg
