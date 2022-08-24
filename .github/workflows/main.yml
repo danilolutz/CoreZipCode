@@ -1,25 +1,27 @@
-name: Upload dotnet package
+name: .NET
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main", "develop"]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 6.0.x
-          source-url: https://nuget.pkg.github.com/CoreZipCode/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - run: dotnet build --configuration Release CoreZipCode.sln
-      - name: Create the package
-        run: dotnet pack --configuration Release CoreZipCode.sln --include-symbols -p:PackageVersion=${{github.ref_name}} -v normal
-      - name: Publish the package to GPR
-        run: dotnet nuget push CoreZipCode/bin/Release/*.nupkg
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Test
+        run: dotnet test --no-build --verbosity normal -p:CollectCoverage=true -p:CoverletOutputFormat=lcov -p:CoverletOutput=./coverage/lcov.info
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
