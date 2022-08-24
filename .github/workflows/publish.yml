@@ -1,8 +1,9 @@
 name: Upload dotnet package
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - "*"
 
 jobs:
   deploy:
