@@ -1,6 +1,6 @@
 # ![CoreZipCode](./corezipcode.png)
 
-[![Build Status](https://travis-ci.com/danilolutz/CoreZipCode.svg?branch=master)](https://travis-ci.com/danilolutz/CoreZipCode)
+[![Build](https://github.com/danilolutz/CoreZipCode/actions/workflows/main.yml/badge.svg)](https://github.com/danilolutz/CoreZipCode/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/danilolutz/CoreZipCode/badge.svg?branch=master)](https://coveralls.io/github/danilolutz/CoreZipCode?branch=master)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/4e055c8f8dfb4d88961f19a6318c8b52)](https://www.codacy.com/gh/danilolutz/CoreZipCode/dashboard?utm_source=github.com&utm_medium=referral&utm_content=danilolutz/CoreZipCode&utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/github/danilolutz/CoreZipCode/main/badge.svg)](https://snyk.io/test/github/danilolutz/CoreZipCode/main)
