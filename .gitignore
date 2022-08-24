@@ -550,6 +550,7 @@ healthchecksdb
 
 .coverageCoreZipCode.deps.json
 .coverage
+coverage
 coverage.json
 coverage.cobertura.xml
 
