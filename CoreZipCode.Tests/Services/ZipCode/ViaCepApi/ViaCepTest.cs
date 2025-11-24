@@ -174,31 +174,31 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
         }
 
         [Fact]
-        public void MustThrowTheExceptionsAsync()
+        public async Task MustThrowTheExceptionsAsync()
         {
-            var exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 12345-67 "));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
+            var exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 12345-67 "));
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 123A5-678 "));
-            Assert.Equal(InvalidZipCodeFormatMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 123A5-678 "));
+            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("U", "Araraquara", "barão do rio"));
-            Assert.Equal(InvalidStateMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("U", "Araraquara", "barão do rio"));
+            Assert.Equal(InvalidStateMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ar", "barão do rio"));
-            Assert.Equal(InvalidCityMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ar", "barão do rio"));
+            Assert.Equal(InvalidCityMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", "ba"));
-            Assert.Equal(InvalidStreetMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", "ba"));
+            Assert.Equal(InvalidStreetMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("", "Araraquara", "barão do rio"));
-            Assert.Equal(InvalidStateMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("", "Araraquara", "barão do rio"));
+            Assert.Equal(InvalidStateMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "", "barão do rio"));
-            Assert.Equal(InvalidCityMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "", "barão do rio"));
+            Assert.Equal(InvalidCityMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", ""));
-            Assert.Equal(InvalidStreetMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", ""));
+            Assert.Equal(InvalidStreetMessage, exception.Message);
         }
     }
 }

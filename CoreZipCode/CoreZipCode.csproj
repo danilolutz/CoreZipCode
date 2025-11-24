@@ -5,7 +5,7 @@
 
     <PackageId>CoreZipCode</PackageId>
     <Title>CoreZipCode</Title>
-    <Version>2.0.8</Version>
+    <Version>2.0.9</Version>
     <Authors>Danilo Lutz</Authors>
     <Company>Danilo Lutz</Company>
     <license>https://github.com/danilolutz/CoreZipCode/blob/master/LICENSE</license>
@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
 </Project>

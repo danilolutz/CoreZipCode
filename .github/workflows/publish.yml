@@ -1,4 +1,4 @@
-name: Upload dotnet package
+﻿name: Upload dotnet package
 
 on:
   push:
@@ -12,24 +12,34 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       packages: write
       contents: read
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
           source-url: https://nuget.pkg.github.com/danilolutz/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - run: dotnet build --configuration Release CoreZipCode.sln
+
       - name: Create the package
         run: dotnet pack --configuration Release CoreZipCode.sln --include-symbols -p:PackageVersion=${{github.ref_name}} -v normal
+
       - name: Upload a Build Artifact
         uses: softprops/action-gh-release@v1
         with:
           files: CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish the package to GPR
-        run: dotnet nuget push CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: NuGet push
+        run: dotnet nuget push CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json

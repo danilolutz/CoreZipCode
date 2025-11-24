@@ -97,7 +97,7 @@ static bool PrintMenu()
     Console.WriteLine(" |****  CoreZipCode Demo Application ****|");
     Console.WriteLine("  ---------------------------------------");
     Console.WriteLine(" 1 - ViaCep Service");
-    Console.WriteLine(" 2 - SmartyStreets Service");
+    Console.WriteLine(" 2 - Smarty Service");
     Console.WriteLine(" 3 - PostalpincodeIn Service");
     Console.WriteLine(" 4 - PostcodesIo Service");
     Console.WriteLine(" 5 - Get out");
