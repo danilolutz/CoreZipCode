@@ -188,25 +188,25 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyApi
         }
 
         [Fact]
-        public void MustThrowTheExceptionsAsync()
+        public async Task MustThrowTheExceptionsAsync()
         {
-            var exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12345678901234567890 "));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
+            var exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12345678901234567890 "));
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12A"));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12A"));
+            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 123A5678 "));
-            Assert.Equal(InvalidZipCodeFormatMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 123A5678 "));
+            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
-            Assert.Equal(InvalidStateMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
+            Assert.Equal(InvalidStateMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
-            Assert.Equal(InvalidCityMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
+            Assert.Equal(InvalidCityMessage, exception.Message);
 
-            exception = Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
-            Assert.Equal(InvalidStreetMessage, exception.Result.Message);
+            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
+            Assert.Equal(InvalidStreetMessage, exception.Message);
         }
     }
 }
