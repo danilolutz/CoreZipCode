@@ -4,19 +4,16 @@ using System.Threading.Tasks;
 
 namespace CoreZipCode.Interfaces
 {
-    /// <inheritdoc />
     /// <summary>
     /// Postcode base service abstract class.
     /// </summary>
     public abstract class PostcodeBaseService : ApiHandler
     {
-        /// <inheritdoc />
         /// <summary>
         /// postalcode base service protected constructor.
         /// </summary>
         protected PostcodeBaseService() { }
 
-        /// <inheritdoc />
         /// <summary>
         /// postalcode base service protected constructor.
         /// </summary>

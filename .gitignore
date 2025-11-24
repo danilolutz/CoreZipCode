@@ -555,3 +555,6 @@ coverage.json
 coverage.cobertura.xml
 
 # End of https://www.gitignore.io/api/aspnetcore,visualstudio,visualstudiocode,openframeworks+visualstudio
+
+docs/_site
+docs/api

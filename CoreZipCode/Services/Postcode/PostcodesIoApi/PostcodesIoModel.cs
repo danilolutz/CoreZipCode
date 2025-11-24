@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 namespace CoreZipCode.Services.Postcode.PostcodesIoApi
 {
+    /// <summary>
+    /// Represents the response model for the Postcodes.io API, containing the status code and a collection of postcode
+    /// results.
+    /// </summary>
+    /// <remarks>This class is typically used to deserialize JSON responses from the Postcodes.io service. The
+    /// structure matches the standard response format returned by the API for postcode queries.</remarks>
     [Serializable]
     public class PostcodesIoModel
     {
@@ -14,6 +20,15 @@ namespace CoreZipCode.Services.Postcode.PostcodesIoApi
         public List<Result> Result { get; set; }
     }
 
+    /// <summary>
+    /// Represents detailed information about a UK postcode, including geographic, administrative, and electoral data as
+    /// returned by postcode lookup services.  
+    /// </summary>
+    /// <remarks>This class provides structured access to various attributes associated with a postcode, such
+    /// as location coordinates, administrative regions, and health authorities. It is typically used to deserialize
+    /// responses from postcode APIs and may contain null or default values for properties where data is unavailable.
+    /// Thread safety is not guaranteed; if multiple threads access an instance concurrently, external synchronization
+    /// is required.</remarks>
     [Serializable]
     public class Result
     {
@@ -90,6 +105,14 @@ namespace CoreZipCode.Services.Postcode.PostcodesIoApi
         public Codes Codes { get; set; }
     }
 
+    /// <summary>
+    /// Represents a collection of administrative and geographic codes associated with a location, such as district,
+    /// county, ward, parish, and constituency identifiers. 
+    /// </summary>
+    /// <remarks>This class is typically used to provide standardized codes for various administrative
+    /// divisions in the United Kingdom. The codes correspond to specific government or statistical regions and can be
+    /// used for data integration, analysis, or mapping purposes. All properties are optional and may be null if the
+    /// corresponding code is not available.</remarks>
     [Serializable]
     public class Codes
     {

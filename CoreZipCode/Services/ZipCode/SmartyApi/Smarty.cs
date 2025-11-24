@@ -5,6 +5,14 @@ using System.Text.RegularExpressions;
 
 namespace CoreZipCode.Services.ZipCode.SmartyApi
 {
+    /// <summary>
+    /// Provides access to Smarty ZIP code and street address lookup services using authenticated API requests.
+    /// </summary>
+    /// <remarks>Use this class to construct authenticated requests to the Smarty US ZIP code and
+    /// street address APIs. The class requires valid authentication credentials, which are used to authorize each
+    /// request. Inherit from <see cref="ZipCodeBaseService"/> to enable integration with other ZIP code service implementations. This
+    /// class is not thread-safe; create a separate instance for each concurrent operation if needed. For more information about the Smarty API, see
+    /// https://www.smarty.com/.</remarks>
     public class Smarty : ZipCodeBaseService
     {
         private const string ZipCodeSizeErrorMessage = "Invalid ZipCode Size";

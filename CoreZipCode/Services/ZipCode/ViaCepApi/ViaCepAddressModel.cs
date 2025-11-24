@@ -3,6 +3,13 @@ using System;
 
 namespace CoreZipCode.Services.ZipCode.ViaCepApi
 {
+    /// <summary>
+    /// Represents an address as returned by the ViaCep API, including postal code, street information, and regional
+    /// identifiers.
+    /// </summary>
+    /// <remarks>This model is typically used to deserialize address data from the ViaCep web service, which
+    /// provides postal code lookup for Brazilian addresses. All properties correspond to fields in the ViaCep API
+    /// response. This class is serializable and suitable for use in data transfer scenarios.</remarks>
     [Serializable]
     public class ViaCepAddressModel
     {

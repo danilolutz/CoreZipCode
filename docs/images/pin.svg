@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="77.850029"
+   height="137.61714"
+   viewBox="0 0 20.59782 36.411202"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="pin.svg"
+   inkscape:export-filename="pin.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.71891835"
+     inkscape:cx="103.6279"
+     inkscape:cy="192.65053"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-77.3079,-97.476058)">
+    <path
+       d="m 77.3079,107.77639 c 0,-5.68703 4.61007,-10.300332 10.29871,-10.300332 5.68865,0 10.29871,4.613302 10.29911,10.299522 0,0.29412 -0.0158,0.58096 -0.0413,0.86941 -0.008,0.10236 -0.0206,0.20876 -0.0332,0.30829 -0.0182,0.17356 -0.0457,0.34429 -0.072,0.5138 -0.0223,0.13593 -0.0461,0.26904 -0.0728,0.40052 -0.0194,0.091 -0.0372,0.18206 -0.0615,0.27309 -0.93213,4.07563 -4.10476,7.34454 -6.54916,12.94094 -0.73065,1.67451 -1.36825,3.46959 -1.89136,5.1089 l -1.57782,5.69673 -1.57782,-5.69592 c -0.5223,-1.63972 -1.16071,-3.43439 -1.89136,-5.1089 -2.4444,-5.5964 -5.61582,-8.86532 -6.5524,-12.94094 -0.0194,-0.091 -0.0433,-0.18206 -0.0615,-0.27309 -0.0283,-0.13189 -0.0494,-0.26499 -0.0716,-0.40052 -0.0291,-0.16951 -0.0518,-0.34024 -0.07,-0.5138 -0.0121,-0.0995 -0.0251,-0.20633 -0.0348,-0.30829 -0.0227,-0.28845 -0.0392,-0.57529 -0.0392,-0.86941 z m 5.64334,-0.002 c 0,2.57063 2.08474,4.65659 4.65375,4.65659 2.57225,0 4.65659,-2.08596 4.65659,-4.65659 0,-2.57063 -2.08474,-4.65376 -4.65659,-4.65376 -2.56901,0 -4.65375,2.08313 -4.65375,4.65376 z"
+       data-paper-data="{&quot;isPathIcon&quot;:true}"
+       id="path12"
+       style="mix-blend-mode:normal;fill:#ff6a13;fill-opacity:1;stroke-width:0.264583" />
+  </g>
+</svg>
