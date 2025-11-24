@@ -1,4 +1,4 @@
-# ![CoreZipCode](./corezipcode.png)
+# ![CoreZipCode](./docs/images/corezipcode.png)
 
 [![Build](https://github.com/danilolutz/CoreZipCode/actions/workflows/main.yml/badge.svg)](https://github.com/danilolutz/CoreZipCode/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/danilolutz/CoreZipCode/badge.svg?branch=master)](https://coveralls.io/github/danilolutz/CoreZipCode?branch=master)
@@ -10,7 +10,7 @@
 
 Normaly we must implement ZipCode or Postcode services every time in each new software we create. Well this package is for keep you [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) and eliminate the necessity to implement ZipCode or Postcode services over and over.
 
-Also this package could be used for easily implements address services to yours [Microsoft .Net Core](https://dotnet.github.io/) based software.
+Also this package could be used for easily implements address services to yours [Microsoft .NET](https://dotnet.github.io/) based software.
 
 And the **CoreZipCode** was designed to be easily extensible, and if you want, implement your own address services, you only must override the API calls methods.
 

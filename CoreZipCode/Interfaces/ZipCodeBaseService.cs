@@ -5,19 +5,16 @@ using System.Threading.Tasks;
 
 namespace CoreZipCode.Interfaces
 {
-    /// <inheritdoc />
     /// <summary>
     /// Zip code base service abstract class
     /// </summary>
     public abstract class ZipCodeBaseService : ApiHandler
     {
-        /// <inheritdoc />
         /// <summary>
         /// Zip Code Base Service protected constructor.
         /// </summary>
         protected ZipCodeBaseService() { }
 
-        /// <inheritdoc />
         /// <summary>
         /// Zip Code Base Service protected constructor.
         /// </summary>

@@ -4,6 +4,13 @@ using System.Collections.Generic;
 
 namespace CoreZipCode.Services.Postcode.PostalpincodeInApi
 {
+    /// <summary>
+    /// Represents the response model for postal pincode queries, containing status information, a message, and a
+    /// collection of post office details.  
+    /// </summary>
+    /// <remarks>This class is typically used to deserialize responses from postal pincode APIs. The
+    /// properties correspond to the expected fields in the API response, allowing access to the status, message, and
+    /// associated post office data.</remarks>
     [Serializable]
     public class PostalpincodeInModel
     {
@@ -17,6 +24,14 @@ namespace CoreZipCode.Services.Postcode.PostalpincodeInApi
         public List<PostOffice> PostOffice { get; set; }
     }
 
+    /// <summary>
+    /// Represents a postal office location and its associated details, including name, branch type, delivery status,
+    /// and geographic information.
+    /// </summary>
+    /// <remarks>This class is typically used to model information about a post office for address validation,
+    /// postal lookup, or geographic categorization scenarios. All properties are read-write and correspond to standard
+    /// attributes found in postal systems. Instances of this class can be serialized for data exchange or storage
+    /// purposes.</remarks>
     [Serializable]
     public class PostOffice
     {

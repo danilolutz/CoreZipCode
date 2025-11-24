@@ -1,0 +1,60 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../CoreZipCode",
+          "files": [
+            "**/*.csproj"
+          ],
+          "exclude": [ "**/bin/**", "**/obj/**" ]
+        }
+      ],
+      "output": "api",
+      "outputFormat": "apiPage"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern",
+      "template"
+    ],
+    "globalMetadata": {
+      "_appName": "",
+      "_appTitle": "CoreZipCode",
+      "_appFooter": "<span>CoreZipCode Docs</span>",
+      "_appLogoPath": "images/corezipcode128.png",
+      "_appFaviconPath": "images/favicon.ico",
+      "_enableSearch": true,
+      "_gitContribute": {
+        "repo": "https://github.com/danilolutz/CoreZipCode"
+      },
+      "pdf": false
+    },
+    "sitemap": {
+      "baseUrl": "https://danilolutz.dev/CoreZipCode",
+      "priority": 0.5,
+      "changefreq": "daily"
+    }
+  }
+}

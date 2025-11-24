@@ -4,6 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace CoreZipCode.Services.ZipCode.ViaCepApi
 {
+    /// <summary>
+    /// Provides an implementation of a zip code lookup service using the ViaCep API for Brazilian addresses.       
+    /// </summary>
+    /// <remarks>ViaCep enables retrieval of address information based on zip code, state, city, and street
+    /// parameters. This class extends <see cref="ZipCodeBaseService"/> to construct ViaCep-specific request URLs. Use this service to
+    /// integrate Brazilian postal code queries into your application. For more information about the ViaCep API, see
+    /// https://viacep.com.br.</remarks>
     public class ViaCep : ZipCodeBaseService
     {
         private const string ZipCodeSizeErrorMessage = "Invalid ZipCode Size";
