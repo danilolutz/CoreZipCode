@@ -14,24 +14,23 @@ jobs:
     permissions:
       id-token: write
       packages: write
-      contents: read
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 8.0.x
-          source-url: https://nuget.pkg.github.com/danilolutz/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - run: dotnet build --configuration Release CoreZipCode.sln
 
       - name: Create the package
         run: dotnet pack --configuration Release CoreZipCode.sln --include-symbols -p:PackageVersion=${{github.ref_name}} -v normal
 
       - name: Upload a Build Artifact
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: CoreZipCode/bin/Release/CoreZipCode.${{github.ref_name}}.nupkg
+          files: CoreZipCode/bin/Release/CoreZipCode.${{ github.ref_name }}.nupkg
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
