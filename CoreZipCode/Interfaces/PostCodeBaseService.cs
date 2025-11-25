@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace CoreZipCode.Interfaces
 {
     /// <summary>
-    /// Postcode base service abstract class.
-    /// </summary>
+    /// Postcode base service abstract class.
+    /// </summary>
     public abstract class PostcodeBaseService : IPostcodeService
     {
         private readonly IApiHandler _apiHandler;
