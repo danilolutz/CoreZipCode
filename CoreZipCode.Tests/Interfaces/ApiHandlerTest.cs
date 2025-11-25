@@ -10,7 +10,7 @@ using Xunit;
 
 namespace CoreZipCode.Tests.Interfaces
 {
-    public class ApiHandlerTests
+    public class ApiHandlerTest
     {
         [Fact]
         public void Constructor_Without_Parameters_Should_Create_Instance()

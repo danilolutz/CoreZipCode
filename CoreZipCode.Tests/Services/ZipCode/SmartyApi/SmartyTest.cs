@@ -12,7 +12,7 @@ using Xunit;
 
 namespace CoreZipCode.Tests.Services.ZipCode.SmartyApi
 {
-    public class SmartyTests
+    public class SmartyTest
     {
         private const string AuthId = "test-id";
         private const string AuthToken = "test-token";
@@ -22,7 +22,7 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyApi
         private readonly Mock<IApiHandler> _handlerMock = new();
         private readonly Smarty _service;
 
-        public SmartyTests()
+        public SmartyTest()
         {
             _service = new Smarty(_handlerMock.Object, AuthId, AuthToken);
         }

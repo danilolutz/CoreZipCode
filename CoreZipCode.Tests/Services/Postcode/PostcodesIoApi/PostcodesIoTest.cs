@@ -10,7 +10,7 @@ using Xunit;
 
 namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
 {
-    public class PostcodesIoTests
+    public class PostcodesIoTest
     {
         private const string ValidPostcode = "OX49 5NU";
 
@@ -19,7 +19,7 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
         private readonly Mock<IApiHandler> _apiHandlerMock;
         private readonly PostcodesIo _service;
 
-        public PostcodesIoTests()
+        public PostcodesIoTest()
         {
             _apiHandlerMock = new Mock<IApiHandler>();
             _service = new PostcodesIo(_apiHandlerMock.Object);
