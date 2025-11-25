@@ -1,3 +1,4 @@
+using CoreZipCode.Result;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -8,75 +9,78 @@ namespace CoreZipCode.Interfaces
     /// <summary>
     /// ApiHandler class
     /// </summary>
-    public class ApiHandler
+    public class ApiHandler : IApiHandler
     {
         /// <summary>
         /// Http Client Request.
         /// </summary>
-        private readonly HttpClient _request;
+        private readonly HttpClient _httpClient;
 
         /// <summary>
         /// ApiHandler Constructor without parameter: request.
         /// </summary>
-        public ApiHandler()
-        {
-            _request = new HttpClient();
-        }
+        public ApiHandler() : this(new HttpClient()) { }
 
         /// <summary>
         /// ApiHandler Constructor with parameter: request.
         /// </summary>
-        /// <param name="request">HttpClient class param to handle with API Servers Connections.</param>
-        public ApiHandler(HttpClient request)
+        /// <param name="httpClient">HttpClient class param to handle with API Servers Connections.</param>
+        public ApiHandler(HttpClient httpClient)
         {
-            _request = request;
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         /// <summary>
-        /// Method to execute the api call.
+        /// Sends an asynchronous HTTP GET request to the specified URL and returns the response content or an error
+        /// result. 
         /// </summary>
-        /// <param name="url">Api url to execute</param>
-        /// <returns>String Server response</returns>
-        public virtual string CallApi(string url)
+        /// <remarks>If the request fails due to network issues, timeouts, or a non-success HTTP status
+        /// code, the returned result will contain an <see cref="ApiError"/> describing the failure. The method does not
+        /// throw exceptions for typical HTTP or network errors; instead, errors are encapsulated in the result
+        /// object.</remarks>
+        /// <param name="url">The absolute URL of the API endpoint to call. Cannot be null, empty, or whitespace.</param>
+        /// <returns>A <see cref="Result{string}"/> containing the response body if the request succeeds; otherwise, a failure
+        /// result with error details.</returns>
+        public virtual async Task<Result<string>> CallApiAsync(string url)
         {
+            if (string.IsNullOrWhiteSpace(url))
+                return Result<string>.Failure(
+                    new ApiError(HttpStatusCode.BadRequest, "URL cannot be null or empty."));
+
             try
             {
-                var response = _request.GetAsync(url).Result;
+                var response = await _httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead)
+                                                      .ConfigureAwait(false);
 
-                if (response.StatusCode == HttpStatusCode.BadRequest)
-                {
-                    throw new ArgumentException();
-                }
+                var body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                return response.Content.ReadAsStringAsync().Result;
+                if (response.IsSuccessStatusCode)
+                    return Result<string>.Success(body);
+
+                var errorMessage = $"API returned {(int)response.StatusCode} {response.StatusCode}";
+                var error = new ApiError(response.StatusCode, errorMessage, response.ReasonPhrase, body);
+
+                return Result<string>.Failure(error);
+            }
+            catch (HttpRequestException ex)
+            {
+                return Result<string>.Failure(
+                    new ApiError(HttpStatusCode.ServiceUnavailable, "Network or connection error.", ex.Message));
+            }
+            catch (TaskCanceledException ex)
+            {
+                return Result<string>.Failure(
+                    new ApiError(HttpStatusCode.RequestTimeout, "Request timed out.", ex.Message));
+            }
+            catch (OperationCanceledException ex)
+            {
+                return Result<string>.Failure(
+                    new ApiError(HttpStatusCode.BadRequest, "Request was cancelled.", ex.Message));
             }
             catch (Exception ex)
             {
-                throw new HttpRequestException($"Error trying execute the request: {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Method to execute the api call async.
-        /// </summary>
-        /// <param name="url">Api url to execute async</param>
-        /// <returns>String Server response</returns>
-        public virtual async Task<string> CallApiAsync(string url)
-        {
-            try
-            {
-                var response = await _request.GetAsync(url);
-
-                if (response.StatusCode == HttpStatusCode.BadRequest)
-                {
-                    throw new ArgumentException();
-                }
-
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new HttpRequestException($"Error trying execute the request: {ex.Message}");
+                return Result<string>.Failure(
+                    new ApiError(HttpStatusCode.InternalServerError, "Unexpected error.", ex.Message));
             }
         }
     }

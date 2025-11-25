@@ -14,14 +14,11 @@ namespace CoreZipCode.Services.Postcode.PostalpincodeInApi
     {
         public PostalpincodeIn() { }
 
-        public PostalpincodeIn(HttpClient request) : base(request)
-        {
-            //
-        }
+        public PostalpincodeIn(HttpClient httpClient) : base(httpClient) { }
+
+        public PostalpincodeIn(IApiHandler apiHandler) : base(apiHandler) { }
 
         public override string SetPostcodeUrl(string postcode)
-        {
-            return $"http://postalpincode.in/api/pincode/{postcode}";
-        }
+            => $"http://postalpincode.in/api/pincode/{postcode.Trim()}";
     }
 }

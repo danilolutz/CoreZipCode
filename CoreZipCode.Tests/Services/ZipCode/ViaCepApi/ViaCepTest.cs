@@ -1,11 +1,10 @@
-﻿using CoreZipCode.Services.ZipCode.ViaCepApi;
+﻿using CoreZipCode.Interfaces;
+using CoreZipCode.Result;
+using CoreZipCode.Services.ZipCode.ViaCepApi;
 using Moq;
-using Moq.Protected;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,192 +12,314 @@ namespace CoreZipCode.Tests.Services.ZipCode.ViaCepApi
 {
     public class ViaCepTest
     {
-        private const string ExpectedResponse = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\",\n  \"ddd\": \"16\",\n  \"siafi\": \"7107\"\n}";
-        private const string ExpectedListResponse = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\",\n    \"ddd\": \"16\",\n  \"siafi\": \"7107\"  }\n]";
-        private const string ExpectedState = "SP";
-        private const string ExpectedCity = "Araraquara";
-        private const string ZipCodeTest = "14810-100";
-        private const string SendAsync = "SendAsync";
-        private const string MockUri = "https://unit.test.com/";
-        private const string ViaCepParameterState = "sp";
-        private const string ViaCepParameterCity = "araraquara";
-        private const string ViaCepParameterStreet = "barão do rio";
-        private const string InvalidStreetMessage = "Invalid Street, parameter below size of 3 characters.";
-        private const string InvalidCityMessage = "Invalid City, parameter below size of 3 characters.";
-        private const string InvalidStateMessage = "Invalid State, parameter below size of 2 characters.";
-        private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
-        private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
+        private const string ValidCep = "14810100";
+        private const string SingleAddressJson = "{\n  \"cep\": \"14810-100\",\n  \"logradouro\": \"Rua Barão do Rio Branco\",\n  \"complemento\": \"\",\n  \"bairro\": \"Vila Xavier (Vila Xavier)\",\n  \"localidade\": \"Araraquara\",\n  \"uf\": \"SP\",\n  \"ibge\": \"3503208\",\n  \"gia\": \"1818\",\n  \"ddd\": \"16\",\n  \"siafi\": \"7107\"\n}";
+        private const string ListAddressJson = "[\n  {\n    \"cep\": \"14810-100\",\n    \"logradouro\": \"Rua Barão do Rio Branco\",\n    \"complemento\": \"\",\n    \"bairro\": \"Vila Xavier (Vila Xavier)\",\n    \"localidade\": \"Araraquara\",\n    \"uf\": \"SP\",\n    \"ibge\": \"3503208\",\n    \"gia\": \"1818\",\n    \"ddd\": \"16\",\n  \"siafi\": \"7107\"  }\n]";
 
+        private readonly Mock<IApiHandler> _handlerMock = new();
         private readonly ViaCep _service;
-        private readonly ViaCep _serviceList;
 
         public ViaCepTest()
         {
-            _service = ConfigureService(ExpectedResponse);
-            _serviceList = ConfigureService(ExpectedListResponse);
-        }
-
-        private static ViaCep ConfigureService(string response)
-        {
-            var handlerMock = new Mock<HttpMessageHandler>();
-
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    SendAsync,
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(response),
-                })
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri(MockUri)
-            };
-
-            return new ViaCep(httpClient);
+            _service = new ViaCep(_handlerMock.Object);
         }
 
         [Fact]
-        public static void ConstructorTest()
+        public void Constructor_Creates_Instance()
         {
-            var actual = new ViaCep();
-            Assert.NotNull(actual);
+            new ViaCep();
         }
 
         [Fact]
-        public void MustGetSingleZipCodeJsonString()
+        public void Constructor_Creates_Instance_With_HttpClient()
         {
-            var actual = _service.Execute(ZipCodeTest);
-
-            Assert.Equal(ExpectedResponse, actual);
+            new ViaCep(new HttpClient());
         }
 
         [Fact]
-        public void MustGetListZipCodeJsonString()
+        public void Constructor_With_Null_ApiHandler_Should_Throw_ArgumentNullException()
         {
-            var actual = _serviceList.Execute(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
-
-            Assert.Equal(ExpectedListResponse, actual);
+            Assert.Throws<ArgumentNullException>(() => new ViaCep((IApiHandler)null));
         }
 
         [Fact]
-        public void MustGetSingleZipCodeObject()
+        public async Task GetAddressAsync_ValidCep_Returns_Success()
         {
-            var actual = _service.GetAddress<ViaCepAddressModel>(ZipCodeTest);
+            _handlerMock
+                .Setup(x => x.CallApiAsync($"https://viacep.com.br/ws/{ValidCep}/json/"))
+                .ReturnsAsync(Result<string>.Success(SingleAddressJson));
 
-            Assert.IsType<ViaCepAddressModel>(actual);
-            Assert.Equal(ExpectedCity, actual.City);
-            Assert.Equal(ExpectedState, actual.State);
+            var result = await _service.GetAddressAsync<ViaCepAddressModel>(ValidCep);
+
+            Assert.True(result.IsSuccess);
+            Assert.Equal("Araraquara", result.Value.City);
+            Assert.Equal("SP", result.Value.State);
         }
 
         [Fact]
-        public void MustGetZipCodeObjectList()
+        public async Task GetAddressAsync_ApiReturns404_Returns_Failure()
         {
-            var actual = _serviceList.ListAddresses<ViaCepAddressModel>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Failure(new ApiError(HttpStatusCode.NotFound, "Not found")));
 
-            Assert.IsType<List<ViaCepAddressModel>>(actual);
-            Assert.True(actual.Count > 0);
-            Assert.Equal(ExpectedCity, actual[0].City);
-            Assert.Equal(ExpectedState, actual[0].State);
+            var result = await _service.GetAddressAsync<ViaCepAddressModel>("00000000");
+
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.NotFound, result.Error.StatusCode);
         }
 
         [Fact]
-        public void MustThrowTheExceptions()
+        public async Task GetAddressAsync_ApiReturnsNullBody_Returns_NotFound()
         {
-            var exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 12345-67 "));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success("null"));
 
-            exception = Assert.Throws<ViaCepException>(() => _service.Execute(" 123A5-678 "));
-            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
+            var result = await _service.GetAddressAsync<ViaCepAddressModel>(ValidCep);
 
-            exception = Assert.Throws<ViaCepException>(() => _service.Execute("U", "Araraquara", "barão do rio"));
-            Assert.Equal(InvalidStateMessage, exception.Message);
-
-            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ar", "barão do rio"));
-            Assert.Equal(InvalidCityMessage, exception.Message);
-
-            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", "ba"));
-            Assert.Equal(InvalidStreetMessage, exception.Message);
-
-            exception = Assert.Throws<ViaCepException>(() => _service.Execute("", "Araraquara", "barão do rio"));
-            Assert.Equal(InvalidStateMessage, exception.Message);
-
-            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "", "barão do rio"));
-            Assert.Equal(InvalidCityMessage, exception.Message);
-
-            exception = Assert.Throws<ViaCepException>(() => _service.Execute("SP", "Ara", ""));
-            Assert.Equal(InvalidStreetMessage, exception.Message);
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.NotFound, result.Error.StatusCode);
+            Assert.Equal("Address not found or empty response.", result.Error.Message);
         }
 
         [Fact]
-        public async Task MustGetSingleZipCodeJsonStringAsync()
+        public async Task GetAddressAsync_ApiReturnsInvalidJson_Returns_UnprocessableEntity()
         {
-            var actual = await _service.ExecuteAsync(ZipCodeTest);
+            var invalidJson = "{ invalid json }";
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success(invalidJson));
 
-            Assert.Equal(ExpectedResponse, actual);
+            var result = await _service.GetAddressAsync<ViaCepAddressModel>(ValidCep);
+
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, result.Error.StatusCode);
+            Assert.Equal("Failed to parse API response.", result.Error.Message);
+            Assert.NotNull(result.Error.Detail);
+            Assert.Equal(invalidJson, result.Error.ResponseBody);
         }
 
         [Fact]
-        public async Task MustGetListZipCodeJsonStringAsync()
+        public async Task GetAddressAsync_InvalidCep_Throws_ViaCepException()
         {
-            var actual = await _serviceList.ExecuteAsync(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.GetAddressAsync<ViaCepAddressModel>("123"));
 
-            Assert.Equal(ExpectedListResponse, actual);
+            Assert.Contains("Invalid ZipCode Size", ex.Message);
         }
 
         [Fact]
-        public async Task MustGetSingleZipCodeObjectAsync()
+        public async Task GetAddressAsync_NonNumericCep_Throws_ViaCepException()
         {
-            var actual = await _service.GetAddressAsync<ViaCepAddressModel>(ZipCodeTest);
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.GetAddressAsync<ViaCepAddressModel>("ABCDEF12"));
 
-            Assert.IsType<ViaCepAddressModel>(actual);
-            Assert.Equal(ExpectedCity, actual.City);
-            Assert.Equal(ExpectedState, actual.State);
+            Assert.Contains("Invalid ZipCode Format", ex.Message);
         }
 
         [Fact]
-        public async Task MustGetZipCodeObjectListAsync()
+        public async Task ListAddressesAsync_ValidParams_Returns_Success_List()
         {
-            var actual = await _serviceList.ListAddressesAsync<ViaCepAddressModel>(ViaCepParameterState, ViaCepParameterCity, ViaCepParameterStreet);
+            _handlerMock
+                .Setup(x => x.CallApiAsync("https://viacep.com.br/ws/SP/Araraquara/barão do rio/json/"))
+                .ReturnsAsync(Result<string>.Success(ListAddressJson));
 
-            Assert.IsType<List<ViaCepAddressModel>>(actual);
-            Assert.True(actual.Count > 0);
-            Assert.Equal(ExpectedCity, actual[0].City);
-            Assert.Equal(ExpectedState, actual[0].State);
+            var result = await _service.ListAddressesAsync<ViaCepAddressModel>("SP", "Araraquara", "barão do rio");
+
+            Assert.True(result.IsSuccess);
+            Assert.Single(result.Value);
+            Assert.Equal("Araraquara", result.Value[0].City);
+            Assert.Equal("SP", result.Value[0].State);
         }
 
         [Fact]
-        public async Task MustThrowTheExceptionsAsync()
+        public async Task ListAddressesAsync_ApiReturnsEmptyList_Returns_Success_EmptyList()
         {
-            var exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 12345-67 "));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success("[]"));
 
-            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync(" 123A5-678 "));
-            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
+            var result = await _service.ListAddressesAsync<ViaCepAddressModel>("SP", "City", "Street");
 
-            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("U", "Araraquara", "barão do rio"));
-            Assert.Equal(InvalidStateMessage, exception.Message);
+            Assert.True(result.IsSuccess);
+            Assert.Empty(result.Value);
+        }
 
-            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ar", "barão do rio"));
-            Assert.Equal(InvalidCityMessage, exception.Message);
+        [Fact]
+        public async Task ListAddressesAsync_ApiReturnsNull_Returns_Success_EmptyList()
+        {
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success("null"));
 
-            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", "ba"));
-            Assert.Equal(InvalidStreetMessage, exception.Message);
+            var result = await _service.ListAddressesAsync<ViaCepAddressModel>("SP", "City", "Street");
 
-            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("", "Araraquara", "barão do rio"));
-            Assert.Equal(InvalidStateMessage, exception.Message);
+            Assert.True(result.IsSuccess);
+            Assert.Empty(result.Value);
+        }
 
-            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "", "barão do rio"));
-            Assert.Equal(InvalidCityMessage, exception.Message);
+        [Fact]
+        public async Task ListAddressesAsync_ApiReturnsInvalidJson_Returns_UnprocessableEntity()
+        {
+            var invalidJson = "[ invalid json ]";
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success(invalidJson));
 
-            exception = await Assert.ThrowsAsync<ViaCepException>(() => _service.ExecuteAsync("SP", "Ara", ""));
-            Assert.Equal(InvalidStreetMessage, exception.Message);
+            var result = await _service.ListAddressesAsync<ViaCepAddressModel>("SP", "City", "Street");
+
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, result.Error.StatusCode);
+            Assert.Equal("Failed to parse address list.", result.Error.Message);
+            Assert.NotNull(result.Error.Detail);
+            Assert.Equal(invalidJson, result.Error.ResponseBody);
+        }
+
+        [Fact]
+        public async Task ListAddressesAsync_ApiReturnsFailure_Returns_Failure()
+        {
+            var error = new ApiError(HttpStatusCode.ServiceUnavailable, "Service unavailable");
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Failure(error));
+
+            var result = await _service.ListAddressesAsync<ViaCepAddressModel>("SP", "City", "Street");
+
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.ServiceUnavailable, result.Error.StatusCode);
+            Assert.Equal("Service unavailable", result.Error.Message);
+        }
+
+        [Fact]
+        public async Task ListAddressesAsync_InvalidState_Throws_ViaCepException()
+        {
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.ListAddressesAsync<ViaCepAddressModel>("X", "City", "Street"));
+
+            Assert.Contains("Invalid State", ex.Message);
+        }
+
+        [Fact]
+        public async Task ListAddressesAsync_EmptyState_Throws_ViaCepException()
+        {
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.ListAddressesAsync<ViaCepAddressModel>("", "City", "Street"));
+
+            Assert.Contains("Invalid State", ex.Message);
+        }
+
+        [Fact]
+        public async Task ListAddressesAsync_InvalidCity_Throws_ViaCepException()
+        {
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.ListAddressesAsync<ViaCepAddressModel>("SP", "AB", "Street"));
+
+            Assert.Contains("Invalid City", ex.Message);
+        }
+
+        [Fact]
+        public async Task ListAddressesAsync_EmptyCity_Throws_ViaCepException()
+        {
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.ListAddressesAsync<ViaCepAddressModel>("SP", "", "Street"));
+
+            Assert.Contains("Invalid City", ex.Message);
+        }
+
+        [Fact]
+        public async Task ListAddressesAsync_InvalidStreet_Throws_ViaCepException()
+        {
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.ListAddressesAsync<ViaCepAddressModel>("SP", "City", "AB"));
+
+            Assert.Contains("Invalid Street", ex.Message);
+        }
+
+        [Fact]
+        public async Task ListAddressesAsync_EmptyStreet_Throws_ViaCepException()
+        {
+            var ex = await Assert.ThrowsAsync<ViaCepException>(
+                () => _service.ListAddressesAsync<ViaCepAddressModel>("SP", "City", ""));
+
+            Assert.Contains("Invalid Street", ex.Message);
+        }
+
+        [Fact]
+        [Obsolete("Will be removed in next version")]
+        public async Task ExecuteAsync_ValidCep_Returns_Json_String()
+        {
+            _handlerMock
+                .Setup(x => x.CallApiAsync($"https://viacep.com.br/ws/{ValidCep}/json/"))
+                .ReturnsAsync(Result<string>.Success(SingleAddressJson));
+
+            var result = await _service.ExecuteAsync(ValidCep);
+
+            Assert.Equal(SingleAddressJson, result);
+        }
+
+        [Fact]
+        [Obsolete("Will be removed in next version")]
+        public async Task ExecuteAsync_ApiReturnsFailure_Throws_HttpRequestException()
+        {
+            var error = new ApiError(HttpStatusCode.NotFound, "Not found");
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Failure(error));
+
+            var ex = await Assert.ThrowsAsync<HttpRequestException>(
+                () => _service.ExecuteAsync(ValidCep));
+
+            Assert.Equal("Not found", ex.Message);
+        }
+
+        [Fact]
+        [Obsolete("Will be removed in next version")]
+        public void Execute_Always_Throws_NotSupportedException()
+        {
+            Assert.Throws<NotSupportedException>(() => _service.Execute(ValidCep));
+        }
+
+        [Fact]
+        [Obsolete("Will be removed in next version")]
+        public void GetAddress_Always_Throws_NotSupportedException()
+        {
+            Assert.Throws<NotSupportedException>(() => _service.GetAddress<ViaCepAddressModel>(ValidCep));
+        }
+
+        [Fact]
+        public void SetZipCodeUrl_Generates_Correct_Url()
+        {
+            var url = _service.SetZipCodeUrl("01001000");
+            Assert.Equal("https://viacep.com.br/ws/01001000/json/", url);
+        }
+
+        [Fact]
+        public void SetZipCodeUrl_With_Hyphen_Generates_Correct_Url()
+        {
+            var url = _service.SetZipCodeUrl("01001-000");
+            Assert.Equal("https://viacep.com.br/ws/01001000/json/", url);
+        }
+
+        [Fact]
+        public void SetZipCodeUrl_With_Spaces_Generates_Correct_Url()
+        {
+            var url = _service.SetZipCodeUrl(" 01001000 ");
+            Assert.Equal("https://viacep.com.br/ws/01001000/json/", url);
+        }
+
+        [Fact]
+        public void SetZipCodeUrlBy_Generates_Correct_Url()
+        {
+            var url = _service.SetZipCodeUrlBy("rj", "rio de janeiro", "praia de botafogo");
+            Assert.Equal("https://viacep.com.br/ws/rj/rio de janeiro/praia de botafogo/json/", url);
+        }
+
+        [Fact]
+        public void SetZipCodeUrlBy_With_Spaces_Generates_Correct_Url()
+        {
+            var url = _service.SetZipCodeUrlBy(" SP ", " Araraquara ", " Street Name ");
+            Assert.Equal("https://viacep.com.br/ws/SP/Araraquara/Street Name/json/", url);
         }
     }
 }

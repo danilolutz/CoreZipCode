@@ -1,10 +1,10 @@
+using CoreZipCode.Interfaces;
+using CoreZipCode.Result;
 using CoreZipCode.Services.Postcode.PostcodesIoApi;
+using CoreZipCode.Services.ZipCode.SmartyApi;
 using Moq;
-using Moq.Protected;
-using System;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,90 +12,81 @@ namespace CoreZipCode.Tests.Services.Postcode.PostcodesIoApi
 {
     public class PostcodesIoTest
     {
-        private const string ExpectedResponse = "{\"status\":200,\"result\":[{\"postcode\":\"OX49 5NU\",\"quality\":1,\"eastings\":464447,\"northings\":195647,\"country\":\"England\",\"nhs_ha\":\"South Central\",\"longitude\":-1.069752,\"latitude\":51.655929,\"european_electoral_region\":\"South East\",\"primary_care_trust\":\"Oxfordshire\",\"region\":\"South East\",\"lsoa\":\"South Oxfordshire 011B\",\"msoa\":\"South Oxfordshire 011\",\"incode\":\"5NU\",\"outcode\":\"OX49\",\"parliamentary_constituency\":\"Henley\",\"admin_district\":\"South Oxfordshire\",\"parish\":\"Brightwell Baldwin\",\"admin_county\":\"Oxfordshire\",\"admin_ward\":\"Chalgrove\",\"ced\":\"Chalgrove and Watlington\",\"ccg\":\"NHS Oxfordshire\",\"nuts\":\"Oxfordshire\",\"codes\":{\"admin_district\":\"E07000179\",\"admin_county\":\"E10000025\",\"admin_ward\":\"E05009735\",\"parish\":\"E04008109\",\"parliamentary_constituency\":\"E14000742\",\"ccg\":\"E38000136\",\"ced\":\"E58001238\",\"nuts\":\"UKJ14\"}}]}";
-        private const string ExpectedCountry = "England";
-        private const string PostalPinCodeTest = "OX49 5NU";
-        private const string SendAsync = "SendAsync";
-        private const string MockUri = "https://unit.test.com/";
-        private const int ExpectedStatusSuccess = 200;
-        private const int ExpectedResultQuality = 1;
+        private const string ValidPostcode = "OX49 5NU";
 
+        private const string SuccessJson = """{"status":200,"result":[{"postcode":"OX49 5NU","quality":1,"eastings":464447,"northings":195647,"country":"England","nhs_ha":"South Central","longitude":-1.069752,"latitude":51.655929,"european_electoral_region":"South East","primary_care_trust":"Oxfordshire","region":"South East","lsoa":"South Oxfordshire 011B","msoa":"South Oxfordshire 011","incode":"5NU","outcode":"OX49","parliamentary_constituency":"Henley","admin_district":"South Oxfordshire","parish":"Brightwell Baldwin","admin_county":"Oxfordshire","admin_ward":"Chalgrove","ced":"Chalgrove and Watlington","ccg":"NHS Oxfordshire","nuts":"Oxfordshire","codes":{"admin_district":"E07000179","admin_county":"E10000025","admin_ward":"E05009735","parish":"E04008109","parliamentary_constituency":"E14000742","ccg":"E38000136","ced":"E58001238","nuts":"UKJ14"}}]}""";
+
+        private readonly Mock<IApiHandler> _apiHandlerMock;
         private readonly PostcodesIo _service;
 
         public PostcodesIoTest()
         {
-            _service = ConfigureService(ExpectedResponse);
-        }
-
-        private static PostcodesIo ConfigureService(string response)
-        {
-            var handlerMock = new Mock<HttpMessageHandler>();
-
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    SendAsync,
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(response),
-                })
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri(MockUri),
-            };
-
-            return new PostcodesIo(httpClient);
+            _apiHandlerMock = new Mock<IApiHandler>();
+            _service = new PostcodesIo(_apiHandlerMock.Object);
         }
 
         [Fact]
-        public static void ConstructorTest()
+        public void Constructor_Should_Create_Instance()
         {
-            var actual = new PostcodesIo();
-            Assert.NotNull(actual);
+            new PostcodesIo();
         }
 
         [Fact]
-        public void MustGetPostcodes()
+        public void Constructor_Should_Create_Instance_With_HttpClient()
         {
-            var actual = _service.Execute(PostalPinCodeTest);
-
-            Assert.Equal(ExpectedResponse, actual);
+            new PostcodesIo(new HttpClient());
         }
 
         [Fact]
-        public void MustGetPostcodesObject()
+        public async Task GetPostcodeAsync_ValidPostcode_Returns_Success_Result()
         {
-            var actual = _service.GetPostcode<PostcodesIoModel>(PostalPinCodeTest);
+            _apiHandlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success(SuccessJson));
 
-            Assert.IsType<PostcodesIoModel>(actual);
-            Assert.Equal(ExpectedStatusSuccess, actual.Status);
-            Assert.Equal(ExpectedResultQuality, actual.Result[0].Quality);
-            Assert.Equal(ExpectedCountry, actual.Result[0].Country);
+            var result = await _service.GetPostcodeAsync<PostcodesIoModel>(ValidPostcode);
+
+            Assert.True(result.IsSuccess);
+            Assert.NotNull(result.Value);
+            Assert.Equal(200, result.Value.Status);
+            Assert.Equal("England", result.Value.Result[0].Country);
+            Assert.Equal(1, result.Value.Result[0].Quality);
         }
 
         [Fact]
-        public async Task MustGetPostcodesAsync()
+        public async Task GetPostcodeAsync_ApiReturnsNotFound_Returns_Failure()
         {
-            var actual = await _service.ExecuteAsync(PostalPinCodeTest);
+            var error = new ApiError(HttpStatusCode.NotFound, "Not found");
+            _apiHandlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Failure(error));
 
-            Assert.Equal(ExpectedResponse, actual);
+            var result = await _service.GetPostcodeAsync<PostcodesIoModel>("INVALID");
+
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.NotFound, result.Error.StatusCode);
         }
 
         [Fact]
-        public async Task MustGetPostcodesObjectAsync()
+        public async Task GetPostcodeAsync_ApiReturnsMalformedJson_Returns_UnprocessableEntity()
         {
-            var actual = await _service.GetPostcodeAsync<PostcodesIoModel>(PostalPinCodeTest);
+            _apiHandlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success("{ invalid json }"));
 
-            Assert.IsType<PostcodesIoModel>(actual);
-            Assert.Equal(ExpectedStatusSuccess, actual.Status);
-            Assert.Equal(ExpectedResultQuality, actual.Result[0].Quality);
-            Assert.Equal(ExpectedCountry, actual.Result[0].Country);
+            var result = await _service.GetPostcodeAsync<PostcodesIoModel>(ValidPostcode);
+
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.UnprocessableEntity, result.Error.StatusCode);
+        }
+
+        [Fact]
+        public void SetPostcodeUrl_Should_Generate_Correct_Url()
+        {
+            var service = new PostcodesIo();
+            var url = service.SetPostcodeUrl("SW1A 1AA");
+
+            Assert.Equal("https://api.postcodes.io/postcodes?q=SW1A%201AA", url);
         }
     }
 }

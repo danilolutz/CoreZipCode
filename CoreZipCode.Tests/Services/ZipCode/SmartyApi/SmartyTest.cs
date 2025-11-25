@@ -1,11 +1,12 @@
-﻿using CoreZipCode.Services.ZipCode.SmartyApi;
+﻿using CoreZipCode.Interfaces;
+using CoreZipCode.Result;
+using CoreZipCode.Services.ZipCode.SmartyApi;
+using CoreZipCode.Services.ZipCode.ViaCepApi;
 using Moq;
-using Moq.Protected;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -13,200 +14,147 @@ namespace CoreZipCode.Tests.Services.ZipCode.SmartyApi
 {
     public class SmartyTest
     {
-        private const string ExpectedZipcodeResponse = "[{\"input_index\":0,\"city_states\":[{\"city\":\"Cupertino\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true},{\"city\":\"Monte Vista\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true},{\"city\":\"Permanente\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true}],\"zipcodes\":[{\"zipcode\":\"95014\",\"zipcode_type\":\"S\",\"default_city\":\"Cupertino\",\"county_fips\":\"06085\",\"county_name\":\"Santa Clara\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"latitude\":37.32098,\"longitude\":-122.03838,\"precision\":\"Zip5\"}]}]";
-        private const string ExpectedParamResponse = "[{\"input_index\":0,\"candidate_index\":0,\"delivery_line_1\":\"1600 Amphitheatre Pkwy\",\"last_line\":\"Mountain View CA 94043-1351\",\"delivery_point_barcode\":\"940431351000\",\"components\":{\"primary_number\":\"1600\",\"street_name\":\"Amphitheatre\",\"street_suffix\":\"Pkwy\",\"city_name\":\"Mountain View\",\"default_city_name\":\"Mountain View\",\"state_abbreviation\":\"CA\",\"zipcode\":\"94043\",\"plus4_code\":\"1351\",\"delivery_point\":\"00\",\"delivery_point_check_digit\":\"0\"},\"metadata\":{\"record_type\":\"S\",\"zip_type\":\"Standard\",\"county_fips\":\"06085\",\"county_name\":\"Santa Clara\",\"carrier_route\":\"C909\",\"congressional_district\":\"18\",\"rdi\":\"Commercial\",\"elot_sequence\":\"0094\",\"elot_sort\":\"A\",\"latitude\":37.42357,\"longitude\":-122.08661,\"precision\":\"Zip9\",\"time_zone\":\"Pacific\",\"utc_offset\":-8,\"dst\":true},\"analysis\":{\"dpv_match_code\":\"Y\",\"dpv_footnotes\":\"AABB\",\"dpv_cmra\":\"N\",\"dpv_vacant\":\"N\",\"active\":\"N\"}}]";
-        private const string ExpectedState = "CA";
-        private const string ExpectedCity = "Cupertino";
-        private const string ZipCodeTest = "95014";
-        private const string SendAsync = "SendAsync";
-        private const string MockUri = "https://unit.test.com/";
-        private const string SmartyParameterState = "CA";
-        private const string SmartyParameterCity = "Mountain View";
-        private const string SmartyParameterStreet = "1600 Amphitheatre Pkwy";
-        private const string InvalidStreetMessage = "Invalid Street, parameter over size of 64 characters.";
-        private const string InvalidCityMessage = "Invalid City, parameter over size of 64 characters.";
-        private const string InvalidStateMessage = "Invalid State, parameter over size of 32 characters.";
-        private const string InvalidZipCodeFormatMessage = "Invalid ZipCode Format";
-        private const string InvalidZipCodeSizeMessage = "Invalid ZipCode Size";
-        private const string AuthToken = "some auth token";
-        private const string AuthId = "some auth id";
+        private const string AuthId = "test-id";
+        private const string AuthToken = "test-token";
+        private const string ZipcodeResponse = "[{\"input_index\":0,\"city_states\":[{\"city\":\"Cupertino\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true},{\"city\":\"Monte Vista\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true},{\"city\":\"Permanente\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"mailable_city\":true}],\"zipcodes\":[{\"zipcode\":\"95014\",\"zipcode_type\":\"S\",\"default_city\":\"Cupertino\",\"county_fips\":\"06085\",\"county_name\":\"Santa Clara\",\"state_abbreviation\":\"CA\",\"state\":\"California\",\"latitude\":37.32098,\"longitude\":-122.03838,\"precision\":\"Zip5\"}]}]";
+        private const string StreetResponse = "[{\"input_index\":0,\"candidate_index\":0,\"delivery_line_1\":\"1600 Amphitheatre Pkwy\",\"last_line\":\"Mountain View CA 94043-1351\",\"delivery_point_barcode\":\"940431351000\",\"components\":{\"primary_number\":\"1600\",\"street_name\":\"Amphitheatre\",\"street_suffix\":\"Pkwy\",\"city_name\":\"Mountain View\",\"default_city_name\":\"Mountain View\",\"state_abbreviation\":\"CA\",\"zipcode\":\"94043\",\"plus4_code\":\"1351\",\"delivery_point\":\"00\",\"delivery_point_check_digit\":\"0\"},\"metadata\":{\"record_type\":\"S\",\"zip_type\":\"Standard\",\"county_fips\":\"06085\",\"county_name\":\"Santa Clara\",\"carrier_route\":\"C909\",\"congressional_district\":\"18\",\"rdi\":\"Commercial\",\"elot_sequence\":\"0094\",\"elot_sort\":\"A\",\"latitude\":37.42357,\"longitude\":-122.08661,\"precision\":\"Zip9\",\"time_zone\":\"Pacific\",\"utc_offset\":-8,\"dst\":true},\"analysis\":{\"dpv_match_code\":\"Y\",\"dpv_footnotes\":\"AABB\",\"dpv_cmra\":\"N\",\"dpv_vacant\":\"N\",\"active\":\"N\"}}]";
 
+        private readonly Mock<IApiHandler> _handlerMock = new();
         private readonly Smarty _service;
-        private readonly Smarty _serviceParam;
 
         public SmartyTest()
         {
-            _service = ConfigureService(ExpectedZipcodeResponse);
-            _serviceParam = ConfigureService(ExpectedParamResponse);
-        }
-
-        private static Smarty ConfigureService(string response)
-        {
-            var handlerMock = new Mock<HttpMessageHandler>();
-
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    SendAsync,
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(response),
-                })
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri(MockUri)
-            };
-
-            return new Smarty(httpClient, "test-auth-id", "test-auth-token");
+            _service = new Smarty(_handlerMock.Object, AuthId, AuthToken);
         }
 
         [Fact]
-        public static void ConstructorTest()
+        public void Constructor_Creates_Instance_With_HttpClient()
         {
-            var actual = new Smarty(AuthId, AuthToken);
-            Assert.NotNull(actual);
+            new Smarty(new HttpClient(), AuthId, AuthToken);
         }
 
         [Fact]
-        public static void ConstructorNullTest()
+        public void Constructor_Requires_NonEmpty_Credentials()
         {
-            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), AuthId, null));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), null, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), null, null));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), AuthId, string.Empty));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), string.Empty, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(new HttpClient(), string.Empty, string.Empty));
-
-            Assert.Throws<ArgumentNullException>(() => new Smarty(AuthId, null));
             Assert.Throws<ArgumentNullException>(() => new Smarty(null, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(null, null));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(AuthId, string.Empty));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(string.Empty, AuthToken));
-            Assert.Throws<ArgumentNullException>(() => new Smarty(string.Empty, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(AuthId, null));
+            Assert.Throws<ArgumentNullException>(() => new Smarty("", AuthToken));
+            Assert.Throws<ArgumentNullException>(() => new Smarty(AuthId, ""));
         }
 
         [Fact]
-        public void MustGetSingleZipCodeJsonString()
+        public async Task GetAddressAsync_ValidZip_Returns_Success_With_ListOfSmartyModel()
         {
-            var actual = _service.Execute(ZipCodeTest);
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.Is<string>(u => u.Contains("zipcode=95014"))))
+                .ReturnsAsync(Result<string>.Success(ZipcodeResponse));
 
-            Assert.Equal(ExpectedZipcodeResponse, actual);
+            var result = await _service.GetAddressAsync<List<SmartyModel>>("95014");
+
+            Assert.True(result.IsSuccess);
+            Assert.Single(result.Value);
+            Assert.Equal("Cupertino", result.Value[0].CityStates[0].City);
+            Assert.Equal("CA", result.Value[0].CityStates[0].StateAbbreviation);
         }
 
         [Fact]
-        public void MustGetZipCodeByParamsJsonString()
+        public async Task ListAddressesAsync_ValidAddress_Returns_Success_With_StreetModel()
         {
-            var actual = _serviceParam.Execute(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Success(StreetResponse));
 
-            Assert.Equal(ExpectedParamResponse, actual);
+            var result = await _service.ListAddressesAsync<SmartyParamsModel>("CA", "Mountain View", "1600 Amphitheatre Pkwy");
+
+            Assert.True(result.IsSuccess);
+            Assert.Single(result.Value);
+            Assert.Equal("Mountain View", result.Value[0].Components.CityName);
+            Assert.Equal("CA", result.Value[0].Components.StateAbbreviation);
         }
 
         [Fact]
-        public void MustGetSingleZipCodeObject()
+        public async Task GetAddressAsync_ApiReturns404_Returns_Failure()
         {
-            var actual = _service.GetAddress<List<SmartyModel>>(ZipCodeTest);
+            _handlerMock
+                .Setup(x => x.CallApiAsync(It.IsAny<string>()))
+                .ReturnsAsync(Result<string>.Failure(new ApiError(HttpStatusCode.NotFound, "Not found")));
 
-            Assert.IsType<List<SmartyModel>>(actual);
-            Assert.Equal(ExpectedCity, actual[0].CityStates[0].City);
-            Assert.Equal(ExpectedState, actual[0].CityStates[0].StateAbbreviation);
+            var result = await _service.GetAddressAsync<List<SmartyModel>>("00000");
+
+            Assert.True(result.IsFailure);
+            Assert.Equal(HttpStatusCode.NotFound, result.Error.StatusCode);
         }
 
         [Fact]
-        public void MustGetZipCodeByParamsList()
+        public async Task ListAddressesAsync_InvalidState_Throws_SmartyException()
         {
-            var actual = _serviceParam.ListAddresses<SmartyParamsModel>(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
+            var longState = new string('A', 33);
+            var ex = await Assert.ThrowsAsync<SmartyException>(
+                () => _service.ListAddressesAsync<SmartyParamsModel>(longState, "City", "Street"));
 
-            Assert.IsType<List<SmartyParamsModel>>(actual);
-            Assert.True(actual.Count > 0);
-            Assert.Equal(SmartyParameterCity, actual[0].Components.CityName);
-            Assert.Equal(SmartyParameterState, actual[0].Components.StateAbbreviation);
+            Assert.Contains("exceeds 32 characters", ex.Message);
         }
 
         [Fact]
-        public void MustThrowTheExceptions()
+        public async Task GetAddressAsync_InvalidZipFormat_Throws_SmartyException()
         {
-            var exception = Assert.Throws<SmartyException>(() => _service.Execute(" 12345678901234567890 "));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
+            var ex = await Assert.ThrowsAsync<SmartyException>(
+                () => _service.GetAddressAsync<List<SmartyModel>>("12345a"));
 
-            exception = Assert.Throws<SmartyException>(() => _service.Execute(" 12A"));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
-
-            exception = Assert.Throws<SmartyException>(() => _service.Execute(" 123A5678 "));
-            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
-
-            exception = Assert.Throws<SmartyException>(() => _service.Execute("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
-            Assert.Equal(InvalidStateMessage, exception.Message);
-
-            exception = Assert.Throws<SmartyException>(() => _service.Execute("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
-            Assert.Equal(InvalidCityMessage, exception.Message);
-
-            exception = Assert.Throws<SmartyException>(() => _service.Execute("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
-            Assert.Equal(InvalidStreetMessage, exception.Message);
+            Assert.Contains("Invalid ZipCode Format", ex.Message);
         }
 
         [Fact]
-        public async Task MustGetSingleZipCodeJsonStringAsync()
+        public async Task GetAddressAsync_InvalidZipSize_Throws_SmartyException()
         {
-            var actual = await _service.ExecuteAsync(ZipCodeTest);
+            var ex = await Assert.ThrowsAsync<SmartyException>(
+                () => _service.GetAddressAsync<List<SmartyModel>>("ABC"));
 
-            Assert.Equal(ExpectedZipcodeResponse, actual);
+            Assert.Contains("Invalid ZipCode Size", ex.Message);
         }
 
         [Fact]
-        public async Task MustGetListZipCodeJsonStringAsync()
+        public async Task ListAddressesAsync_InvalidCity_Throws_SmartyException()
         {
-            var actual = await _serviceParam.ExecuteAsync(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
+            var longCity = new string('A', 65);
+            var ex = await Assert.ThrowsAsync<SmartyException>(
+                () => _service.ListAddressesAsync<SmartyParamsModel>("CA", longCity, "Street"));
 
-            Assert.Equal(ExpectedParamResponse, actual);
+            Assert.Contains("exceeds 64 characters", ex.Message);
         }
 
         [Fact]
-        public async Task MustGetSingleZipCodeObjectAsync()
+        public async Task ListAddressesAsync_InvalidStreet_Throws_SmartyException()
         {
-            var actual = await _service.GetAddressAsync<List<SmartyModel>>(ZipCodeTest);
+            var longStreet = new string('A', 65);
+            var ex = await Assert.ThrowsAsync<SmartyException>(
+                () => _service.ListAddressesAsync<SmartyParamsModel>("CA", "City", longStreet));
 
-            Assert.IsType<List<SmartyModel>>(actual);
-            Assert.Equal(ExpectedCity, actual[0].CityStates[0].City);
-            Assert.Equal(ExpectedState, actual[0].CityStates[0].StateAbbreviation);
+            Assert.Contains("exceeds 64 characters", ex.Message);
         }
 
         [Fact]
-        public async Task MustGetZipCodeByParamsListAsync()
+        public void SetZipCodeUrl_Generates_Correct_Url()
         {
-            var actual = await _serviceParam.ListAddressesAsync<SmartyParamsModel>(SmartyParameterState, SmartyParameterCity, SmartyParameterStreet);
+            var service = new Smarty(AuthId, AuthToken);
+            var url = service.SetZipCodeUrl("95014");
 
-            Assert.IsType<List<SmartyParamsModel>>(actual);
-            Assert.True(actual.Count > 0);
-            Assert.Equal(SmartyParameterCity, actual[0].Components.CityName);
-            Assert.Equal(SmartyParameterState, actual[0].Components.StateAbbreviation);
+            Assert.Contains("us-zipcode.api.smartystreets.com", url);
+            Assert.Contains("auth-id=test-id", url);
+            Assert.Contains("auth-token=test-token", url);
+            Assert.Contains("zipcode=95014", url);
         }
 
         [Fact]
-        public async Task MustThrowTheExceptionsAsync()
+        public void SetZipCodeUrlBy_Generates_Correct_Url_With_Encoded_Parameters()
         {
-            var exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12345678901234567890 "));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
+            var service = new Smarty(AuthId, AuthToken);
+            var url = service.SetZipCodeUrlBy("CA", "San José", "Main St");
 
-            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 12A"));
-            Assert.Equal(InvalidZipCodeSizeMessage, exception.Message);
-
-            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync(" 123A5678 "));
-            Assert.Equal(InvalidZipCodeFormatMessage, exception.Message);
-
-            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("Lorem ipsum dolor sit amet amet sit", "Mountain View", "1600 Amphitheatre Pkwy"));
-            Assert.Equal(InvalidStateMessage, exception.Message);
-
-            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere.", "1600 Amphitheatre Pkwy"));
-            Assert.Equal(InvalidCityMessage, exception.Message);
-
-            exception = await Assert.ThrowsAsync<SmartyException>(() => _service.ExecuteAsync("CA", "Mountain View", "Lorem ipsum dolor sit amet, consectetur adipiscing elit posuere posuere."));
-            Assert.Equal(InvalidStreetMessage, exception.Message);
+            Assert.Contains("us-street.api.smartystreets.com", url);
+            Assert.Contains("state=CA", url);
+            Assert.Contains("city=San%20Jos%C3%A9", url);
+            Assert.Contains("street=Main%20St", url);
         }
     }
 }
