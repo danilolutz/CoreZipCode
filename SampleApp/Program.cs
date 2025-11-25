@@ -56,8 +56,8 @@ static async Task SmartyServiceAsync()
     Console.WriteLine("Type your US Zipcode (eg: 95014):");
     var zipcode = Console.ReadLine()?.Trim();
 
-    var authId = "5c19485e-306d-c4e9-ab20-4b30cb926420"; // Create an account on https://www.smarty.com/ and put your own.
-    var authToken = "t7Uvm5G5ox8kalbJyMgC"; // Create an account on https://www.smarty.com/ and put your own.
+    var authId = ""; // Create an account on https://www.smarty.com/ and put your own.
+    var authToken = ""; // Create an account on https://www.smarty.com/ and put your own.
 
     if (string.IsNullOrWhiteSpace(authId) || string.IsNullOrWhiteSpace(authToken))
     {
