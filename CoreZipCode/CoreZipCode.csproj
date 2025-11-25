@@ -17,7 +17,8 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>CoreZipCode is useful to retrives zipcodes and postalcodes.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>- Change SmartyStreets to Smarty since they changed their name
+    <PackageReleaseNotes>- Do general enchancements all over the package
+- Check Smarty Service and keep compatibility
 - Check ViaCep Service and keep compatibility
 - Check Smarty Service and keep compatibility
 - Check PostalpincodeIn Service and keep compatibility
@@ -26,7 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\corezipcode128.png">
+    <None Include="..\docs\images\corezipcode128.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
