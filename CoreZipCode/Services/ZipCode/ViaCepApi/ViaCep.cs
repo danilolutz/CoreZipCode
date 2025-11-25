@@ -18,42 +18,32 @@ namespace CoreZipCode.Services.ZipCode.ViaCepApi
 
         public ViaCep() { }
 
-        public ViaCep(HttpClient request) : base(request)
-        {
-            //
-        }
+        public ViaCep(HttpClient httpClient) : base(httpClient) { }
 
-        public override string SetZipCodeUrl(string zipCode) => $"https://viacep.com.br/ws/{ValidateZipCode(zipCode)}/json/";
+        public ViaCep(IApiHandler apiHandler) : base(apiHandler) { }
 
-        public override string SetZipCodeUrlBy(string state, string city, string street) => $"https://viacep.com.br/ws/{ValidateParam("State", state, 2)}/{ValidateParam("City", city)}/{ValidateParam("Street", street)}/json/";
+        public override string SetZipCodeUrl(string zipCode)
+            => $"https://viacep.com.br/ws/{ValidateZipCode(zipCode)}/json/";
+
+        public override string SetZipCodeUrlBy(string state, string city, string street)
+            => $"https://viacep.com.br/ws/{ValidateParam("State", state, 2)}/{ValidateParam("City", city)}/{ValidateParam("Street", street)}/json/";
 
         private static string ValidateParam(string name, string value, int size = 3)
         {
-            var aux = value.Trim();
-
-            if (string.IsNullOrEmpty(aux) || aux.Length < size)
-            {
+            var trimmed = value.Trim();
+            if (string.IsNullOrEmpty(trimmed) || trimmed.Length < size)
                 throw new ViaCepException($"Invalid {name}, parameter below size of {size} characters.");
-            }
-
-            return aux;
+            return trimmed;
         }
 
         private static string ValidateZipCode(string zipCode)
         {
-            var zipAux = zipCode.Trim().Replace("-", "");
-
-            if (zipAux.Length != 8)
-            {
+            var clean = zipCode.Trim().Replace("-", "");
+            if (clean.Length != 8)
                 throw new ViaCepException(ZipCodeSizeErrorMessage);
-            }
-
-            if (!Regex.IsMatch(zipAux, ("[0-9]{8}")))
-            {
+            if (!Regex.IsMatch(clean, @"^\d{8}$"))
                 throw new ViaCepException(ZipCodeFormatErrorMessage);
-            }
-
-            return zipAux;
+            return clean;
         }
     }
 }

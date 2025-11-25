@@ -1,4 +1,5 @@
 using CoreZipCode.Interfaces;
+using System;
 using System.Net.Http;
 
 namespace CoreZipCode.Services.Postcode.PostcodesIoApi
@@ -12,16 +13,14 @@ namespace CoreZipCode.Services.Postcode.PostcodesIoApi
     /// information about the Postcodes API, see https://postcodes.io.</remarks>
     public class PostcodesIo : PostcodeBaseService
     {
+
         public PostcodesIo() { }
 
-        public PostcodesIo(HttpClient request) : base(request)
-        {
-            //
-        }
+        public PostcodesIo(HttpClient httpClient) : base(httpClient) { }
+
+        public PostcodesIo(IApiHandler apiHandler) : base(apiHandler) { }
 
         public override string SetPostcodeUrl(string postcode)
-        {
-            return $"https://api.postcodes.io/postcodes?q={postcode}";
-        }
+            => $"https://api.postcodes.io/postcodes?q={Uri.EscapeDataString(postcode.Trim())}";
     }
 }
